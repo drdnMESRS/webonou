@@ -1,0 +1,18 @@
+@php use Illuminate\Support\Facades\Auth; @endphp
+<div>
+    <!-- Simplicity is the ultimate sophistication. - Leonardo da Vinci -->
+
+    <form action="{{ route('change_academic_year') }}" method="POST">
+        @csrf
+        <select name="academic_year"
+                class="flex items-center justify-center p-2 w-auto rounded-lg bg-indigo-300"
+                onchange="this.form.submit()">
+            @foreach($academic_years as $year)
+                <option value="{{ $year->id }}"
+                        @if((new \App\Actions\Sessions\AcademicYearSession)->get_academic_year() == $year->id)
+                            selected="selected"
+                    @endif>{{ $year->fullName }}</option>
+            @endforeach
+        </select>
+    </form>
+</div>

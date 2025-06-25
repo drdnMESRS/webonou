@@ -30,7 +30,6 @@
                                      !!}
                             </flux:menu.item>
                             @else
-
                                 <flux:menu.item href="{!! route('change_active_role', ['role'=>$aff['id']]) !!}">
                                     {!!  $aff['role']['libelle_long_fr'] . ' / '.
                                          $aff['structure']['etablissement']['ll_etablissement_latin'] .' / '.
@@ -58,26 +57,18 @@
                     @endforeach
                 </flux:menu>
             </flux:dropdown>
+
+            <x-layouts.partials.academic_year />
         </flux:navbar>
 </flux:header>
-<flux:sidebar   class=" border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+<flux:sidebar   class=" border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 w-auto">
     <flux:sidebar.toggle class="lg:hidden" icon="x-mark"/>
 
     <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
         <x-app-logo/>
     </a>
 
-    <flux:navlist variant="outline">
-        <flux:navlist.group :heading="__('Platform')" class="grid">
-            <flux:navlist.item
-                icon="home"
-                :href="route('dashboard')"
-                :current="request()->routeIs('dashboard')"
-                wire:navigate>
-                {{ __('Dashboard') }}
-            </flux:navlist.item>
-        </flux:navlist.group>
-    </flux:navlist>
+   <x-layouts.partials.menuitems :menuItems="$menuItems" />
 
     <flux:spacer/>
 

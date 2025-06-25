@@ -50,7 +50,15 @@ class Ref_compte extends Authenticatable
         return null;
     }
 
-    /*
+    public function activeRoleId():Attribute{
+       return Attribute::make(
+           get: function (){
+               $aff = $this->get_activeRole();
+               return $aff['role']['id'];
+           }
+       );
+    }
+        /*
      * set the active role from the id of the affectation
      */
     public function activeRole():Attribute{
