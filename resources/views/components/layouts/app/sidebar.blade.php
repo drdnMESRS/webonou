@@ -136,5 +136,16 @@
 {{ $slot }}
 
 @fluxScripts
+<!-- Adds the Core Table Scripts -->
+
+@rappasoftTableScripts
+
+
+
+<!-- Adds any relevant Third-Party Scripts (e.g. Flatpickr) -->
+
+@rappasoftTableThirdPartyScripts
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
 </body>
 </html>

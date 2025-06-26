@@ -32,7 +32,7 @@ class CommonController extends Controller
     }
 
     public function dashboard(Request $request){
-        $menuItems = (new MenuItems)->menuItems();
-        return view('dashboard')->with(compact('menuItems'));
+
+        return view('dashboard');
     }
 }

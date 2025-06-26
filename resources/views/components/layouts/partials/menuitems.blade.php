@@ -15,7 +15,7 @@
 
                 @foreach($item as $it)
                     <flux:navlist.item>
-                        <a href="{{ $it->url }}" >
+                        <a href="{{ $it->url }}" wire:navigate>
                             <i class="{{ $it->fonction_icon }}"></i>
                             {{ $it->fonction_name }}
                         </a>

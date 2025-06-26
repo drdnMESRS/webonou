@@ -1,12 +1,23 @@
 @import "@fortawesome/fontawesome-free/css/all.css";
 
 @import 'tailwindcss';
+@import 'flowbite/src/themes/default';
+@plugin 'flowbite/plugin';
+
 @import '../../vendor/livewire/flux/dist/flux.css';
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
 @source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+@source '../../vendor/rappasoft/laravel-livewire-tables/resources/views/*.blade.php';
+
+@source '../../vendor/rappasoft/laravel-livewire-tables/resources/views/**/*.blade.php';
+@source '../../app/Livewire/*.php',
+
+@source '../../app/Livewire/**/*.php',
+@source '../../node_modules/flowbite';
+
 
 @custom-variant dark (&:where(.dark, .dark *));
 
