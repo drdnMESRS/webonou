@@ -7,18 +7,19 @@ use App\Models\Scopes\Dou\ResidanceScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use YMigVal\LaravelModelCache\HasCachedQueries;
+use YMigVal\LaravelModelCache\ModelRelationships;
 
 #[ScopedBy(ResidanceScope::class)]
 class Onou_cm_etablissement extends Model
 {
+    use HasCachedQueries, ModelRelationships;
 
     protected $table = 'onou.onou_cm_etablissement';
 
     protected $primaryKey = 'id';
 
     public $timestamps = false;
-
 
     /**
      * get the full name of the etablissement.
@@ -28,6 +29,7 @@ class Onou_cm_etablissement extends Model
         if (app()->getLocale() === 'ar') {
             return $this->denomination_ar;
         }
+
         return $this->denomination_fr;
     }
 
@@ -47,10 +49,8 @@ class Onou_cm_etablissement extends Model
         return $this->belongsTo('App\Models\Ppm\Ref_etablissement', 'etablissement_appartenance', 'id');
     }
 
-
     /**
      * Get the type based NC nomenclature.
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function type_nc(): BelongsTo
     {
@@ -59,7 +59,6 @@ class Onou_cm_etablissement extends Model
 
     /**
      * Get the type based NC nomenclature.
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function type_strecture(): BelongsTo
     {
@@ -68,7 +67,6 @@ class Onou_cm_etablissement extends Model
 
     /**
      * Get the type based NC nomenclature.
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function etat_strecture(): BelongsTo
     {

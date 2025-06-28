@@ -38,7 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'users', // Use the cached user provider
         ],
     ],
 
@@ -61,7 +61,7 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
+            'driver' => 'CachedElequent',
             'model' => env('AUTH_MODEL', \App\Models\Ppm\Ref_compte::class),
         ],
 

@@ -11,15 +11,14 @@ use Illuminate\Support\Facades\Session;
 
 class SsoController extends Controller
 {
-
     public function __invoke(Request $request)
     {
-        $response = (new Sso_service())->user_details($request);
+        $response = (new Sso_service)->user_details($request);
 
         $userName = $response->json()['nom_utilisateur'];
 
         // user should log in with fortifying
-        $user = Ref_compte::where('nom_utilisateur',$userName )->first();
+        $user = Ref_compte::where('nom_utilisateur', $userName)->first();
 
         Auth::login($user);
 
@@ -33,5 +32,4 @@ class SsoController extends Controller
 
         return redirect('/dashboard');
     }
-
 }

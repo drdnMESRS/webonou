@@ -16,15 +16,13 @@ class ResidanceDTO extends \App\DTO\BaseDTO
         public ?string $date_ouverture = null,
         public ?string $numero_inscription_domaniale = null,
         public ?string $date_inscription_domaniale = null,
-        public ?int    $capacite_theorique = null,
-        public ?int    $capacite_reel = null,
-        public ?int    $places_disponibles_garcons = null,
-        public ?int    $places_disponibles_filles = null,
+        public ?int $capacite_theorique = null,
+        public ?int $capacite_reel = null,
+        public ?int $places_disponibles_garcons = null,
+        public ?int $places_disponibles_filles = null,
         public ?string $surface_globale = null,
         public ?string $surface_batie = null,
         public ?string $consistance = null,
 
     ) {}
-
-
 }

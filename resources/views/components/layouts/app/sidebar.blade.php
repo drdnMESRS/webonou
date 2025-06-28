@@ -61,7 +61,8 @@
             <x-layouts.partials.academic_year />
         </flux:navbar>
 </flux:header>
-<flux:sidebar   class=" border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 w-auto">
+<flux:sidebar sticky stashable class=" border-zinc-200
+bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 w-auto border-r">
     <flux:sidebar.toggle class="lg:hidden" icon="x-mark"/>
 
     <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
@@ -93,7 +94,6 @@
 <!-- Mobile User Menu -->
 <flux:header class="lg:hidden">
     <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left"/>
-
     <flux:spacer/>
 
     <flux:dropdown position="top" align="end">

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Nomenclature extends Model
 {
-
     protected $table = 'nc.nomenclature';
 
     protected $primaryKey = 'id';
@@ -18,12 +17,12 @@ class Nomenclature extends Model
      *
      * @return string
      */
-
     public function getFullNameAttribute()
     {
         if (app()->getLocale() === 'ar') {
             return $this->libelle_long_ar;
         }
+
         return $this->libelle_long_fr;
     }
 

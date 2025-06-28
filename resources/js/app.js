@@ -1,3 +1,4 @@
+
 // Import the core library
 import { library, dom } from '@fortawesome/fontawesome-svg-core';
 

@@ -3,12 +3,9 @@
 namespace App\Livewire\Onou;
 
 use App\Actions\Pages\Residances\FindResidenceById;
-use App\DTO\Onou\ResidanceDTO;
-use App\Models\Onou\Onou_cm_etablissement;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use phpDocumentor\Reflection\Types\Collection;
 
 class ResidanceDetails extends Component
 {
@@ -27,23 +24,15 @@ class ResidanceDetails extends Component
     public $loading = false;
 
     #[locked]
-    public ? array $residence ;
+    public ?array $residence;
 
     #[On('residence-show')]
     public function UpdateshowResidenceDetails($id)
     {
-        $this->dispatch('loader-show')->self();
+        $this->dispatch('loader-show');
         $this->residence = (new FindResidenceById)->handle($id)->toArray();
         $this->showResidenceDetails = true;
     }
-
-    #[On('loader-show')]
-    public function showloader()
-    {
-        $this->loading = true;
-        $this->showResidenceDetails = true;
-    }
-
 
     public function render()
     {

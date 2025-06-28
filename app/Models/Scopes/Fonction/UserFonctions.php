@@ -15,6 +15,6 @@ class UserFonctions implements Scope
     public function apply(Builder $builder, Model $model): void
     {
         $builder->where('role', Auth::user()->activeRoleId)
-            ->where('creer', TRUE);
+            ->where('creer', true);
     }
 }

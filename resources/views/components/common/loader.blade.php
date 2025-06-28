@@ -1,5 +1,5 @@
 <div>
-    <div id="loader-container" class="d-none" wire:loading> {{-- Start hidden --}}
+    <div id="loader-container" wire:loading> {{-- Start hidden --}}
         {{-- Loader icon --}}
         <div {{ $attributes->merge([
         'class' => 'z-50 position-absolute

@@ -2,19 +2,20 @@
 
 namespace App\DTO;
 
-abstract  class BaseDTO
+abstract class BaseDTO
 {
-
     public function FromArray(array $data): static
     {
-        $instance = new static();
+        $instance = new static;
         foreach ($data as $key => $value) {
             if (property_exists($instance, $key)) {
                 $instance->{$key} = $value;
             }
         }
+
         return $instance;
     }
+
     public function toArray(): array
     {
         $data = [];
@@ -23,12 +24,15 @@ abstract  class BaseDTO
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
+
     public function toJson(): string
     {
         return json_encode($this->toArray());
     }
+
     public function __toString(): string
     {
         return $this->toJson();
@@ -39,7 +43,7 @@ abstract  class BaseDTO
         if (property_exists($this, $name)) {
             return $this->{$name};
         }
-        throw new \Exception("Property {$name} does not exist on " . static::class);
+        throw new \Exception("Property {$name} does not exist on ".static::class);
     }
 
     public function __set($name, $value)
@@ -47,7 +51,7 @@ abstract  class BaseDTO
         if (property_exists($this, $name)) {
             $this->{$name} = $value;
         } else {
-            throw new \Exception("Property {$name} does not exist on " . static::class);
+            throw new \Exception("Property {$name} does not exist on ".static::class);
         }
     }
 
@@ -61,19 +65,19 @@ abstract  class BaseDTO
         if (property_exists($this, $name)) {
             unset($this->{$name});
         } else {
-            throw new \Exception("Property {$name} does not exist on " . static::class);
+            throw new \Exception("Property {$name} does not exist on ".static::class);
         }
     }
 
     public function fromModel($model): static
     {
-        $instance = new static();
+        $instance = new static;
         foreach ($model->getAttributes() as $key => $value) {
             if (property_exists($instance, $key)) {
                 $instance->{$key} = $value;
             }
         }
+
         return $instance;
     }
-
 }

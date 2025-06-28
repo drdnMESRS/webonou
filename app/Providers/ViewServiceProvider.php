@@ -5,8 +5,8 @@ namespace App\Providers;
 use App\Models\Lmd\Annee_academique;
 use App\Models\Ppm\MenuItems;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -31,11 +31,10 @@ class ViewServiceProvider extends ServiceProvider
 
         View::composer(['components.layouts.partials.academic_year'], function ($view) {
             $academic_years = Cache::rememberForever('academic_years', function () {
-                    return Annee_academique::query()->orderByDesc('premiere_annee')->get();
+                return Annee_academique::query()->orderByDesc('premiere_annee')->get();
             });
             $view->with('academic_years', $academic_years);
         });
-
 
 
     }

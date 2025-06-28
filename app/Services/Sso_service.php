@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+
 use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Client\ConnectionException;
@@ -13,28 +14,25 @@ use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Throwable;
 
-
 class Sso_service
 {
-
-    public function login_sso(Request $request){
+    public function login_sso(Request $request)
+    {
         $request->session()->put('state', $state = Str::random(40));
 
-        $query= http_build_query([
+        $query = http_build_query([
             'client_id' => env('CLIENT_ID'),
             'response_type' => 'code',
             'redirect_uri' => env('REDIRECT_URI'),
             'state' => $state,
         ]);
 
-        return redirect(env('SSO_SERVER').'/oauth/authorize?'. $query);
+        return redirect(env('SSO_SERVER').'/oauth/authorize?'.$query);
     }
 
-
-
     /**
-     * @param Request $request
      * @return Application|RedirectResponse|Redirector
+     *
      * @throws Throwable
      * @throws ConnectionException
      */
@@ -53,24 +51,22 @@ class Sso_service
         ]);
 
         $request->session()->put('access_token', $response->json()['access_token']);
+
         return redirect('/user');
     }
 
-
-
-    //fetch user information and redirect to the home page
+    // fetch user information and redirect to the home page
     /**
-     * @param Request $request
-     * @return PromiseInterface|Response
      * @throws ConnectionException
      */
-    function user_details(Request $request): Response|PromiseInterface
+    public function user_details(Request $request): Response|PromiseInterface
     {
-        $access_token  = $request->session()->get('access_token');
+        $access_token = $request->session()->get('access_token');
+
         return Http::withHeaders(
             [
-                "Accept" => "application/json",
-                "Authorization" => "Bearer $access_token",
+                'Accept' => 'application/json',
+                'Authorization' => "Bearer $access_token",
             ]
         )->get(env('SSO_SERVER').'/api/user');
     }
