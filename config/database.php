@@ -85,8 +85,17 @@ return [
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DB_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
+            'read' => [
+                'host' => env('DB_READ_HOST', '127.0.0.1'), // Often the same host as write for same-server setup
+                'port' => env('DB_READ_PORT', '5433'), // The port for your read replica instance
+            ],
+
+            'write' => [
+                'host' => env('DB_WRITE_HOST', '127.0.0.1'), // The host for your primary (write) instance
+                'port' => env('DB_WRITE_PORT', '5432'), // The port for your primary (write) instance
+            ],
+            //'host' => env('DB_HOST', '127.0.0.1'),
+            //'port' => env('DB_PORT', '5432'),
             'database' => env('DB_DATABASE', 'laravel'),
             'username' => env('DB_USERNAME', 'root'),
             'password' => env('DB_PASSWORD', ''),

@@ -73,7 +73,7 @@ class OnouCmDemandeTable extends DataTableComponent
                         return [];
                     }
                 }
-            )->setPaginationMethod('simple');
+            );
     }
 
     public function columns(): array
