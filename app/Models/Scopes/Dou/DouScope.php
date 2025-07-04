@@ -6,8 +6,6 @@ use App\Actions\Sessions\RoleManagement;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 
 class DouScope implements Scope
 {
@@ -20,11 +18,10 @@ class DouScope implements Scope
         $id = app(RoleManagement::class)->get_active_role_etablissement();
 
         // find the active role and its etablissement
-        if(app(RoleManagement::class)->get_active_type_etablissement() == 'DO') {
-            $builder->where('dou', $id);
-        }else {
+        if (app(RoleManagement::class)->get_active_type_etablissement() == 'DO') {
+            $builder->where('onou_cm_demande.dou', $id);
+        } else {
             $builder->where('residence', $id);
         }
-
     }
 }

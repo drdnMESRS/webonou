@@ -33,6 +33,21 @@ class Onou_cm_etablissement extends Model
         return $this->denomination_fr;
     }
 
+    public function scopeGarcon($query)
+    {
+        return $query->where('type_resid', 699054); // R1
+    }
+
+    public function scopeFille($query)
+    {
+        return $query->where('type_resid', 699055); // R2
+    }
+
+    public function scopeOpen($query)
+    {
+        return $query->where('etat', null); // DO
+    }
+
     /**
      * Get the etablissement associated with the Onou_cm_etablissement.
      */

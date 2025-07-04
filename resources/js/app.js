@@ -1,7 +1,13 @@
+//initialize flowbite
 
-// Import the core library
-import { library, dom } from '@fortawesome/fontawesome-svg-core';
+import 'flowbite';
 
-// Import the icon sets you need
-import { faSolid } from '@fortawesome/free-solid-svg-icons';
-import { faBrands } from '@fortawesome/free-brands-svg-icons';
+document.addEventListener('livewire:navigated', () => {
+    // Re-initialize all Flowbite components.
+    if (typeof initFlowbite === 'function') {
+        initFlowbite();
+    }
+});
+window.addEventListener('page-reload', function(e) {
+    window.location.reload();
+});

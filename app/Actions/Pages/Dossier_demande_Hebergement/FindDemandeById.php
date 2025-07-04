@@ -5,7 +5,6 @@ namespace App\Actions\Pages\Dossier_demande_Hebergement;
 use App\DTO\Onou\DemandeHebergementDTO;
 use App\Models\Onou\Onou_cm_demande;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FindDemandeById
@@ -16,10 +15,14 @@ class FindDemandeById
 
         $demande = Onou_cm_demande::fetchDemandeById($id, $this->getSelectFields());
 
-        $historique_heb  = Onou_cm_demande::fetchAllDemandeByIdividu($demande->id_individu, $this->getSelectFieldsHis());
+        if (is_null($demande)) {
+            throw new NotFoundHttpException('Demande not found with ID: '.$id);
+        }
+        // Fetching the historical data for the individual
+
+        $historique_heb = Onou_cm_demande::fetchAllDemandeByIdividu($demande->id_individu, $this->getSelectFieldsHis());
 
         $result = (new CheckConformeHeb(collect($demande)->toArray()))->handle();
-
 
         if (! $demande) {
             throw new NotFoundHttpException('Demande not found with ID: '.$id);
@@ -38,6 +41,7 @@ class FindDemandeById
     private function getSelectFields(): array
     {
         return [
+            'demande.id as id_demande',
             'demande.*',
             'individu.id as id_individu',
             'individu.identifiant',
@@ -135,21 +139,23 @@ class FindDemandeById
 
     private function mapToDTO($demande, $historique): DemandeHebergementDTO
     {
+
         return (new DemandeHebergementDTO)->FromArray([
-            'id' => $demande->id,
+            'id' => $demande->id_demande,
+            'actual_page' => $this->getPageFromUrl(),
             'individu' => $this->getIndividu($demande),
             'dossierInscriptionAdministrative' => $this->getInscription($demande),
             'demandeHebergement' => [
-                '1er_choix_arabe'=> $demande->choix1_arabe ?? ' - ',
-                '1er_choix'=> $demande->choix1 ?? ' - ',
-                '2er_choix_arabe'=> $demande->choix2_arabe ?? ' - ',
-                '2er_choix'=> $demande->choix2 ?? ' - ',
-                '3er_choix_arabe'=> $demande->choix3_arabe ?? ' - ',
-                '3er_choix'=> $demande->choix3 ?? ' - ',
+                '1er_choix_arabe' => $demande->choix1_arabe ?? ' - ',
+                '1er_choix' => $demande->choix1 ?? ' - ',
+                '2er_choix_arabe' => $demande->choix2_arabe ?? ' - ',
+                '2er_choix' => $demande->choix2 ?? ' - ',
+                '3er_choix_arabe' => $demande->choix3_arabe ?? ' - ',
+                '3er_choix' => $demande->choix3 ?? ' - ',
                 'date_demande' => Carbon::make($demande->date_demande_heb)->format('d/m/Y') ?? ' - ',
             ],
             'historiqueHebergement' => $historique->toArray(),
-            'adressIndividue' => $this->getadressIndividue($demande)
+            'adressIndividue' => $this->getadressIndividue($demande),
         ]);
     }
 
@@ -168,6 +174,7 @@ class FindDemandeById
             'lieu_naissance' => $demande->lieu_naissance,
             'nationalite_arabe' => $demande->nationalite_arabe ?? ' ',
             'nationalite' => $demande->nationalite ?? ' ',
+            'civilite' => $demande->civilite,
 
         ];
     }
@@ -215,7 +222,7 @@ class FindDemandeById
         return $name;
     }
 
-    private function getadressIndividue($demande) : array
+    private function getadressIndividue($demande): array
     {
         return [
             'adresse' => $demande->libelle_adresse_latin ?? ' - ',
@@ -228,15 +235,15 @@ class FindDemandeById
             'wilaya' => $demande->wilaya ?? ' - ',
             'wilaya_arabe' => $demande->wilaya_arabe ?? ' - ',
 
-            'pays'=>$demande->pays ?? ' - ',
-            'pays_arabe'=>$demande->pays_arabe ?? ' - ',
+            'pays' => $demande->pays ?? ' - ',
+            'pays_arabe' => $demande->pays_arabe ?? ' - ',
 
-            'type_adresse'=>$demande->type_adresse ?? ' - ',
-            'type_adresse_arabe'=>$demande->type_adresse_arabe ?? ' - ',
+            'type_adresse' => $demande->type_adresse ?? ' - ',
+            'type_adresse_arabe' => $demande->type_adresse_arabe ?? ' - ',
         ];
     }
 
-    private function getSelectFieldsHis():array
+    private function getSelectFieldsHis(): array
     {
         return [
             'demande.renouvellement',
@@ -249,7 +256,21 @@ class FindDemandeById
             'demande.date_approuve_heb_resid as traiter_par_Resi_le_:',
             'demande.hebergement_paye',
             'demande.hebergement_paye_date as date_de_paiment',
-            'lieu.libelle_fr as chambre'
+            'lieu.libelle_fr as chambre',
         ];
+    }
+
+    /**
+     * @param $queryParams
+     * @return mixed
+     */
+    public function getPageFromUrl(): int
+    {
+        $urm = parse_url(url()->previous());
+        parse_str($urm['query'] ?? '', $queryParams);
+        if (isset($queryParams['page']) && is_numeric($queryParams['page'])) {
+            return (int)$queryParams['page'];
+        }
+        return 1;
     }
 }

@@ -36,6 +36,5 @@ class ViewServiceProvider extends ServiceProvider
             $view->with('academic_years', $academic_years);
         });
 
-
     }
 }

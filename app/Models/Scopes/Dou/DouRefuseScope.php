@@ -18,13 +18,13 @@ class DouRefuseScope implements Scope
         $id = app(RoleManagement::class)->get_active_role_etablissement();
 
         // find the active role and its etablissement
-        if(app(RoleManagement::class)->get_active_type_etablissement() == 'DO') {
+        if (app(RoleManagement::class)->get_active_type_etablissement() == 'DO') {
             $builder->where('dou', $id);
-        }else {
-            $builder->where('dou', function ($query) use ($id) {;
+        } else {
+            $builder->where('dou', function ($query) use ($id) {
                 $query->select('etablissement_appartenance')
-                      ->from('onou.onou_cm_etablissement')
-                      ->where('id', $id);
+                    ->from('onou.onou_cm_etablissement')
+                    ->where('id', $id);
             });
         }
 

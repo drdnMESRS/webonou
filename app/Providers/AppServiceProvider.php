@@ -23,9 +23,19 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
+
         $this->declareCacheElequentProvider();
 
         $this->automaticallyEagerLoadRelationships();
+
+    }
+
+    /**
+     * Configure the general configuration
+     */
+    public function configure(): void
+    {
+        // Set the default string length for database columns
 
     }
 

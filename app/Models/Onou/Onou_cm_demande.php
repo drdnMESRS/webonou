@@ -34,6 +34,20 @@ class Onou_cm_demande extends Model
     public $timestamps = false;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+
+    protected $fillable = [
+        'dou',
+        'residence',
+        'approuvee_heb_dou',
+        'date_approuve_heb_dou',
+        'affectation',
+    ];
+
+    /**
      * Relationship belongs to Ref_individu.
      */
     public function individu_detais(): BelongsTo
@@ -57,8 +71,7 @@ class Onou_cm_demande extends Model
         return $this->belongsTo(Nomenclature::class, 'commune_residence', 'id');
     }
 
-
-    public static function fetchDemandeById(int $id, ? array $getSelectFields = ['*'])
+    public static function fetchDemandeById(int $id, ?array $getSelectFields = ['*'])
     {
         return cache()->remember('demande_'.$id, 60 * 60 * 12, function () use ($getSelectFields, $id) {
             return DB::table('onou.onou_cm_demande as demande')
@@ -78,10 +91,10 @@ class Onou_cm_demande extends Model
                 ->leftJoin('lmd.cycle as cycle', 'cycle.id', '=', 'niveau.id_cycle')
                 ->leftJoin('ppm.ref_structure as structure', 'structure.id', '=', 'ouverture.id_structure')
                 ->leftJoin('nc.nomenclature AS nationalite', 'nationalite.id', '=', 'individu.nationalite')
-                ->leftJoin('ppm.ref_coordonnee as coordonnee',function (JoinClause $join){
+                ->leftJoin('ppm.ref_coordonnee as coordonnee', function (JoinClause $join) {
                     $join->on('coordonnee.individu', '=', 'individu.id')
                         ->where([
-                            ['coordonnee.type_coordonnee' , '=', 1]
+                            ['coordonnee.type_coordonnee', '=', 1],
                         ]);
                 })
                 ->leftJoin('ppm.ref_adresse as adress', 'adress.id', '=', 'coordonnee.id')
@@ -95,21 +108,21 @@ class Onou_cm_demande extends Model
                 ->leftJoin('onou.onou_cm_etablissement as choix3', 'choix3.id', '=', 'demande.choix3')
 
                 ->where([
-                    ['demande.id', '=' , $id]
+                    ['demande.id', '=', $id],
                 ])
                 ->firstOrFail();
         });
     }
 
-
-    public static function fetchAllDemandeByIdividu(int $id, ? array $getSelectFields = [])
+    public static function fetchAllDemandeByIdividu(int $id, ?array $getSelectFields = [])
     {
-        return cache()->remember('demande_'.$id, 60 * 60 * 12, function () use ($getSelectFields, $id) {
+
+        return cache()->remember('History_demande_'.$id, 60 * 60 * 12, function () use ($getSelectFields, $id) {
             return DB::table('onou.onou_cm_demande as demande')
                 ->distinct()
                 ->select(
                     array_merge([
-                        DB::raw('CONCAT(annee.premiere_annee, \'/\', annee.deuxieme_annee) as annee_academique')
+                        DB::raw('CONCAT(annee.premiere_annee, \'/\', annee.deuxieme_annee) as annee_academique'),
                     ], $getSelectFields)
                 )
                 ->leftJoin('lmd.annee_academique as annee', 'annee.id', '=', 'demande.annee_academique')
@@ -120,12 +133,10 @@ class Onou_cm_demande extends Model
                 ->leftJoin('onou.onou_cm_etablissement as dou', 'dou.id', '=', 'demande.dou')
                 ->leftJoin('onou.onou_cm_etablissement as residence', 'residence.id', '=', 'demande.residence')
                 ->leftJoin('onou.onou_cm_lieu as lieu', 'lieu.id', '=', 'demande.affectation')
-               ->where([
-                    ['individu.id', '=' , $id]
+                ->where([
+                    ['individu.id', '=', $id],
                 ])
                 ->get();
         });
     }
-
-
 }

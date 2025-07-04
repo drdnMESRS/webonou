@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleManagement
 {
-
     public function get_active_role()
     {
         return Auth()->user()->activeRole;
@@ -28,13 +27,14 @@ class RoleManagement
         })->map(function ($role) {
             if (isset($role['groupe']['etablissement'])) {
                 return $role['groupe']['etablissement'];
-            }elseif (isset($role['structure']['etablissement'])) {
+            } elseif (isset($role['structure']['etablissement'])) {
                 return $role['structure']['etablissement'];
             }
+
             return null;
         })->first();
 
-        return $activeRole['id'] ?? null ;
+        return $activeRole['id'] ?? null;
     }
 
     public function get_active_type_etablissement(): ?string
@@ -48,13 +48,14 @@ class RoleManagement
         })->map(function ($role) {
             if (isset($role['groupe']['etablissement'])) {
                 return $role['groupe']['etablissement'];
-            }elseif (isset($role['structure']['etablissement'])) {
+            } elseif (isset($role['structure']['etablissement'])) {
                 return $role['structure']['etablissement'];
             }
+
             return null;
         })->first();
+
         // return the first to carecters from the etablissement identifiant
         return substr($activeRole['identifiant'] ?? '', 0, 2);
     }
-
 }

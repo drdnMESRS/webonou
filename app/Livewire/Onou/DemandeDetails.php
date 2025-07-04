@@ -3,12 +3,16 @@
 namespace App\Livewire\Onou;
 
 use App\Actions\Pages\Dossier_demande_Hebergement\FindDemandeById;
+use App\Strategies\Onou\ProcessCmDemande as ProcessCmDemandeInterface;
+use App\Strategies\Onou\Processing\ProcessCmDemandeContext;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class DemandeDetails extends Component
 {
+    private ProcessCmDemandeInterface $processCmDemande;
+
     #[Locked]
     public $demandeId;
 
@@ -17,6 +21,16 @@ class DemandeDetails extends Component
 
     #[Locked]
     public ?array $demande;
+
+    #[Locked]
+    public ?string $view = null;
+
+    public function mount()
+    {
+        $this->processCmDemande = new ProcessCmDemandeContext;
+        $this->view = $this->processCmDemande->getView();
+
+    }
 
     #[On('demande-show')]
     public function showDemandeDetails($id)

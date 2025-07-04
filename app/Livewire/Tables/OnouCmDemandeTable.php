@@ -4,6 +4,9 @@ namespace App\Livewire\Tables;
 
 use App\Actions\Sessions\RoleManagement;
 use App\Models\Onou\Onou_cm_demande;
+use App\Models\Scopes\Dou\DouScope;
+use App\Strategies\Onou\ProcessCmDemande;
+use App\Strategies\Onou\Processing\ProcessCmDemandeContext;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -13,28 +16,15 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
  */
 class OnouCmDemandeTable extends DataTableComponent
 {
+    private ProcessCmDemande $processCmDemande;
+
+public function __construct()
+    {
+        $this->processCmDemande = new ProcessCmDemandeContext;
+    }
     public function builder(): Builder
     {
-        return Onou_cm_demande::query()
-            ->with([
-                'individu_detais',
-                'dossier_inscription_administrative',
-                'dossier_inscription_administrative.ouvertureOf',
-                'dossier_inscription_administrative.niveau',
-                'dossier_inscription_administrative.etablissement:id,ll_etablissement_arabe,ll_etablissement_latin',
-                'dossier_inscription_administrative.domaine',
-                'dossier_inscription_administrative.filiere',
-                'nc_commune_residence',
-            ])
-            ->select(
-                'onou.onou_cm_demande.*',
-                'individu_detais.identifiant as individu_identifiant',
-                'individu_detais.nom_latin as individu_nom_latin',
-                'individu_detais.civilite as individu_civilite',
-                'dossier_inscription_administrative.numero_inscription as dossier_inscription_numero',
-                'dossier_inscription_administrative.*',
-            )
-            ->remember(60);
+        return $this->processCmDemande->builder();
     }
 
     public function configure(): void
@@ -49,27 +39,33 @@ class OnouCmDemandeTable extends DataTableComponent
                     ];
                 })
             ->setTdAttributes(
-                function ($column, $row ) {
+                function ($column, $row) {
                     // test baed on type of role
-                    if(app(RoleManagement::class)->get_active_type_etablissement() == 'DO') {
-                        if ($row->approuvee_heb_dou)
+                    if (app(RoleManagement::class)->get_active_type_etablissement() == 'DO') {
+                        if ($row->approuvee_heb_dou) {
                             return [
                                 'class' => 'bg-green-50',
                             ];
-                        if (!$row->approuvee_heb_dou)
+                        }
+                        if (! $row->approuvee_heb_dou) {
                             return [
                                 'class' => 'bg-red-50',
                             ];
+                        }
+
                         return [];
-                    }else {
-                        if ($row->approuvee_heb_resid)
+                    } else {
+                        if ($row->approuvee_heb_resid) {
                             return [
                                 'class' => 'bg-green-50',
                             ];
-                        if (!$row->approuvee_heb_resid)
+                        }
+                        if (! $row->approuvee_heb_resid) {
                             return [
                                 'class' => 'bg-red-50',
                             ];
+                        }
+
                         return [];
                     }
                 }
@@ -93,9 +89,9 @@ class OnouCmDemandeTable extends DataTableComponent
                 ->format(
                     function ($value, $row, Column $column) {
                         if (app()->getLocale() === 'ar') {
-                            return $row->individu_detais->civilite === '1' ? 'ذ' : 'أ';
+                            return $row->individu_detais->civilite === 1 ? 'ذ' : 'أ';
                         } else {
-                            return $row->individu_detais->civilite === '1' ? 'G' : 'F';
+                            return $row->individu_detais->civilite === 1 ? 'G' : 'F';
                         }
                     }
                 )

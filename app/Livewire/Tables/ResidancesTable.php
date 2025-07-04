@@ -16,7 +16,8 @@ class ResidancesTable extends DataTableComponent
     {
         return Onou_cm_etablissement::query()
             ->select('onou_cm_etablissement.*')
-            ->with(['etablissement', 'type_nc']); // Cache for 24 hours
+            ->with(['etablissement', 'type_nc'])
+            ->remember(60 * 60 * 24); // Cache for 24 hours
     }
 
     public function configure(): void

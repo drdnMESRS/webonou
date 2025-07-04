@@ -14,5 +14,7 @@
         @endforeach
 
         <x-common.table :data="$demande['demandeHebergement']" :title="__('adress')" />
+
+
     @endif
 </h1>
