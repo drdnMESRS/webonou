@@ -9,7 +9,7 @@ use App\Strategies\Onou\ProcessCmDemande;
 
 class RuProcessingCmDemande implements ProcessCmDemande
 {
-    public function process_demande(?int $id, ?array $data): bool
+    public function process_demande(?int $id, ?array $data, ?string $action='accept'): bool
     {
        return true;
     }
@@ -22,7 +22,7 @@ class RuProcessingCmDemande implements ProcessCmDemande
     /**
      * Get the columns to update when processing the form.
      */
-    public function formFields(?int $civility = null): array
+    public function formFields(?int $civility = null, ?string $action='accept'): array
     {
         return [
             'field_update' => [
@@ -38,15 +38,19 @@ class RuProcessingCmDemande implements ProcessCmDemande
         ];
     }
 
-    public function field(): string
+    public function field(?string $action='accept'): string
     {
         // TODO: Implement field() method.
         return 'affectation';
     }
 
-    public function getFormView(): string
+    public function getFormView(): array
     {
-        return 'livewire.onou.forms.ru';
+        return
+            [
+                'accept'=>'livewire.onou.forms.ru',
+                'reject'=>'livewire.onou.forms.ru-reject'
+            ];
     }
 
     public function builder(): \Illuminate\Database\Eloquent\Builder
@@ -87,5 +91,11 @@ class RuProcessingCmDemande implements ProcessCmDemande
                 $q->where('onou_cm_demande.residence', '=', app(RoleManagement::class)->get_active_role_etablissement());
             })
             ->remember(60);
+    }
+    public function rules(?string $action='accept'): array
+    {
+        return [
+            'field_update' => 'required|integer',
+        ];
     }
 }

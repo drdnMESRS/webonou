@@ -45,21 +45,36 @@
 
 ]"/>
 
-            <x-common.modal id="my-modal" title="My Awesome Modal" size="lg">
-                @include($view, ['data'=>$demande])
-            </x-common.modal>
+            <div class="flex justify-between items-center mt-4">
+               <div>
+                   <x-common.modal id="accept-modal" title="Affectation au residence" size="auto">
+                       @include($accept_view, ['data'=>$demande, 'action'=>'accept'])
+                   </x-common.modal>
 
-            <button id="open-my-modal-button"
-                    data-modal-target="my-modal"
-                    data-modal-toggle="my-modal" class="block
-            text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none
-            focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center
-            dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    type="button">
-                Toggle modal
-            </button>
+                   <button id="open-my-modal-button"
+                           data-modal-target="accept-modal"
+                           data-modal-toggle="accept-modal" class="block
+            text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none
+            focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center
+            dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
+                       Accepter le demande
+                   </button>
+               </div>
+              <div>
+                  <x-common.modal id="reject-modal" title="Rejet de la demande" size="auto">
+                      @include($reject_view, ['data'=>$demande, 'action'=>'reject'])
+                  </x-common.modal>
+                  <button id="open-reject-modal-button"
+                          data-modal-target="reject-modal"
+                          data-modal-toggle="reject-modal" class="block
+            text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none
+            focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center
+            dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900" type="button">
+                      Rejeter le demande
+                  </button>
+              </div>
+            </div>
         </div>
-
     </div>
 
 

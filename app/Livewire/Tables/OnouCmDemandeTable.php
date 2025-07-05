@@ -40,7 +40,7 @@ public function __construct()
                 })
             ->setTdAttributes(
                 function ($column, $row) {
-                    // test baed on type of role
+
                     if (app(RoleManagement::class)->get_active_type_etablissement() == 'DO') {
                         if ($row->approuvee_heb_dou) {
                             return [

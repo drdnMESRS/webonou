@@ -12,10 +12,16 @@ class UpdateDemandById
     public function handle($id, $data)
     {
         // Logic to update the demand by ID
-        // This could involve fetching the demand from the database,
-        // updating its properties with the provided data, and saving it.
-
-        // Example:
+        if (is_null($id) || is_null($data)) {
+            throw new \InvalidArgumentException("ID and data must be provided.");
+        }
+        // Ensure $data is an array and contains the necessary fields
+        if (!is_array($data)) {
+            throw new \InvalidArgumentException("Data must be an array.");
+        }
+        if (empty($data)) {
+            throw new \InvalidArgumentException("Data array cannot be empty.");
+        }
         $demand = Onou_cm_demande::query()
             ->where('id', $id)
             ->withoutGlobalScope(DouScope::class)
@@ -30,8 +36,7 @@ class UpdateDemandById
             cache()->delete('History_demande_' . $demand->individu); // Clear cache for this demand
             return $demand;
         }
-
-        return null; // or throw an exception if not found
+        return null;
     }
 
 }

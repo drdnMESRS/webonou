@@ -21,9 +21,9 @@ class ProcessCmDemandeContext implements ProcessCmDemande
         };
     }
 
-    public function process_demande(?int $id, ?array $data): bool
+    public function process_demande(?int $id, ?array $data, ?string $action='accept'): bool
     {
-        return $this->cm_demande->process_demande($id, $data);
+        return $this->cm_demande->process_demande($id, $data, $action);
     }
 
     public function getView(): string
@@ -34,22 +34,22 @@ class ProcessCmDemandeContext implements ProcessCmDemande
     /**
      * Get the columns to update when processing the form.
      */
-    public function formFields(?int $civility = null): array
+    public function formFields( ?int $civility = null, ?string $action='accept'): array
     {
         if (is_null($civility)) {
-            return $this->cm_demande->formFields();
+            return $this->cm_demande->formFields(null, $action);
         }
 
-        return $this->cm_demande->formFields($civility);
+        return $this->cm_demande->formFields($civility,$action,);
     }
 
-    public function field(): string
+    public function field(?string $action='accept'): string
     {
         // TODO: Implement field() method.
-        return $this->cm_demande->field();
+        return $this->cm_demande->field($action);
     }
 
-    public function getFormView(): string
+    public function getFormView(): array
     {
         // TODO: Implement getFormView() method.
         return $this->cm_demande->getFormView();
@@ -58,5 +58,10 @@ class ProcessCmDemandeContext implements ProcessCmDemande
     public function builder(): Builder
     {
         return $this->cm_demande->builder();
+    }
+
+    public function rules(?string $action='accept'): array
+    {
+        return $this->cm_demande->rules($action);
     }
 }

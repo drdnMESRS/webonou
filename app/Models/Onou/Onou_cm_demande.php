@@ -45,6 +45,7 @@ class Onou_cm_demande extends Model
         'approuvee_heb_dou',
         'date_approuve_heb_dou',
         'affectation',
+        'observ_heb_dou',
     ];
 
     /**
@@ -132,7 +133,10 @@ class Onou_cm_demande extends Model
                 })
                 ->leftJoin('onou.onou_cm_etablissement as dou', 'dou.id', '=', 'demande.dou')
                 ->leftJoin('onou.onou_cm_etablissement as residence', 'residence.id', '=', 'demande.residence')
-                ->leftJoin('onou.onou_cm_lieu as lieu', 'lieu.id', '=', 'demande.affectation')
+                ->leftJoin('onou.onou_cm_affectation_individu as affectation', function (JoinClause $join) {
+                    $join->on('affectation.id', '=', 'demande.affectation');
+                })
+                ->leftJoin('onou.onou_cm_lieu as lieu', 'lieu.id', '=', 'affectation.lieu')
                 ->where([
                     ['individu.id', '=', $id],
                 ])

@@ -23,12 +23,14 @@ class DemandeDetails extends Component
     public ?array $demande;
 
     #[Locked]
-    public ?string $view = null;
+    public ?string $accept_view = null;
+    public ?string $reject_view = null;
 
     public function mount()
     {
         $this->processCmDemande = new ProcessCmDemandeContext;
-        $this->view = $this->processCmDemande->getView();
+        $this->accept_view = $this->processCmDemande->getView();
+        $this->reject_view = $this->processCmDemande->getView();
 
     }
 

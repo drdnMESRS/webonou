@@ -4,31 +4,36 @@ namespace App\Strategies\Onou\Processing;
 
 use App\Actions\Pages\Dossier_demande_Hebergement\UpdateDemandById;
 use App\Actions\Sessions\RoleManagement;
+use App\Models\Nc\Nomenclature;
 use App\Models\Onou\Onou_cm_demande;
 use App\Models\Onou\Onou_cm_etablissement;
 use App\Models\Scopes\Dou\DouScope;
 use App\Strategies\Onou\ProcessCmDemande;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\Rule;
 
 class DoProcessingCmDemande implements ProcessCmDemande
 {
-    public function process_demande(?int $id, ?array $data):bool
+    public function process_demande(?int $id, ?array $data, ?string $action='accept'):bool
     {
-        if (is_null($id) || is_null($data)) {
-            return false; // Invalid parameters
+        if (is_null($id) || is_null($data) || !is_array($data) || !in_array($action, ['accept', 'reject'])) {
+           throw new \InvalidArgumentException('Invalid parameters provided for processing the demand.');
         }
 
         $data = array_merge($data, [
             'dou'=> app(RoleManagement::class)->get_active_role_etablissement(),
-            'approuvee_heb_dou' => true,
+            'approuvee_heb_dou' => $action==='accept',
             'date_approuve_heb_dou'=> now(),
         ]);
-
-        // dd($id, $data);
-        // Fetch the demand by ID
+        if ($action === 'reject') {
+            $data['residence'] = null; // Clear residence if rejecting
+        }else {
+            $data['observ_heb_dou'] = ''; // Clear observation if accepting
+        }
+        // Update the demand with the provided data
         $demand = (new UpdateDemandById())->handle($id, $data);
 
-        return true; // Successfully processed
+        return $demand->wasChanged(); // Successfully processed
     }
 
     public function getView(): string
@@ -39,54 +44,58 @@ class DoProcessingCmDemande implements ProcessCmDemande
     /**
      * Get the columns to update when processing the form.
      */
-    public function formFields(?int $civility = null): array
+    public function formFields( ?int $civility = null, ?string $action='accept'): array
     {
-        if (is_null($civility)) {
-            // if civility is null, we can return all options
-            $options = Onou_cm_etablissement::query()
-                ->select('onou_cm_etablissement.*')
-                ->with(['etablissement', 'type_nc'])
-                ->open()// R1
-                ->remember(60 * 60 * 24)
-                ->get();
-        } else {
-            // if civility is not null and civility is mal (1), we can return only R1
-            $options = ($civility === 1) ?
-                Onou_cm_etablissement::query()
-                    ->select('onou_cm_etablissement.*')
-                    ->with(['etablissement', 'type_nc'])
-                    ->garcon()
-                    ->open()// R1
-                    ->remember(60 * 60 * 24)
-                    ->pluck('denomination_ar', 'id') : // if civility is not null and civility is femal (2), we can return only R1
-                Onou_cm_etablissement::query()
-                    ->select('onou_cm_etablissement.*')
-                    ->with(['etablissement', 'type_nc'])
-                    ->fille()
-                    ->open()// R1
-                    ->remember(60 * 60 * 24)
-                    ->pluck('denomination_ar', 'id');
-        }
+        $options = cache()->remember('residences_' .auth()->id().'_'.$civility, 60 * 60 * 24, function () use ($civility) {
+            // if civility is not null, we can return only R1
+            return $this->getResidences($civility)
+                ->pluck('denomination_ar', 'id')
+                ->prepend('Sélectionner une résidence', '');
+        });
 
-        return [
+        $reject_fields = [
+            'observ_heb_dou' => [
+                'type' => 'select',
+                'label' => 'Motif de refus',
+                'name' => 'observ_heb_dou',
+                'required' => true,
+                'options' => cache()->remember('reject_observ_heb_dou', 60 * 60 * 24, function () {
+                   return Nomenclature::byListId(533)
+                    ->pluck('libelle_long_ar', 'id')
+                    ->prepend('Sélectionner un motif de refus', '');
+                }),
+            ],
+        ];
+
+        $accept_fields = [
             'residence' => [
                 'type' => 'select',
                 'label' => 'Residence',
                 'name' => 'residence',
+                'required' => true,
                 'options' => $options,
             ],
         ];
+
+        if ($action === 'reject') {
+            return $reject_fields;
+        }
+        return $accept_fields;
     }
 
-    public function field(): string
+    public function field(?string $action='accept'): string
     {
         // TODO: Implement field() method.
-        return 'residence';
+        return ($action==='accept') ? 'residence': 'observ_heb_dou';
     }
 
-    public function getFormView(): string
+    public function getFormView(): array
     {
-        return 'livewire.onou.forms.do';
+        return
+            [
+                'accept'=>'livewire.onou.forms.do',
+                'reject'=>'livewire.onou.forms.do'
+            ];
     }
 
     public function builder(): Builder
@@ -133,5 +142,58 @@ class DoProcessingCmDemande implements ProcessCmDemande
            ->where('aff.dou', '=', app(RoleManagement::class)->get_active_role_etablissement())
            ->withoutGlobalScope(DouScope::class)
            ->remember(60);
+    }
+
+    /**
+     * @param int|null $civility
+     * @return mixed
+     */
+    private function getResidences(?int $civility): \Illuminate\Database\Eloquent\Builder
+    {
+        if (is_null($civility)) {
+            // if civility is null, we can return all options
+            $options = Onou_cm_etablissement::query()
+                ->select('onou_cm_etablissement.*')
+                ->with(['etablissement', 'type_nc'])
+                ->open()// R1
+                ->remember(60 * 60 * 24);
+        } else {
+            // if civility is not null and civility is mal (1), we can return only R1
+            $options = ($civility === 1) ?
+                Onou_cm_etablissement::query()
+                    ->select('onou_cm_etablissement.*')
+                    ->with(['etablissement', 'type_nc'])
+                    ->garcon()
+                    ->open()// R1
+                    ->remember(60 * 60 * 24): // if civility is not null and civility is femal (2), we can return only R1
+                Onou_cm_etablissement::query()
+                    ->select('onou_cm_etablissement.*')
+                    ->with(['etablissement', 'type_nc'])
+                    ->fille()
+                    ->open()// R1
+                    ->remember(60 * 60 * 24);
+        }
+        return $options;
+    }
+
+    public function rules(?string $action='accept'): array
+    {
+        $nc = Nomenclature::byListId(533)->pluck('id');
+        $residences = $this->getResidences(null)->pluck('id');
+        if ($action === 'reject') {
+                    return [
+                        'field_update' => [
+                            'required',
+                            Rule::in($nc),
+                            ]
+                    ];
+                }
+        return [
+                'field_update' => [
+                    'required',
+                    'integer',
+                    Rule::in($residences),
+                ],
+            ];
     }
 }

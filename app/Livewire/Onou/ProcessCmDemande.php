@@ -5,29 +5,48 @@ namespace App\Livewire\Onou;
 use App\Livewire\Tables\OnouCmDemandeTable;
 use App\Strategies\Onou\ProcessCmDemande as ProcessCmDemandeInterface;
 use App\Strategies\Onou\Processing\ProcessCmDemandeContext;
+use Illuminate\Validation\Rule;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class ProcessCmDemande extends Component
 {
+
+    #[locked]
     private ProcessCmDemandeInterface $processCmDemande;
 
     public array $data;
-
+    #[locked]
+    public ?string $action = null;
+    #[locked]
     public ?array $formFields = null;
 
     public ?int $field_update = null;
+    #[locked]
+    public ?string $acceptformView = null;
+    #[locked]
+    public ?string $rejectformView = null;
 
-    public ?string $formView = null;
-
+    protected function rules()
+    {
+        $this->processCmDemande = new ProcessCmDemandeContext;
+        return $this->processCmDemande->rules($this->action);
+    }
     public function mount()
     {
         $this->processCmDemande = new ProcessCmDemandeContext;
-        $this->formFields = $this->processCmDemande->formFields($this->data['individu']['civilite'] ?? null);
-        $this->formView = $this->processCmDemande->getFormView();
+        $this->formFields = $this->processCmDemande->formFields(
+            $this->data['individu']['civilite'] ?? null , $this->action);
+        $this->acceptformView = $this->processCmDemande->getFormView()['accept'] ?? null;
+        $this->rejectformView = $this->processCmDemande->getFormView()['reject'] ?? null;
+
     }
 
     public function update()
     {
+        // validate the input data
+        $this->validate();
+
         $this->processCmDemande = new ProcessCmDemandeContext;
 
         $id = $this->data['id'] ?? null;
@@ -39,10 +58,10 @@ class ProcessCmDemande extends Component
         }
         // prepare the new data to update
         $values = [
-            $this->processCmDemande->field() => $this->field_update,
+            $this->processCmDemande->field($this->action) => $this->field_update,
         ];
         // call the process method to handle the update
-        $done = $this->processCmDemande->process_demande($id, $values);
+        $done = $this->processCmDemande->process_demande($id, $values, $this->action);
         // dispatch an event to refresh the data table
         if (!$done) {
             session()->flash('error', 'Une erreur est survenue lors de la mise à jour de la demande.');
