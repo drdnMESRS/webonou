@@ -30,46 +30,47 @@ public function __construct()
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setTrAttributes(
-                function ($row) {
-                    return [
-                        '@click' => "\$dispatch('loader-show'); \$dispatch('demande-show', {id: ' $row->id '})",
-                        'style' => 'cursor: pointer;',
+            ->setTrAttributes(fn($row) => $this->getTrAttributesConfig($row))
+            ->setTdAttributes(fn($column, $row) => $this->getTdAttributesConfig($row));
+    }
 
-                    ];
-                })
-            ->setTdAttributes(
-                function ($column, $row) {
+    private function getTrAttributesConfig($row): array
+    {
+        return [
+            '@click' => "\$dispatch('loader-show'); \$dispatch('demande-show', {id: ' $row->id '})",
+            'style' => 'cursor: pointer;',
+        ];
+    }
 
-                    if (app(RoleManagement::class)->get_active_type_etablissement() == 'DO') {
-                        if ($row->approuvee_heb_dou) {
-                            return [
-                                'class' => 'bg-green-50',
-                            ];
-                        }
-                        if (! $row->approuvee_heb_dou) {
-                            return [
-                                'class' => 'bg-red-50',
-                            ];
-                        }
+    private function getTdAttributesConfig($row): array
+    {
+        if (app(RoleManagement::class)->get_active_type_etablissement() === 'DO') {
+            return $this->getTdAttributesForDO($row);
+        }
 
-                        return [];
-                    } else {
-                        if ($row->approuvee_heb_resid) {
-                            return [
-                                'class' => 'bg-green-50',
-                            ];
-                        }
-                        if (! $row->approuvee_heb_resid) {
-                            return [
-                                'class' => 'bg-red-50',
-                            ];
-                        }
+        return $this->getTdAttributesForResid($row);
+    }
 
-                        return [];
-                    }
-                }
-            );
+    private function getTdAttributesForDO($row): array
+    {
+        if (is_null($row->approuvee_heb_dou)) {
+            return ['class' => 'bg-yellow-50'];
+        }
+
+        return $row->approuvee_heb_dou
+            ? ['class' => 'bg-green-50']
+            : ['class' => 'bg-red-50'];
+    }
+
+    private function getTdAttributesForResid($row): array
+    {
+        if (is_null($row->approuvee_heb_resid)) {
+            return ['class' => 'bg-yellow-50'];
+        }
+
+        return $row->approuvee_heb_resid
+            ? ['class' => 'bg-green-50']
+            : ['class' => 'bg-red-50'];
     }
 
     public function columns(): array

@@ -14,10 +14,19 @@ use Illuminate\Validation\Rule;
 
 class DoProcessingCmDemande implements ProcessCmDemande
 {
+
+    /**
+     * Process the demand based on the provided ID, data, and action.
+     *
+     * @param int|null $id The ID of the demand to process.
+     * @param array|null $data The data to update the demand with.
+     * @param string $action The action to perform ('accept' or 'reject').
+     * @return bool True if the demand was successfully processed, false otherwise.
+     */
     public function process_demande(?int $id, ?array $data, ?string $action='accept'):bool
     {
         if (is_null($id) || is_null($data) || !is_array($data) || !in_array($action, ['accept', 'reject'])) {
-           throw new \InvalidArgumentException('Invalid parameters provided for processing the demand.');
+           throw new \Exception('Invalid parameters provided for processing the demand.');
         }
 
         $data = array_merge($data, [
@@ -36,13 +45,22 @@ class DoProcessingCmDemande implements ProcessCmDemande
         return $demand->wasChanged(); // Successfully processed
     }
 
+    /**
+     * Get the view for processing the demand.
+     *
+     * @return string The view name.
+     */
     public function getView(): string
     {
         return 'pages.processing-cm-demande.do-process-cm-demande';
     }
 
     /**
-     * Get the columns to update when processing the form.
+     * Get the form fields for processing the demand.
+     *
+     * @param int|null $civility The civility of the individual
+     * @param string|null $action The action to perform ('accept' or 'reject').
+     * @return array The form fields to be displayed.
      */
     public function formFields( ?int $civility = null, ?string $action='accept'): array
     {
@@ -83,12 +101,23 @@ class DoProcessingCmDemande implements ProcessCmDemande
         return $accept_fields;
     }
 
+    /**
+     * Get the field name based on the action.
+     *
+     * @param string $action The action to perform ('accept' or 'reject').
+     * @return string The field name to be used in the form.
+     */
     public function field(?string $action='accept'): string
     {
         // TODO: Implement field() method.
         return ($action==='accept') ? 'residence': 'observ_heb_dou';
     }
 
+    /**
+     * Get the form view for processing the demand.
+     *
+     * @return array The form view configuration.
+     */
     public function getFormView(): array
     {
         return
@@ -98,6 +127,11 @@ class DoProcessingCmDemande implements ProcessCmDemande
             ];
     }
 
+    /**
+     * Get the query builder for fetching the demands.
+     *
+     * @return Builder The query builder instance.
+     */
     public function builder(): Builder
     {
        return Onou_cm_demande::query()
@@ -176,8 +210,16 @@ class DoProcessingCmDemande implements ProcessCmDemande
         return $options;
     }
 
+    /**
+     * Get the validation rules for processing the demand.
+     *
+     * @param string|null $action The action to perform ('accept' or 'reject').
+     * @return array The validation rules.
+     */
+
     public function rules(?string $action='accept'): array
     {
+        // Get the list of residences and the nomenclature IDs for rejection
         $nc = Nomenclature::byListId(533)->pluck('id');
         $residences = $this->getResidences(null)->pluck('id');
         if ($action === 'reject') {

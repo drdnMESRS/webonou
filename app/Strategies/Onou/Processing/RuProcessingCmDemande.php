@@ -2,16 +2,28 @@
 
 namespace App\Strategies\Onou\Processing;
 
+use App\Actions\Pages\Dossier_demande_Hebergement\CreateAffectationIndividu;
+use App\Actions\Pages\Dossier_demande_Hebergement\UpdateDemandById;
 use App\Actions\Sessions\RoleManagement;
+use App\Models\Nc\Nomenclature;
 use App\Models\Onou\Onou_cm_demande;
-use App\Models\Scopes\Dou\DouScope;
+
+use App\Models\Onou\Onou_cm_lieu;
 use App\Strategies\Onou\ProcessCmDemande;
 
 class RuProcessingCmDemande implements ProcessCmDemande
 {
     public function process_demande(?int $id, ?array $data, ?string $action='accept'): bool
     {
-       return true;
+
+        if (is_null($id) || is_null($data) || !is_array($data) || !in_array($action, ['accept', 'reject'])) {
+            throw new \InvalidArgumentException('Invalid parameters provided for processing the demand.');
+        }
+         // Here you would implement the logic to process the request for RU
+        //if action is 'accept', you might want to update the status of the request
+        return ($action === 'accept') ? $this->acceptedProcess($id, $data)
+                                      : $this->rejectProcess($id, $data) ;
+
     }
 
     public function getView(): string
@@ -24,24 +36,37 @@ class RuProcessingCmDemande implements ProcessCmDemande
      */
     public function formFields(?int $civility = null, ?string $action='accept'): array
     {
+
+        if ($action ==='reject')
+            return [
+            'observ_heb_resid' => [
+                'type' => 'select',
+                'label' => 'Motif de refus',
+                'name' => 'observ_heb_resid',
+                'required' => true,
+                'options' => cache()->remember('reject_observ_heb_resid', 60 * 60 * 24, function () {
+                    return Nomenclature::byListId(533)
+                        ->pluck('libelle_long_ar', 'id')
+                        ->prepend('Sélectionner un motif de refus', '');
+                }),
+            ],
+        ];
+
         return [
             'field_update' => [
-                'label' => 'Mettre à jour le champ',
-                'type' => 'select',
-                'options' => [
-                    1 => 'Option 1',
-                    2 => 'Option 2',
-                    3 => 'Option 3',
-                ],
+                'type' => 'hidden',
+                'label' => 'Test Field',
+                'placeholder' => 'Enter test value',
                 'required' => true,
-            ],
+                'name' => 'field_update',
+            ]
         ];
     }
 
     public function field(?string $action='accept'): string
     {
         // TODO: Implement field() method.
-        return 'affectation';
+        return ($action==='accept') ? 'affectation': 'observ_heb_resid';
     }
 
     public function getFormView(): array
@@ -49,7 +74,7 @@ class RuProcessingCmDemande implements ProcessCmDemande
         return
             [
                 'accept'=>'livewire.onou.forms.ru',
-                'reject'=>'livewire.onou.forms.ru-reject'
+                'reject'=>'livewire.onou.forms.ru'
             ];
     }
 
@@ -97,5 +122,53 @@ class RuProcessingCmDemande implements ProcessCmDemande
         return [
             'field_update' => 'required|integer',
         ];
+    }
+
+    private function rejectProcess(?int $id, ?array $data): bool
+    {
+        $demande = Onou_cm_demande::find($id);
+        if (!$demande) {
+            throw new \Exception('Demande not found for the given  ');
+        }
+        // Here you would implement the logic to reject the request for RU
+        $data = array_merge($data,
+            [
+                'approuvee_heb_resid'=> false,
+                'date_approuve_heb_resid'=> now(),
+                'affectation' => null,
+            ]
+        );
+        (new UpdateDemandById())->handle($id, $data);
+        return true; // Implement rejection logic here
+    }
+
+    private function acceptedProcess(?int $id, ?array $data):bool
+    {
+        //create the affectation_individu
+        $demande = Onou_cm_demande::find($id);
+        if (!$demande) {
+            throw new \Exception('Demande not found for the given  ');
+        }
+        $affectation = (new CreateAffectationIndividu())->handle(
+            $demande->individu,
+            $data['affectation']
+        );
+        // Check if the place is already occupied in the selected location
+
+        $place = $demande->placeOccupe($data['affectation'])->first();
+        if ($place && $place->place_occupe >= Onou_cm_lieu::find($data['affectation'])->capacite_reelle) {
+            throw new \Exception('The selected location is already fully occupied. Please choose another location.');
+        }
+        // update the cm_demande with the new affectation ID
+        $data = array_merge($data,
+            [
+                'approuvee_heb_resid'=> true,
+                'date_approuve_heb_resid'=> now(),
+                'affectation' => $affectation
+            ]
+        );
+        (new UpdateDemandById())->handle($id, $data);
+
+        return true; //Implement acceptance logic here
     }
 }

@@ -7,6 +7,7 @@ use App\Strategies\Onou\ProcessCmDemande as ProcessCmDemandeInterface;
 use App\Strategies\Onou\Processing\ProcessCmDemandeContext;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ProcessCmDemande extends Component
@@ -42,6 +43,18 @@ class ProcessCmDemande extends Component
 
     }
 
+    #[On('ChambrefieldUpdateChanged')]
+    public function updatedFieldUpdate($value)
+    {
+        // dispatch an event to update the field in the form
+       if (!empty($value)) {
+            $this->field_update = $value;
+        } else {
+            $this->field_update = null;
+        }
+    }
+
+
     public function update()
     {
         // validate the input data
@@ -60,12 +73,20 @@ class ProcessCmDemande extends Component
         $values = [
             $this->processCmDemande->field($this->action) => $this->field_update,
         ];
-        // call the process method to handle the update
-        $done = $this->processCmDemande->process_demande($id, $values, $this->action);
-        // dispatch an event to refresh the data table
-        if (!$done) {
-            session()->flash('error', 'Une erreur est survenue lors de la mise à jour de la demande.');
+        try {
+            // call the process method to handle the update
+            $done = $this->processCmDemande->process_demande($id, $values, $this->action);
+            // dispatch an event to refresh the data table
+            if (!$done) {
+                session()->flash('error', 'Une erreur est survenue lors de la mise à jour de la demande.');
+                $this->redirectRoute('diaHeb.show',['page'=>$this->data['actual_page']], navigate: true);
+            }
+            // get the actual url to redirect
+
+        } catch (\Exception $e) {
+            session()->flash('error', 'Validation failed: ' . $e->getMessage());
             $this->redirectRoute('diaHeb.show',['page'=>$this->data['actual_page']], navigate: true);
+            return;
         }
 
         // get the actual url to redirect

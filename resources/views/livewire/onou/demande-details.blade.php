@@ -47,7 +47,7 @@
 
             <div class="flex justify-between items-center mt-4">
                <div>
-                   <x-common.modal id="accept-modal" title="Affectation au residence" size="auto">
+                   <x-common.modal id="accept-modal" title="Accepter la demande " size="auto">
                        @include($accept_view, ['data'=>$demande, 'action'=>'accept'])
                    </x-common.modal>
 
@@ -61,7 +61,7 @@
                    </button>
                </div>
               <div>
-                  <x-common.modal id="reject-modal" title="Rejet de la demande" size="auto">
+                  <x-common.modal id="reject-modal" title="Rejeter la demande" size="auto">
                       @include($reject_view, ['data'=>$demande, 'action'=>'reject'])
                   </x-common.modal>
                   <button id="open-reject-modal-button"

@@ -4,9 +4,13 @@
 ]
 )
 <div>
-    <div id="{{ $id }}" tabindex="-1" class="modal fixed top-0 left-0 right-0 z-50
-    hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative w-full max-w-{{ $size }} max-h-full">
+    <div id="{{ $id }}" tabindex="-1"
+         aria-hidden="true"
+         class="modal fixed top-0 left-0 right-0 z-50
+    hidden  p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] ">
+        <!-- Grey background overlay -->
+        <div class="fixed inset-0 bg-gray-400 opacity-70"></div>
+        <div class="relative p-36 w-full max-w-{{ $size }} max-h-full">
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                 <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
@@ -36,3 +40,4 @@
         </div>
     </div>
 </div>
+

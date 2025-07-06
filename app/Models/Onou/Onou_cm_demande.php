@@ -8,6 +8,7 @@ use App\Models\Ppm\Ref_Individu;
 use App\Models\Scopes\Dou\AcademicyearScope;
 use App\Models\Scopes\Dou\DouScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Query\JoinClause;
@@ -46,6 +47,9 @@ class Onou_cm_demande extends Model
         'date_approuve_heb_dou',
         'affectation',
         'observ_heb_dou',
+        'approuvee_heb_resid',
+        'date_approuve_heb_resid',
+        'observ_heb_resid'
     ];
 
     /**
@@ -54,6 +58,14 @@ class Onou_cm_demande extends Model
     public function individu_detais(): BelongsTo
     {
         return $this->belongsTo(Ref_Individu::class, 'individu', 'id');
+    }
+
+    public function scopePlaceOccupe(Builder $query, int $lieuId): Builder
+    {
+        return $query->selectRaw('COUNT(*) as place_occupe')
+            ->join('onou.onou_cm_affectation_individu as aff', 'aff.id', '=', 'onou.onou_cm_demande.affectation')
+            ->join('onou.onou_cm_lieu as lieu', 'lieu.id', '=', 'aff.lieu')
+            ->where('lieu.id', $lieuId);
     }
 
     /*
