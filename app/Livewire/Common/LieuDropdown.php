@@ -21,7 +21,7 @@ class LieuDropdown extends Component
     {
         $this->pavillonx = $this->chambres = cache()->remember(
                             'pavillion_' .auth()->id(),
-                            120,
+                            60*60,
                             function ()  {
                                 return Onou_cm_lieu::pavillion()
                                     ->byEtablissement(app(RoleManagement::class)->get_active_role_etablissement())

@@ -1,11 +1,16 @@
 <x-layouts.app :title="__('Gestion_dossier_hebergement')" >
 
-    <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
+    <div class="mb-6">
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
             {{ __('Gestion des dossiers d\'hébergement') }}
-    </h1>
-    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('Gérer les demandes d\'hébergement des individus') }}
-    </p>
+        </h1>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            {{ __('Gérer les demandes d\'hébergement des individus') }}
+        </p>
+    </div>
+
+
+
     <div class="border-b border-gray-300 dark:border-gray-600 my-4"></div>
 
 
@@ -25,6 +30,18 @@
                         class="mt-8 shadow-lg"
                         id="my-custom-alert" />
     @endif
+
+
+
+
+    <div class="w-full mb-4 p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+        <div class="mb-4">
+            <livewire:common.domain-dropdown />
+        </div>
+        <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+            {{ __('Utilisez les filtres ci-dessous pour affiner votre recherche de demandes d\'hébergement.') }}
+        </p>
+    </div>
 
 
     <livewire:tables.onou-cm-demande-table />

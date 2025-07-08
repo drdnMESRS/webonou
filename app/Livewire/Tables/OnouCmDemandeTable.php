@@ -10,6 +10,11 @@ use App\Strategies\Onou\Processing\ProcessCmDemandeContext;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filter;
+use Rappasoft\LaravelLivewireTables\Views\Filters\BooleanFilter;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
+
 
 /**
  * Class ResidancesTable
@@ -27,11 +32,57 @@ public function __construct()
         return $this->processCmDemande->builder();
     }
 
+    public function filters(): array
+    {
+        return [
+            'filiere' => SelectFilter::make('filiere')
+                ->options($this->processCmDemande->getFiliereFilterOptions())
+                ->filter(function (Builder $builder, $value) {
+                    return $builder->where('dossier_inscription_administrative.id_filiere', $value);
+                })->hiddenFromAll(),
+            'civilite' => SelectFilter::make('Civilité')
+                ->options([
+                    1 => 'Garçon',
+                    2 => 'Fille',
+                ])
+                ->filter(function (Builder $builder, $value) {
+                    return $builder->where('civilite', $value);
+                }),
+            'traiter' => BooleanFilter::make('Traitée')
+                ->setFilterPillValues([
+
+                    true => 'Active',
+
+                    false => 'Inactive',
+
+                ])
+                ->filter(function (Builder $builder, bool $processed) {
+                    if ($processed) {
+                        if (app(RoleManagement::class)->get_active_type_etablissement() === 'DO') {
+                            return $builder->whereNotNull('approuvee_heb_dou',);
+                        }
+                        return $builder->whereNotNull('approuvee_heb_resid');
+                    }
+                    if (app(RoleManagement::class)->get_active_type_etablissement() === 'DO') {
+                        return $builder->whereNull('approuvee_heb_dou',);
+                    }
+                        return $builder->whereNull('approuvee_heb_resid');
+                }),
+            ];
+    }
+
     public function configure(): void
     {
         $this->setPrimaryKey('id')
             ->setTrAttributes(fn($row) => $this->getTrAttributesConfig($row))
-            ->setTdAttributes(fn($column, $row) => $this->getTdAttributesConfig($row));
+            ->setTdAttributes(fn($column, $row) => $this->getTdAttributesConfig($row))
+            ->setLoadingPlaceholderEnabled()
+            ->setLoadingPlaceholderContent(
+                '<div class="flex items-center justify-center h-64">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-3 border-gray-900"></div>
+                </div>'
+            );
+        ;
     }
 
     private function getTrAttributesConfig($row): array
@@ -95,16 +146,13 @@ public function __construct()
                             return $row->individu_detais->civilite === 1 ? 'G' : 'F';
                         }
                     }
-                )
-                ->sortable(),
+                ),
             Column::make('Comune de résidance', 'id')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->nc_commune_residence->full_name ?? '';
                     }
-                )
-                ->sortable()
-                ->searchable(),
+                ),
             Column::make('Etablissement', 'dossier_inscription_administrative.id_etablissement')
                 ->format(
                     function ($value, $row, Column $column) {
@@ -129,6 +177,9 @@ public function __construct()
                         return $row->dossier_inscription_administrative->niveau->full_name ?? '';
                     }
                 ),
+            BooleanColumn::make('frais_inscription_paye', 'dossier_inscription_administrative.frais_inscription_paye'),
+            BooleanColumn::make('paiment', 'hebergement_paye'),
+
 
         ];
     }

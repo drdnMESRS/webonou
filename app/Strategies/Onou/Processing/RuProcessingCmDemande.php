@@ -5,6 +5,7 @@ namespace App\Strategies\Onou\Processing;
 use App\Actions\Pages\Dossier_demande_Hebergement\CreateAffectationIndividu;
 use App\Actions\Pages\Dossier_demande_Hebergement\UpdateDemandById;
 use App\Actions\Sessions\RoleManagement;
+use App\Models\Lmd\Filiere_lmd;
 use App\Models\Nc\Nomenclature;
 use App\Models\Onou\Onou_cm_demande;
 
@@ -171,4 +172,6 @@ class RuProcessingCmDemande implements ProcessCmDemande
 
         return true; //Implement acceptance logic here
     }
+
+
 }

@@ -4,6 +4,8 @@ namespace App\Strategies\Onou\Processing;
 
 use App\Actions\Pages\Dossier_demande_Hebergement\UpdateDemandById;
 use App\Actions\Sessions\RoleManagement;
+use App\Models\Lmd\Domain_lmd;
+use App\Models\Lmd\Filiere_lmd;
 use App\Models\Nc\Nomenclature;
 use App\Models\Onou\Onou_cm_demande;
 use App\Models\Onou\Onou_cm_etablissement;
@@ -174,8 +176,9 @@ class DoProcessingCmDemande implements ProcessCmDemande
                    ->orWhereNull('onou_cm_demande.dou');
            })
            ->where('aff.dou', '=', app(RoleManagement::class)->get_active_role_etablissement())
-           ->withoutGlobalScope(DouScope::class)
-           ->remember(60);
+           ->withoutGlobalScope(DouScope::class);
+
+           //->remember(60);
     }
 
     /**
@@ -238,4 +241,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 ],
             ];
     }
+
+
+
 }

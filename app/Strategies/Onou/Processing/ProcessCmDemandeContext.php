@@ -3,6 +3,7 @@
 namespace App\Strategies\Onou\Processing;
 
 use App\Actions\Sessions\RoleManagement;
+use App\Models\Lmd\Filiere_lmd;
 use App\Strategies\Onou\ProcessCmDemande;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -63,5 +64,15 @@ class ProcessCmDemandeContext implements ProcessCmDemande
     public function rules(?string $action='accept'): array
     {
         return $this->cm_demande->rules($action);
+    }
+
+    public function getFiliereFilterOptions(): array
+    {
+        return cache()->remember('filter_options', 60 * 60 * 24, function () {
+            return Filiere_lmd::query()
+                ->pluck('ll_filiere', 'id')
+                ->prepend('Sélectionner un domaine', '')
+                ->toArray();
+        });
     }
 }
