@@ -1,4 +1,4 @@
-@php use Illuminate\Support\Facades\Auth; @endphp
+@php use App\Actions\Sessions\AcademicYearSession;use Illuminate\Support\Facades\Auth; @endphp
 <div>
     <!-- Simplicity is the ultimate sophistication. - Leonardo da Vinci -->
 
@@ -9,7 +9,8 @@
                 onchange="this.form.submit()">
             @foreach($academic_years as $year)
                 <option value="{{ $year->id }}"
-                        @if((new \App\Actions\Sessions\AcademicYearSession)->get_academic_year() == $year->id)
+                        @if(((new AcademicYearSession)->get_academic_year() == $year->id)
+                        || ($year->est_annee_en_cours))
                             selected="selected"
                     @endif>{{ $year->fullName }}</option>
             @endforeach
