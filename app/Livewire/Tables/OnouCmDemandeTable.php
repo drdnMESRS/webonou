@@ -104,7 +104,7 @@ public function __construct()
 
     private function getTdAttributesForDO($row): array
     {
-        if (is_null($row->approuvee_heb_dou)) {
+        if (is_null($row->approuvee_heb_dou) || is_null($row->residence)) {
             return ['class' => 'bg-yellow-50'];
         }
 

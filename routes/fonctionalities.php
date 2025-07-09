@@ -15,3 +15,9 @@ Route::get('/pages/onou/DossierInscriptionAdministrativeHebC',
     [App\Http\Controllers\Pages\GestionDossierHebController::class, 'index'])
     ->name('diaHeb.show')
     ->middleware(['auth', 'ProgresRole']);
+
+
+Route::get('/pages/onou/OnouCmLieusGerer',
+    [App\Http\Controllers\Pages\GestionLieuController::class, 'index'])
+    ->name('diaHeb.show')
+    ->middleware(['auth', 'ProgresRole']);

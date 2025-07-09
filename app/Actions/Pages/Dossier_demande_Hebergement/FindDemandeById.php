@@ -152,7 +152,7 @@ class FindDemandeById
                 '2er_choix' => $demande->choix2 ?? ' - ',
                 '3er_choix_arabe' => $demande->choix3_arabe ?? ' - ',
                 '3er_choix' => $demande->choix3 ?? ' - ',
-                'date_demande' => Carbon::make($demande->date_demande_heb)->format('d/m/Y') ?? ' - ',
+                'date_demande' => ($demande->date_demande_heb)? Carbon::make($demande->date_demande_heb)->format('d/m/Y') : ' - ',
             ],
             'historiqueHebergement' => $historique->toArray(),
             'adressIndividue' => $this->getadressIndividue($demande),

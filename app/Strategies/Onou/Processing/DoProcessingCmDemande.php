@@ -176,9 +176,9 @@ class DoProcessingCmDemande implements ProcessCmDemande
                    ->orWhereNull('onou_cm_demande.dou');
            })
            ->where('aff.dou', '=', app(RoleManagement::class)->get_active_role_etablissement())
-           ->withoutGlobalScope(DouScope::class);
+           ->withoutGlobalScope(DouScope::class)
 
-           //->remember(60);
+           ->remember(60);
     }
 
     /**
