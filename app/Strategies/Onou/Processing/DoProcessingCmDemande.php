@@ -178,6 +178,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
            ->where('aff.dou', '=', app(RoleManagement::class)->get_active_role_etablissement())
            ->withoutGlobalScope(DouScope::class)
 
+
            ->remember(60);
     }
 

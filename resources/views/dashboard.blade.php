@@ -134,18 +134,18 @@
                             <div class="grid grid-cols-3 gap-3">
 
                                 <dl class="bg-yellow-50 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
-                                    <dt class="w-8 h-8 rounded-full bg-yellow-100 dark:bg-gray-500 text-yellow-600 dark:text-yellow-300 text-sm font-medium flex items-center justify-center mb-1">3</dt>
+                                    <dt class="w-8 h-8 rounded-full bg-yellow-100 dark:bg-gray-500 text-yellow-600 dark:text-yellow-300 text-sm font-medium flex items-center justify-center mb-1"> {{$stathb['pending']}}</dt>
                                     <dd class="text-yellow-600 dark:text-yellow-300 text-sm font-medium">Pending</dd>
                                 </dl>
 
                                 <dl class="bg-green-50 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
-                                    <dt class="w-8 h-8 rounded-full bg-green-100 dark:bg-gray-500 text-green-600 dark:text-green-300 text-sm font-medium flex items-center justify-center mb-1">2</dt>
+                                    <dt class="w-8 h-8 rounded-full bg-green-100 dark:bg-gray-500 text-green-600 dark:text-green-300 text-sm font-medium flex items-center justify-center mb-1"> {{$stathb['accepted']}}</dt>
                                     <dd class="text-green-600 dark:text-green-300 text-sm font-medium">
                                         Accepted</dd>
                                 </dl>
                                 <dl class="bg-red-50 dark:bg-gray-600 rounded-lg flex flex-col items-center justify-center h-[78px]">
                                     <dt class="w-8 h-8 rounded-full bg-red-100 dark:bg-gray-500 text-red-600 dark:text-red-300 text-sm font-bold flex items-center justify-center mb-1">
-                                        6
+                                       {{$stathb['rejected']}}
                                     </dt>
                                     <dd class="text-red-600 dark:text-red-300 text-sm font-medium">Rejected</dd>
                                 </dl>
