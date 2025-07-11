@@ -3,18 +3,14 @@
 namespace App\Livewire\Tables;
 
 use App\Actions\Sessions\RoleManagement;
-use App\Models\Onou\Onou_cm_demande;
-use App\Models\Scopes\Dou\DouScope;
 use App\Strategies\Onou\ProcessCmDemande;
 use App\Strategies\Onou\Processing\ProcessCmDemandeContext;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
-use Rappasoft\LaravelLivewireTables\Views\Filter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\BooleanFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
-
 
 /**
  * Class ResidancesTable
@@ -23,10 +19,11 @@ class OnouCmDemandeTable extends DataTableComponent
 {
     private ProcessCmDemande $processCmDemande;
 
-public function __construct()
+    public function __construct()
     {
         $this->processCmDemande = new ProcessCmDemandeContext;
     }
+
     public function builder(): Builder
     {
         return $this->processCmDemande->builder();
@@ -59,30 +56,32 @@ public function __construct()
                 ->filter(function (Builder $builder, bool $processed) {
                     if ($processed) {
                         if (app(RoleManagement::class)->get_active_type_etablissement() === 'DO') {
-                            return $builder->whereNotNull('approuvee_heb_dou',);
+                            return $builder->whereNotNull('approuvee_heb_dou');
                         }
+
                         return $builder->whereNotNull('approuvee_heb_resid');
                     }
                     if (app(RoleManagement::class)->get_active_type_etablissement() === 'DO') {
-                        return $builder->whereNull('approuvee_heb_dou',);
+                        return $builder->whereNull('approuvee_heb_dou');
                     }
-                        return $builder->whereNull('approuvee_heb_resid');
+
+                    return $builder->whereNull('approuvee_heb_resid');
                 }),
-            ];
+        ];
     }
 
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setTrAttributes(fn($row) => $this->getTrAttributesConfig($row))
-            ->setTdAttributes(fn($column, $row) => $this->getTdAttributesConfig($row))
+            ->setTrAttributes(fn ($row) => $this->getTrAttributesConfig($row))
+            ->setTdAttributes(fn ($column, $row) => $this->getTdAttributesConfig($row))
             ->setLoadingPlaceholderEnabled()
             ->setLoadingPlaceholderContent(
                 '<div class="flex items-center justify-center h-64">
                     <div class="animate-spin rounded-full h-12 w-12 border-b-3 border-gray-900"></div>
                 </div>'
             );
-        ;
+
     }
 
     private function getTrAttributesConfig($row): array
@@ -179,7 +178,6 @@ public function __construct()
                 ),
             BooleanColumn::make('frais_inscription_paye', 'dossier_inscription_administrative.frais_inscription_paye'),
             BooleanColumn::make('paiment', 'hebergement_paye'),
-
 
         ];
     }

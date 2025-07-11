@@ -4,12 +4,22 @@ namespace App\Http\Controllers\Common;
 
 use App\Actions\Sessions\AcademicYearSession;
 use App\Http\Controllers\Controller;
+use App\Strategies\Dashboard\DashboadInterfaceContext;
+use App\Strategies\Dashboard\Interface\DashboadInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class CommonController extends Controller
 {
+    private DashboadInterface $strategy;
+
+    public function __construct()
+    {
+        $this->strategy = new DashboadInterfaceContext;
+
+    }
+
     public function change_activeAcademicYear(Request $request, AcademicYearSession $academicYearSession)
     {
 
@@ -31,7 +41,7 @@ class CommonController extends Controller
 
     public function dashboard(Request $request)
     {
+        return $this->strategy->displayDashboard($this->strategy->getstat());
 
-        return view('dashboard');
     }
 }

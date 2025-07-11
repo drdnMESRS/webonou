@@ -8,8 +8,7 @@ use Illuminate\Support\Carbon;
 
 class CreateAffectationIndividu
 {
-
-    public function handle(int $individuId, int $chambreId):int
+    public function handle(int $individuId, int $chambreId): int
     {
         // Validate the inputs
         if ($individuId <= 0 || $chambreId <= 0) {
@@ -18,14 +17,14 @@ class CreateAffectationIndividu
         $data = [
             'individu' => $individuId,
             'lieu' => $chambreId,
-            'date_debut'=>now(),
+            'date_debut' => now(),
             'date_fin' => Carbon::now()->addMonths(12),
             'nature_affectation' => 699276,
-            'affected_to'=>698992,
-            'onouetablissement' => app(RoleManagement::class)->get_active_role_etablissement()// Assuming the end date is not set initially
+            'affected_to' => 698992,
+            'onouetablissement' => app(RoleManagement::class)->get_active_role_etablissement(), // Assuming the end date is not set initially
         ];
 
-        //test if the affectation already exists
+        // test if the affectation already exists
         $existingAffectation = Onou_cm_affectation_individu::updateOrCreate(
             ['individu' => $individuId, 'lieu' => $chambreId],
             $data
@@ -33,5 +32,4 @@ class CreateAffectationIndividu
 
         return $existingAffectation->id; // Return true if the affectation was successfully created
     }
-
 }

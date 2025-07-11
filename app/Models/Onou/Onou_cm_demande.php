@@ -39,7 +39,6 @@ class Onou_cm_demande extends Model
      *
      * @var array<int, string>
      */
-
     protected $fillable = [
         'dou',
         'residence',
@@ -49,7 +48,7 @@ class Onou_cm_demande extends Model
         'observ_heb_dou',
         'approuvee_heb_resid',
         'date_approuve_heb_resid',
-        'observ_heb_resid'
+        'observ_heb_resid',
     ];
 
     /**
