@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Strategies\Dashboard\Service;
+namespace App\Strategies\Dashboard\Strategies;
 
 use App\Strategies\Dashboard\Interface\DashboadInterface;
-use Illuminate\Support\Carbon;
 
 class RuDashboard implements DashboadInterface
 {
-
     public function displayDashboard($stathb)
     {
 
         $stathb = [];
+
         return view(
             'Home.home.home',
             [
@@ -19,9 +18,9 @@ class RuDashboard implements DashboadInterface
             ]
         );
     }
-       public function getstat(): array
-    {
 
+    public function getstat(): array
+    {
 
         return [];
     }

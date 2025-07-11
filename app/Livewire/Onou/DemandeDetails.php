@@ -24,6 +24,7 @@ class DemandeDetails extends Component
 
     #[Locked]
     public ?string $accept_view = null;
+
     public ?string $reject_view = null;
 
     public function mount()

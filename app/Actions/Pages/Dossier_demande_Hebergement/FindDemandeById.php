@@ -152,7 +152,7 @@ class FindDemandeById
                 '2er_choix' => $demande->choix2 ?? ' - ',
                 '3er_choix_arabe' => $demande->choix3_arabe ?? ' - ',
                 '3er_choix' => $demande->choix3 ?? ' - ',
-                'date_demande' => ($demande->date_demande_heb)? Carbon::make($demande->date_demande_heb)->format('d/m/Y') : ' - ',
+                'date_demande' => ($demande->date_demande_heb) ? Carbon::make($demande->date_demande_heb)->format('d/m/Y') : ' - ',
             ],
             'historiqueHebergement' => $historique->toArray(),
             'adressIndividue' => $this->getadressIndividue($demande),
@@ -262,7 +262,7 @@ class FindDemandeById
     }
 
     /**
-     * @param $queryParams
+     * @param  $queryParams
      * @return mixed
      */
     public function getPageFromUrl(): int
@@ -270,8 +270,9 @@ class FindDemandeById
         $urm = parse_url(url()->previous());
         parse_str($urm['query'] ?? '', $queryParams);
         if (isset($queryParams['page']) && is_numeric($queryParams['page'])) {
-            return (int)$queryParams['page'];
+            return (int) $queryParams['page'];
         }
+
         return 1;
     }
 }

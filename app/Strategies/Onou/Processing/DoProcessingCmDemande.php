@@ -4,8 +4,6 @@ namespace App\Strategies\Onou\Processing;
 
 use App\Actions\Pages\Dossier_demande_Hebergement\UpdateDemandById;
 use App\Actions\Sessions\RoleManagement;
-use App\Models\Lmd\Domain_lmd;
-use App\Models\Lmd\Filiere_lmd;
 use App\Models\Nc\Nomenclature;
 use App\Models\Onou\Onou_cm_demande;
 use App\Models\Onou\Onou_cm_etablissement;
@@ -16,33 +14,32 @@ use Illuminate\Validation\Rule;
 
 class DoProcessingCmDemande implements ProcessCmDemande
 {
-
     /**
      * Process the demand based on the provided ID, data, and action.
      *
-     * @param int|null $id The ID of the demand to process.
-     * @param array|null $data The data to update the demand with.
-     * @param string $action The action to perform ('accept' or 'reject').
+     * @param  int|null  $id  The ID of the demand to process.
+     * @param  array|null  $data  The data to update the demand with.
+     * @param  string  $action  The action to perform ('accept' or 'reject').
      * @return bool True if the demand was successfully processed, false otherwise.
      */
-    public function process_demande(?int $id, ?array $data, ?string $action='accept'):bool
+    public function process_demande(?int $id, ?array $data, ?string $action = 'accept'): bool
     {
-        if (is_null($id) || is_null($data) || !is_array($data) || !in_array($action, ['accept', 'reject'])) {
-           throw new \Exception('Invalid parameters provided for processing the demand.');
+        if (is_null($id) || is_null($data) || ! is_array($data) || ! in_array($action, ['accept', 'reject'])) {
+            throw new \Exception('Invalid parameters provided for processing the demand.');
         }
 
         $data = array_merge($data, [
-            'dou'=> app(RoleManagement::class)->get_active_role_etablissement(),
-            'approuvee_heb_dou' => $action==='accept',
-            'date_approuve_heb_dou'=> now(),
+            'dou' => app(RoleManagement::class)->get_active_role_etablissement(),
+            'approuvee_heb_dou' => $action === 'accept',
+            'date_approuve_heb_dou' => now(),
         ]);
         if ($action === 'reject') {
             $data['residence'] = null; // Clear residence if rejecting
-        }else {
+        } else {
             $data['observ_heb_dou'] = ''; // Clear observation if accepting
         }
         // Update the demand with the provided data
-        $demand = (new UpdateDemandById())->handle($id, $data);
+        $demand = (new UpdateDemandById)->handle($id, $data);
 
         return $demand->wasChanged(); // Successfully processed
     }
@@ -60,13 +57,13 @@ class DoProcessingCmDemande implements ProcessCmDemande
     /**
      * Get the form fields for processing the demand.
      *
-     * @param int|null $civility The civility of the individual
-     * @param string|null $action The action to perform ('accept' or 'reject').
+     * @param  int|null  $civility  The civility of the individual
+     * @param  string|null  $action  The action to perform ('accept' or 'reject').
      * @return array The form fields to be displayed.
      */
-    public function formFields( ?int $civility = null, ?string $action='accept'): array
+    public function formFields(?int $civility = null, ?string $action = 'accept'): array
     {
-        $options = cache()->remember('residences_' .auth()->id().'_'.$civility, 60 * 60 * 24, function () use ($civility) {
+        $options = cache()->remember('residences_'.auth()->id().'_'.$civility, 60 * 60 * 24, function () use ($civility) {
             // if civility is not null, we can return only R1
             return $this->getResidences($civility)
                 ->pluck('denomination_ar', 'id')
@@ -80,9 +77,9 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 'name' => 'observ_heb_dou',
                 'required' => true,
                 'options' => cache()->remember('reject_observ_heb_dou', 60 * 60 * 24, function () {
-                   return Nomenclature::byListId(533)
-                    ->pluck('libelle_long_ar', 'id')
-                    ->prepend('Sélectionner un motif de refus', '');
+                    return Nomenclature::byListId(533)
+                        ->pluck('libelle_long_ar', 'id')
+                        ->prepend('Sélectionner un motif de refus', '');
                 }),
             ],
         ];
@@ -100,19 +97,20 @@ class DoProcessingCmDemande implements ProcessCmDemande
         if ($action === 'reject') {
             return $reject_fields;
         }
+
         return $accept_fields;
     }
 
     /**
      * Get the field name based on the action.
      *
-     * @param string $action The action to perform ('accept' or 'reject').
+     * @param  string  $action  The action to perform ('accept' or 'reject').
      * @return string The field name to be used in the form.
      */
-    public function field(?string $action='accept'): string
+    public function field(?string $action = 'accept'): string
     {
         // TODO: Implement field() method.
-        return ($action==='accept') ? 'residence': 'observ_heb_dou';
+        return ($action === 'accept') ? 'residence' : 'observ_heb_dou';
     }
 
     /**
@@ -124,8 +122,8 @@ class DoProcessingCmDemande implements ProcessCmDemande
     {
         return
             [
-                'accept'=>'livewire.onou.forms.do',
-                'reject'=>'livewire.onou.forms.do'
+                'accept' => 'livewire.onou.forms.do',
+                'reject' => 'livewire.onou.forms.do',
             ];
     }
 
@@ -136,54 +134,52 @@ class DoProcessingCmDemande implements ProcessCmDemande
      */
     public function builder(): Builder
     {
-       return Onou_cm_demande::query()
-           ->with([
-               'individu_detais',
-               'dossier_inscription_administrative',
-               'dossier_inscription_administrative.ouvertureOf',
-               'dossier_inscription_administrative.niveau',
-               'dossier_inscription_administrative.etablissement:id,ll_etablissement_arabe,ll_etablissement_latin',
-               'dossier_inscription_administrative.domaine',
-               'dossier_inscription_administrative.filiere',
-               'nc_commune_residence',
-           ])
-           ->leftJoin(
-               'ppm.ref_individu AS individu_detais',
-               'onou.onou_cm_demande.individu',
-               '=',
-               'individu_detais.id'
-           )
-           ->leftJoin(
-               'cursus.dossier_inscription_administrative AS dossier_inscription_administrative',
-               'onou.onou_cm_demande.id_dia',
-               '=',
-               'dossier_inscription_administrative.id'
-           )
-           ->leftJoin('onou.onou_heb_affectation_etablissement as aff', function ($q) {
-               $q->on('aff.etablissement_affectee', '=', 'dossier_inscription_administrative.id_etablissement');
-           })
+        return Onou_cm_demande::query()
+            ->with([
+                'individu_detais',
+                'dossier_inscription_administrative',
+                'dossier_inscription_administrative.ouvertureOf',
+                'dossier_inscription_administrative.niveau',
+                'dossier_inscription_administrative.etablissement:id,ll_etablissement_arabe,ll_etablissement_latin',
+                'dossier_inscription_administrative.domaine',
+                'dossier_inscription_administrative.filiere',
+                'nc_commune_residence',
+            ])
+            ->leftJoin(
+                'ppm.ref_individu AS individu_detais',
+                'onou.onou_cm_demande.individu',
+                '=',
+                'individu_detais.id'
+            )
+            ->leftJoin(
+                'cursus.dossier_inscription_administrative AS dossier_inscription_administrative',
+                'onou.onou_cm_demande.id_dia',
+                '=',
+                'dossier_inscription_administrative.id'
+            )
+            ->leftJoin('onou.onou_heb_affectation_etablissement as aff', function ($q) {
+                $q->on('aff.etablissement_affectee', '=', 'dossier_inscription_administrative.id_etablissement');
+            })
 
-           ->select(
-               'onou.onou_cm_demande.*',
-               'individu_detais.identifiant as individu_identifiant',
-               'individu_detais.nom_latin as individu_nom_latin',
-               'individu_detais.civilite as individu_civilite',
-               'dossier_inscription_administrative.numero_inscription as dossier_inscription_numero',
-               'dossier_inscription_administrative.*',
-           )
-           ->where(function ($q) {
-               $q->where('onou_cm_demande.dou', '=', app(RoleManagement::class)->get_active_role_etablissement())
-                   ->orWhereNull('onou_cm_demande.dou');
-           })
-           ->where('aff.dou', '=', app(RoleManagement::class)->get_active_role_etablissement())
-           ->withoutGlobalScope(DouScope::class)
+            ->select(
+                'onou.onou_cm_demande.*',
+                'individu_detais.identifiant as individu_identifiant',
+                'individu_detais.nom_latin as individu_nom_latin',
+                'individu_detais.civilite as individu_civilite',
+                'dossier_inscription_administrative.numero_inscription as dossier_inscription_numero',
+                'dossier_inscription_administrative.*',
+            )
+            ->where(function ($q) {
+                $q->where('onou_cm_demande.dou', '=', app(RoleManagement::class)->get_active_role_etablissement())
+                    ->orWhereNull('onou_cm_demande.dou');
+            })
+            ->where('aff.dou', '=', app(RoleManagement::class)->get_active_role_etablissement())
+            ->withoutGlobalScope(DouScope::class)
 
-
-           ->remember(60);
+            ->remember(60);
     }
 
     /**
-     * @param int|null $civility
      * @return mixed
      */
     private function getResidences(?int $civility): \Illuminate\Database\Eloquent\Builder
@@ -203,7 +199,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
                     ->with(['etablissement', 'type_nc'])
                     ->garcon()
                     ->open()// R1
-                    ->remember(60 * 60 * 24): // if civility is not null and civility is femal (2), we can return only R1
+                    ->remember(60 * 60 * 24) : // if civility is not null and civility is femal (2), we can return only R1
                 Onou_cm_etablissement::query()
                     ->select('onou_cm_etablissement.*')
                     ->with(['etablissement', 'type_nc'])
@@ -211,38 +207,36 @@ class DoProcessingCmDemande implements ProcessCmDemande
                     ->open()// R1
                     ->remember(60 * 60 * 24);
         }
+
         return $options;
     }
 
     /**
      * Get the validation rules for processing the demand.
      *
-     * @param string|null $action The action to perform ('accept' or 'reject').
+     * @param  string|null  $action  The action to perform ('accept' or 'reject').
      * @return array The validation rules.
      */
-
-    public function rules(?string $action='accept'): array
+    public function rules(?string $action = 'accept'): array
     {
         // Get the list of residences and the nomenclature IDs for rejection
         $nc = Nomenclature::byListId(533)->pluck('id');
         $residences = $this->getResidences(null)->pluck('id');
         if ($action === 'reject') {
-                    return [
-                        'field_update' => [
-                            'required',
-                            Rule::in($nc),
-                            ]
-                    ];
-                }
-        return [
+            return [
                 'field_update' => [
                     'required',
-                    'integer',
-                    Rule::in($residences),
+                    Rule::in($nc),
                 ],
             ];
+        }
+
+        return [
+            'field_update' => [
+                'required',
+                'integer',
+                Rule::in($residences),
+            ],
+        ];
     }
-
-
-
 }

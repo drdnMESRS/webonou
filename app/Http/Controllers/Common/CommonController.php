@@ -10,15 +10,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-use function PHPUnit\Framework\isEmpty;
-
 class CommonController extends Controller
 {
- private DashboadInterface $strategy;
+    private DashboadInterface $strategy;
 
- public function __construct()
+    public function __construct()
     {
-        $this->strategy = new DashboadInterfaceContext();
+        $this->strategy = new DashboadInterfaceContext;
 
     }
 
@@ -38,19 +36,12 @@ class CommonController extends Controller
         // Send to pipline to get the menu items.
         Session::regenerate();
 
-
         return redirect('/dashboard');
     }
 
     public function dashboard(Request $request)
     {
-
-        $stathb= $this->strategy->getstat();
-
-        if(isEmpty($stathb)){
-            $stathb=['accepted'=>0,'rejected'=>0,'pending'=>0];
-        }
-        return $this->strategy->displayDashboard($stathb);
+        return $this->strategy->displayDashboard($this->strategy->getstat());
 
     }
 }

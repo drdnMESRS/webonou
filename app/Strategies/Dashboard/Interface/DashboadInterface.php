@@ -4,6 +4,7 @@ namespace App\Strategies\Dashboard\Interface;
 
 interface DashboadInterface
 {
-   public function displayDashboard($stathb);
-   public function getstat():array;
+    public function displayDashboard($stathb);
+
+    public function getstat(): array;
 }
