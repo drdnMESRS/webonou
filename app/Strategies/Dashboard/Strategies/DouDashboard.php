@@ -14,8 +14,9 @@ class DouDashboard implements DashboadInterface
 
     public function getstat(): array
     {
-        return (vm_heb_processing_by_dou::query()->first())
-                ? vm_heb_processing_by_dou::query()->first()->toArray()
+        $result = vm_heb_processing_by_dou::query()->first();
+        return ($result)
+                ? $result->toArray()
                 : ['total' => 0, 'accepted' => 0, 'rejected' => 0, 'pending' => 0];
     }
 }
