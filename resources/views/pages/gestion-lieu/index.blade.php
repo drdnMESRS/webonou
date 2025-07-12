@@ -34,17 +34,7 @@
 
     <div class="mb-6">
         <livewire:tables.lieu-table />
-        <x-common.tab-navigation :tabs="[
-            [
-                'id' => 'lieu',
-                'title' => __('Lieu'),
-                'content' => 'test'
-            ],
-            [
-                'id' => 'structure',
-                'title' => __('Structure'),
-                'content' => 'test'
-            ]
-        ]" />
+        <livewire:onou.lieu-details />
+
     </div>
 </x-layouts.app>

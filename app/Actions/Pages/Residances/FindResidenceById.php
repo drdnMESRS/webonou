@@ -42,7 +42,6 @@ class FindResidenceById
                 'surface_globale' => $residence->surface_globale ?? '',
                 'surface_batie' => $residence->surface_batie ?? '',
                 'consistance' => $residence->consistance ?? '',
-
             ]);
 
         // Return the DTO

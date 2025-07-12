@@ -33,7 +33,7 @@ class LieuTable extends DataTableComponent
             ->setTrAttributes(
                 function ($row) {
                     return [
-                        '@click' => "\$dispatch('residence-show', {id: ' $row->id '})",
+                        '@click' => "\$dispatch('lieu-show', {id: ' $row->id '})",
                         'style' => 'cursor: pointer; background-color: #f9f9f9;',
                     ];
                 });

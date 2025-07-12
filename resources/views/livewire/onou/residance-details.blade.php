@@ -1,7 +1,8 @@
 <div>
 
-    <!-- Loader Component -->
-    <livewire:common.loader />
+    <div class="text-center">
+        <livewire:common.loader/>
+    </div>
 
     <div x-data="{ showResidenceDetails: @entangle('showResidenceDetails') }"
          class="container mx-auto p-4">
