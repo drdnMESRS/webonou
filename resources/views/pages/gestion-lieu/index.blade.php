@@ -1,4 +1,4 @@
-<x-layouts.app :title="__('Gestion_dossier_hebergement')" >
+<x-layouts.app :title="__('Gestion_dossier_hebergement')" xmlns:livewire="http://www.w3.org/1999/html">
 
     <div class="mb-6">
         <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
@@ -33,6 +33,7 @@
 
 
     <div class="mb-6">
+        <livewire:tables.lieu-table />
         <x-common.tab-navigation :tabs="[
             [
                 'id' => 'lieu',
