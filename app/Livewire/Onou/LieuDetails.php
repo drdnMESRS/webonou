@@ -22,7 +22,7 @@ class LieuDetails extends Component
     public $loading = false;
 
     #[On('lieu-show')]
-    public function UpdateshowResidenceDetails($id)
+    public function UpdateshowLieuDetails($id)
     {
         $this->dispatch('loader-show');
         $this->lieuId = $id;
