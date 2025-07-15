@@ -11,6 +11,10 @@ class LieuDTO extends BaseDTO
         public ?int $id = null,
         public ?string $libelle_fr = null,
         public ?string $libelle_ar = null,
+        public ?int $etablissement = null,
+        public ?int $typeLieu = null,
+        public ?int $sousTypeLieu = null,
+        public ?int $parent = null,
         public ?array $information_details = null,
     ) {
     }

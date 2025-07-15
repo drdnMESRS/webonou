@@ -26,3 +26,22 @@ window.addEventListener('page-reload', function(e) {
         });
 
 
+            document.addEventListener('DOMContentLoaded', function () {
+        window.addEventListener('lieu-edit', () => {
+            const modal = document.getElementById('lieu-modal');
+            if (modal) {
+                // Using Flowbite modal
+                const instance = Flowbite?.instances?.getInstance(modal);
+                if (instance) {
+                    instance.show();
+                } else {
+                    // Fallback: force show if Flowbite not registered
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                }
+            }
+        });
+
+    });
+
+

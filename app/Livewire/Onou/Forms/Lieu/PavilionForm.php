@@ -8,16 +8,25 @@ use App\Models\Onou\Onou_cm_etablissement;
 use App\Models\Onou\Onou_cm_lieu;
 use App\Actions\Pages\GestionLieu\CreateLieu;
 use Illuminate\Support\Facades\Cache;
+use Livewire\Attributes\On;
 class PavilionForm extends Component
 {
 
-    public $TYPE_PAVILION = 699076,$type_chambre=699077,$type_unite=699305;
-
+public $TYPE_PAVILION = 699076,$type_chambre=699077,$type_unite=699305;
+public ?int $lieuId = null;
+public array $specialTypes = [
+    'pavilion' => 699076,
+    'chambre'  => 699077,
+    'unite'    => 699305,
+];
+public array $specialSousTypes = [
+    'filles' => 699297,
+    'garcons'  => 699298,
+];
     public  $sous_type,$Nombre_chambre	;
     public  $type_structure, $residence=null ;
     public $structure_appartenance;
     public $libelle_fr, $libelle_ar, $capacite_theorique, $capacite_reelle, $observation;
-
     public $residences = [];
     public $types = [];
     public $sous_types = [];
@@ -26,7 +35,7 @@ class PavilionForm extends Component
         protected array $rules = [
         'residence' => 'required|integer',
         'type_structure' => 'required|integer',
-        'sous_type' => 'nullable|integer',
+        'sous_type' => 'required|integer',
         'structure_appartenance' => 'nullable|integer',
         'libelle_fr' => 'required|string|max:255',
         'libelle_ar' => 'required|string|max:255',
@@ -38,7 +47,25 @@ class PavilionForm extends Component
         'chambres.*.to' => 'nullable|integer|min:1',
         'chambres.*.type' => 'nullable|integer|min:1',
     ];
+#[On('lieu-edit-data')]
+public function loadLieu(array $lieu)
+{
+    $this->lieu = $lieu;
 
+$details = $lieu['information_details'] ?? [];
+$this->lieuId                 = $lieu['id'];
+$this->residence              = $lieu['etablissement'];
+$this->type_structure         =$lieu['typeLieu'];
+$this->sous_type              = $lieu['sousTypeLieu'];
+$this->loadStructures();
+$this->structure_appartenance = $lieu['parent'];
+$this->libelle_fr             = $lieu['libelle_fr'] ?? '';
+$this->libelle_ar             = $lieu['libelle_ar'] ?? '';
+$this->capacite_theorique     = isset($details['capacite_theorique']) ? (int) $details['capacite_theorique'] : null;
+$this->capacite_reelle        = isset($details['capacite_reelle']) ? (int) $details['capacite_reelle'] : null;
+$this->observation            = $details['observation'] ?? '';
+
+}
 public function updatedResidence()
 {
     $this->loadStructures();
@@ -50,7 +77,7 @@ public function updatedTypeStructure()
 }
 public function loadStructures()
 {
-       $type = (int) $this->type_structure;
+    $type = (int) $this->type_structure;
 
     $typeLieu = match ($type) {
         $this->TYPE_PAVILION => $this->type_unite,
@@ -64,14 +91,19 @@ public function loadStructures()
 }
     public function mount()
     {
+
         $this->residences = Onou_cm_etablissement::pluck('denomination_fr', 'id')->toArray();
 
-        $this->types = Cache::remember('nomenclature_types_lieux', 86400, function () {
-            return Nomenclature::where('id_list', 339)->pluck('libelle_court_fr', 'id')->toArray();
-        });
 
+$this->types = Cache::remember('nomenclature_types_lieux_filtered', 86400, function () {
+    return Nomenclature::where('id_list', 339)
+        ->whereIn('id', array_values($this->specialTypes)) // use only the values of the array
+        ->pluck('libelle_court_fr', 'id')
+        ->toArray();
+});
         $this->sous_types = Cache::remember('nomenclature_sous_types_lieux', 86400, function () {
-            return Nomenclature::where('id_list', 343)->pluck('libelle_court_fr', 'id')->toArray();
+            return Nomenclature::where('id_list', 343)
+            ->whereIn('id', array_values($this->specialSousTypes))->pluck('libelle_court_fr', 'id')->toArray();
         });
          $this->loadStructures();
         $this->chambres = [
@@ -156,10 +188,11 @@ public function validateChambres()
     }
 
 
-    app(CreateLieu::class)->handle($validated, $this->TYPE_PAVILION, $this->type_chambre);
+    app(CreateLieu::class)->handle($validated, $this->TYPE_PAVILION, $this->type_chambre,$this->lieuId);
 
     $this->resetForm();
     $this->dispatch('close-lieu-modal');
+    session()->flash('success', 'Lieu mise à jour avec succès.');
 
 
     }

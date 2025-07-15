@@ -31,6 +31,10 @@ class FindLieuById
             id: $lieu->id,
             libelle_fr: $lieu->libelle_fr,
             libelle_ar: $lieu->libelle_ar,
+            etablissement:$lieu->etablissement,
+            sousTypeLieu:$lieu->sous_type_lieu,
+            typeLieu:$lieu->type_lieu,
+            parent:$lieu->lieu,
             information_details: $this->information_details($lieu)
         );
     }

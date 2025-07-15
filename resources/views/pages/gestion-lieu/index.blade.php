@@ -47,8 +47,10 @@
                        Ajouter Lieu
                    </button>
     </div>
+
         <livewire:tables.lieu-table />
         <livewire:onou.lieu-details />
+
 
     </div>
 </x-layouts.app>
