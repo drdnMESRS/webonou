@@ -4,6 +4,7 @@ namespace App\Livewire\Onou;
 
 use App\Actions\Pages\GestionLieu\FindLieuById;
 use App\Actions\Pages\Residances\FindResidenceById;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -13,12 +14,13 @@ class LieuDetails extends Component
    /*
     * The lieu ID.
     */
+    #[Locked]
     public $lieuId;
-
+    #[Locked]
     public $showLieuDetails = false;
-
+    #[Locked]
     public ?array $lieu = null;
-
+    #[Locked]
     public $loading = false;
 
     #[On('lieu-show')]

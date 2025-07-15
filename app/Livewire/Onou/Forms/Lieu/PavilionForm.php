@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Onou\Forms\Lieu;
 
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 use App\Models\Nc\Nomenclature;
 use App\Models\Onou\Onou_cm_etablissement;
@@ -11,18 +12,26 @@ use Illuminate\Support\Facades\Cache;
 class PavilionForm extends Component
 {
 
+    #[Locked]
     public $TYPE_PAVILION = 699076,$type_chambre=699077,$type_unite=699305;
+
 
     public  $sous_type,$Nombre_chambre	;
     public  $type_structure, $residence=null ;
     public $structure_appartenance;
     public $libelle_fr, $libelle_ar, $capacite_theorique, $capacite_reelle, $observation;
 
+    #[Locked]
     public $residences = [];
+    #[Locked]
     public $types = [];
+    #[Locked]
     public $sous_types = [];
+    #[Locked]
     public $structures = [];
+
     public $chambres = [];
+    #[Locked]
         protected array $rules = [
         'residence' => 'required|integer',
         'type_structure' => 'required|integer',
