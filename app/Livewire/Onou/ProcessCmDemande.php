@@ -72,6 +72,8 @@ class ProcessCmDemande extends Component
 
             return;
         }
+         $pageact=$this->data['actual_page'];
+
         // prepare the new data to update
         $values = [
             $this->processCmDemande->field($this->action) => $this->field_update,
@@ -79,16 +81,17 @@ class ProcessCmDemande extends Component
         try {
             // call the process method to handle the update
             $done = $this->processCmDemande->process_demande($id, $values, $this->action);
+            $this->reset(['data', 'action', 'formFields','field_update','acceptformView','rejectformView']);
             // dispatch an event to refresh the data table
             if (! $done) {
                 session()->flash('error', 'Une erreur est survenue lors de la mise à jour de la demande.');
-                $this->redirectRoute('diaHeb.show', ['page' => $this->data['actual_page']], navigate: true);
+                $this->redirectRoute('diaHeb.show', ['page' => $pageact], navigate: true);
             }
             // get the actual url to redirect
 
         } catch (\Exception $e) {
             session()->flash('error', 'Validation failed: '.$e->getMessage());
-            $this->redirectRoute('diaHeb.show', ['page' => $this->data['actual_page']], navigate: true);
+            $this->redirectRoute('diaHeb.show', ['page' => $pageact], navigate: true);
 
             return;
         }
@@ -96,7 +99,7 @@ class ProcessCmDemande extends Component
         // get the actual url to redirect
 
         session()->flash('success', 'Demande mise à jour avec succès.');
-        $this->redirectRoute('diaHeb.show', ['page' => $this->data['actual_page']], navigate: true);
+        $this->redirectRoute('diaHeb.show', ['page' => $pageact], navigate: true);
     }
 
     public function render()

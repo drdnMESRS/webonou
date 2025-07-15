@@ -73,21 +73,20 @@ class OnouCmDemandeTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setTrAttributes(fn ($row) => $this->getTrAttributesConfig($row))
-            ->setTdAttributes(fn ($column, $row) => $this->getTdAttributesConfig($row))
+            ->setTrAttributes(fn($row) => $this->getTrAttributesConfig($row))
+            ->setTdAttributes(fn($column, $row) => $this->getTdAttributesConfig($row))
             ->setLoadingPlaceholderEnabled()
             ->setLoadingPlaceholderContent(
                 '<div class="flex items-center justify-center h-64">
                     <div class="animate-spin rounded-full h-12 w-12 border-b-3 border-gray-900"></div>
                 </div>'
             );
-
     }
 
     private function getTrAttributesConfig($row): array
     {
         return [
-            '@click' => "\$dispatch('loader-show'); \$dispatch('demande-show', {id: ' $row->id '})",
+            '@click' => " \$dispatch('loader-show'); \$dispatch('demande-show', {id: ' $row->id '});",
             'style' => 'cursor: pointer;',
         ];
     }

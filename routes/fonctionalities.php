@@ -3,7 +3,7 @@
 /*
  * Routes for dous fonctionalities
  */
-
+use Illuminate\Support\Facades\Route;
 /* display all residances */
 
 Route::get('/pages/onou/consultHebesgement',
@@ -18,5 +18,5 @@ Route::get('/pages/onou/DossierInscriptionAdministrativeHebC',
 
 Route::get('/pages/onou/OnouCmLieusGerer',
     [App\Http\Controllers\Pages\GestionLieuController::class, 'index'])
-    ->name('diaHeb.show')
+    ->name('onouLieu.show')
     ->middleware(['auth', 'ProgresRole']);
