@@ -15,10 +15,10 @@ class vm_heb_processing_by_dou extends Model
 
     public static function firstOrDefault(): array
     {
-        return static::first()?->toArray() ??  [
+        return static::first()?->toArray() ?? [
             'total' => 0,
-             'accepted' => 0,
-             'rejected' => 0,
+            'accepted' => 0,
+            'rejected' => 0,
             'pending' => 0];
     }
 }

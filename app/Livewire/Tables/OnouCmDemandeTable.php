@@ -73,8 +73,8 @@ class OnouCmDemandeTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setTrAttributes(fn($row) => $this->getTrAttributesConfig($row))
-            ->setTdAttributes(fn($column, $row) => $this->getTdAttributesConfig($row))
+            ->setTrAttributes(fn ($row) => $this->getTrAttributesConfig($row))
+            ->setTdAttributes(fn ($column, $row) => $this->getTdAttributesConfig($row))
             ->setLoadingPlaceholderEnabled()
             ->setLoadingPlaceholderContent(
                 '<div class="flex items-center justify-center h-64">

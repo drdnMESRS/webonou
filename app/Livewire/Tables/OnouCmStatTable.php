@@ -2,70 +2,67 @@
 
 namespace App\Livewire\Tables;
 
-use App\Actions\Sessions\RoleManagement;
 use App\Models\Onou\vm_heb_processing_by_ru;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use Rappasoft\LaravelLivewireTables\Views\Filters\BooleanFilter;
-use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 /**
  * Class ResidancesTable
  */
 class OnouCmStatTable extends DataTableComponent
 {
-
-
-     public function builder(): Builder
+    public function builder(): Builder
     {
         return vm_heb_processing_by_ru::query()->with(['etablissement'])
           //  ->select('vm_heb_processing_by_ru.*');
-          ->whereNotNull('residence');
-            ///->join('onou.onou_cm_demande','onou.onou_cm_demande.dou','vm_heb_processing_by_ru.dou')
-         //   ->join('onou.onou_cm_etablissement','vm_heb_processing_by_ru.residence','onou.onou_cm_etablissement.id');
-          //  ->remember(60 * 60 * 24); // Cache for 24 hours
+            ->whereNotNull('residence');
+        // /->join('onou.onou_cm_demande','onou.onou_cm_demande.dou','vm_heb_processing_by_ru.dou')
+        //   ->join('onou.onou_cm_etablissement','vm_heb_processing_by_ru.residence','onou.onou_cm_etablissement.id');
+        //  ->remember(60 * 60 * 24); // Cache for 24 hours
     }
 
     public function configure(): void
     {
         $this->setPrimaryKey('residence')
-          ->setTdAttributes(fn ($column, $row) => $this->getTdAttributesForCapacite($row));
-            // ->setTrAttributes(
-            //     function ($row) {
-            //         return [
-            //             '@click' => "\$dispatch('residence-show', {id: ' $row->id '})",
-            //             'style' => 'cursor: pointer; background-color: #f9f9f9;',
-            //         ];
-            //     });
+            ->setTdAttributes(fn ($column, $row) => $this->getTdAttributesForCapacite($row));
+        // ->setTrAttributes(
+        //     function ($row) {
+        //         return [
+        //             '@click' => "\$dispatch('residence-show', {id: ' $row->id '})",
+        //             'style' => 'cursor: pointer; background-color: #f9f9f9;',
+        //         ];
+        //     });
     }
- private function getTdAttributesForCapacite($row): array
-    {
-        $per=$row->capacite>0?round(($row->accepted / ($row->capacite) )* 100,2):0;
 
-        if ($row->capacite==0) {
+    private function getTdAttributesForCapacite($row): array
+    {
+        $per = $row->capacite > 0 ? round(($row->accepted / ($row->capacite)) * 100, 2) : 0;
+
+        if ($row->capacite == 0) {
             return ['class' => 'bg-gray-50'];
         }
 
-        return $per<=60
+        return $per <= 60
             ? ['class' => 'bg-green-50']
-            : ($per<=80?['class' => 'bg-yellow-50']:['class' => 'bg-red-50']);
+            : ($per <= 80 ? ['class' => 'bg-yellow-50'] : ['class' => 'bg-red-50']);
     }
+
     public function columns(): array
     {
         return [
             Column::make('ll_structure_latin', 'etablissement.denomination_fr')
                 ->sortable()->searchable(),
-                Column::make('Capacite', 'capacite'),
+            Column::make('Capacite', 'capacite'),
             Column::make('Total', 'total'),
             Column::make('Pending', 'pending'),
             Column::make('Accepted', 'accepted'),
             Column::make('Rejected', 'rejected'),
             Column::make('%', 'capacite')
-              ->format(
+                ->format(
                     function ($value, $row, Column $column) {
-                         return $value>0?round(($row->accepted / $value) * 100,2):0     ;
-                    })
+                        return $value > 0 ? round(($row->accepted / $value) * 100, 2) : 0;
+                    }),
         ];
     }
 }

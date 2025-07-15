@@ -72,7 +72,7 @@ class ProcessCmDemande extends Component
 
             return;
         }
-         $pageact=$this->data['actual_page'];
+        $pageact = $this->data['actual_page'];
 
         // prepare the new data to update
         $values = [
@@ -81,7 +81,7 @@ class ProcessCmDemande extends Component
         try {
             // call the process method to handle the update
             $done = $this->processCmDemande->process_demande($id, $values, $this->action);
-            $this->reset(['data', 'action', 'formFields','field_update','acceptformView','rejectformView']);
+            $this->reset(['data', 'action', 'formFields', 'field_update', 'acceptformView', 'rejectformView']);
             // dispatch an event to refresh the data table
             if (! $done) {
                 session()->flash('error', 'Une erreur est survenue lors de la mise à jour de la demande.');
