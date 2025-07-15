@@ -39,9 +39,13 @@ class CommonController extends Controller
         return redirect('/dashboard');
     }
 
+    public function index()
+    {
+        return view('index');
+    }
+
     public function dashboard(Request $request)
     {
         return $this->strategy->displayDashboard($this->strategy->getstat());
-
     }
 }

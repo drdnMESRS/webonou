@@ -10,5 +10,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/change_active_year', [CommonController::class, 'change_activeAcademicYear'])->name('change_academic_year');
     Route::get('change-language/{lang}', [LanguageController::class, 'changeLanguage'])
         ->name('changeLanguage');
-    Route::get('/dashboard', [CommonController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [CommonController::class, 'index'])->name('dashboard');
 })->middleware(['auth']);

@@ -12,4 +12,13 @@ use Illuminate\Database\Eloquent\Model;
 class vm_heb_processing_by_dou extends Model
 {
     protected $table = 'onou.vm_heb_processing_by_dou';
+
+    public static function firstOrDefault(): array
+    {
+        return static::first()?->toArray() ?? [
+            'total' => 0,
+            'accepted' => 0,
+            'rejected' => 0,
+            'pending' => 0];
+    }
 }
