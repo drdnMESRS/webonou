@@ -14,6 +14,8 @@ class DouDashboard implements DashboadInterface
 
     public function getstat(): array
     {
+
         return vm_heb_processing_by_dou::firstOrDefault();
+
     }
 }
