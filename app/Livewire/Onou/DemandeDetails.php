@@ -38,6 +38,7 @@ class DemandeDetails extends Component
     #[On('demande-show')]
     public function showDemandeDetails($id)
     {
+        $this->reset(['demande', 'demandeId']);
         $this->demande = (new FindDemandeById)->handle($id);
         $this->demandeId = $id;
         $this->showDemandeDetails = true;

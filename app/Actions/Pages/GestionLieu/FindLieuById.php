@@ -38,8 +38,14 @@ class FindLieuById
 
     private function information_details(?Onou_cm_lieu $lieu): array
     {
-        $lieuDetails = Collection::make($lieu)->except(['id'])
+        $lieuDetails = Collection::make($lieu)
+            ->except(['id'])
+            ->map(function ($value, $key) {
+                return $value;
+            })
             ->toArray();
+        // Add additional details
+
         $lieuDetails['sous_type_lieu'] = $lieu->sousTypeLieu->full_name ?? '';
         $lieuDetails['type_lieu'] = $lieu->typeLieu->full_name ?? '';
         $lieuDetails['etablissement'] = $lieu->etablissementLieu->full_name ?? '';
