@@ -4,6 +4,7 @@ namespace App\Actions\Pages\Dossier_demande_Hebergement;
 
 use App\Pipelines\Onou\CheckAdress;
 use App\Pipelines\Onou\CheckAge;
+use App\Pipelines\Onou\CheckRights;
 use Illuminate\Pipeline\Pipeline;
 
 class CheckConformeHeb
@@ -23,6 +24,7 @@ class CheckConformeHeb
             ->through([
                 CheckAge::class,
                 CheckAdress::class,
+                CheckRights::class,
             ])
             ->thenReturn(
                 'done'
