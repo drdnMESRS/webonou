@@ -43,7 +43,9 @@ class Sso_service
 
         throw_unless(strlen($state) > 0 && $state === $request->input('state'), InvalidArgumentException::class);
 
+
         $response = Http::asForm()->withOptions(['verify' => false])->post(env('SSO_SERVER').'/oauth/token', [
+
             'client_id' => env('CLIENT_ID'),
             'client_secret' => env('CLIENT_SECRET'),
             'code' => $request->input('code'),

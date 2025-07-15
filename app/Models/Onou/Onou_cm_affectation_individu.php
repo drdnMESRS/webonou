@@ -19,8 +19,8 @@ class Onou_cm_affectation_individu extends Model
 
     protected $guarded = [];
 
-    public function lieu(): BelongsTo
+     public function lieuaffectation():BelongsTo
     {
-        return $this->belongsTo(Onou_cm_etablissement::class, 'lieu', 'id');
+        return $this->belongsTo(Onou_cm_lieu::class, 'lieu', 'id');
     }
 }
