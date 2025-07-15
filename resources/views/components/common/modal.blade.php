@@ -1,6 +1,6 @@
 @props(
 [
-    'id', 'size', 'title', 'view'=>null, 'slot'=>null, 'withFooter' => null
+    'id', 'size', 'title', 'view'=>null, 'slot'=>null, 'withFooter' => null, 'padding' => '36'
 ]
 )
 <div>
@@ -10,7 +10,7 @@
     hidden  p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] ">
         <!-- Grey background overlay -->
         <div class="fixed inset-0 bg-gray-400 opacity-70"></div>
-        <div class="relative p-36 w-full max-w-{{ $size }} max-h-full">
+        <div class="relative p-{{ $padding }} w-full max-w-{{ $size }} max-h-full">
             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                 <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Onou\Forms\Lieu;
 
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 use App\Models\Nc\Nomenclature;
 use App\Models\Onou\Onou_cm_etablissement;
@@ -23,15 +24,23 @@ public array $specialSousTypes = [
     'filles' => 699297,
     'garcons'  => 699298,
 ];
+
+
     public  $sous_type,$Nombre_chambre	;
     public  $type_structure, $residence=null ;
     public $structure_appartenance;
     public $libelle_fr, $libelle_ar, $capacite_theorique, $capacite_reelle, $observation;
+
     public $residences = [];
+
     public $types = [];
+
     public $sous_types = [];
+
     public $structures = [];
+
     public $chambres = [];
+
         protected array $rules = [
         'residence' => 'required|integer',
         'type_structure' => 'required|integer',

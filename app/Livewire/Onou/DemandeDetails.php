@@ -16,7 +16,6 @@ class DemandeDetails extends Component
     #[Locked]
     public $demandeId;
 
-    #[Locked]
     public $showDemandeDetails = false;
 
     #[Locked]
@@ -32,12 +31,12 @@ class DemandeDetails extends Component
         $this->processCmDemande = new ProcessCmDemandeContext;
         $this->accept_view = $this->processCmDemande->getView();
         $this->reject_view = $this->processCmDemande->getView();
-
     }
 
     #[On('demande-show')]
     public function showDemandeDetails($id)
     {
+        $this->reset(['demande', 'demandeId']);
         $this->demande = (new FindDemandeById)->handle($id);
         $this->demandeId = $id;
         $this->showDemandeDetails = true;

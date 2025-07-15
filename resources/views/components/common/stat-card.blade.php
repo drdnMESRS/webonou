@@ -10,7 +10,7 @@
             </div>
         </div>
         <div>
-            <span class="bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-1 rounded-md dark:bg-green-900 dark:text-green-300">
+            <span class="{{ $class }}">
                 {!! $badgeIcon !!}
                 {{ $badgeText }}
             </span>

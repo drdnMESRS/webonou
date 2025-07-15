@@ -42,6 +42,7 @@ class MenuItems extends Authenticatable
                 ->where('f.active', true)
                 ->where('f.new_version', true)
                 ->where('d.nom', 'ilike', config('app.progres_domaine'))
+                ->orderBy('f.rang', 'asc')
                 ->get();
         });
 
