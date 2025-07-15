@@ -146,6 +146,30 @@ class OnouCmDemandeTable extends DataTableComponent
                         }
                     }
                 ),
+                Column::make('Residence', 'residenceaffectation.id')
+                ->format(
+                    function ($value, $row, Column $column) {
+                        return $row->residenceaffectation->denomination_fr?? '';
+                    }
+                ),
+            Column::make('PAVILLON', 'affectationlieu.id')
+                ->format(
+                    function ($value, $row, Column $column) {
+                        return $row->affectationlieu->lieuaffectation->parent->libelle_fr ?? '';
+                    }
+                ),
+            Column::make('Chambre', 'affectationlieu.id')
+                ->format(
+                    function ($value, $row, Column $column) {
+                        return $row->affectationlieu->lieuaffectation->libelle_fr ?? '';
+                    }
+                ),
+            Column::make('Comune de résidance', 'id')
+                ->format(
+                    function ($value, $row, Column $column) {
+                        return $row->nc_commune_residence->full_name ?? '';
+                    }
+                ),
             Column::make('Comune de résidance', 'id')
                 ->format(
                     function ($value, $row, Column $column) {

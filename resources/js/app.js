@@ -17,4 +17,12 @@ window.addEventListener('page-reload', function(e) {
 });
 
 
+     window.addEventListener('close-lieu-modal', () => {
+            const modalId = 'lieu-modal';
+            const modal = document.getElementById(modalId);
+            const closeBtn = modal?.querySelector(`[data-modal-hide="${modalId}"]`);
+            closeBtn?.click();
+            modal?.classList.add('hidden');
+        });
+
 

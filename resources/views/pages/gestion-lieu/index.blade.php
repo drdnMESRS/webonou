@@ -33,6 +33,20 @@
 
 
     <div class="mb-6">
+         <div>
+                   <x-common.modal id="lieu-modal" title="Ajouter Lieu " size="auto">
+                     <livewire:onou.forms.lieu.pavilion-form />
+                   </x-common.modal>
+
+                   <button id="open-my-modal-button"
+                           data-modal-target="lieu-modal"
+                           data-modal-toggle="lieu-modal" class="block
+                   text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none
+                   focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center
+                   dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
+                       Ajouter Lieu
+                   </button>
+    </div>
         <livewire:tables.lieu-table />
         <livewire:onou.lieu-details />
 
