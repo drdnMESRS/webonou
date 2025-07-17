@@ -9,45 +9,75 @@ use App\Models\Onou\Onou_cm_etablissement;
 use App\Models\Onou\Onou_cm_lieu;
 use App\Actions\Pages\GestionLieu\CreateLieu;
 use Illuminate\Support\Facades\Cache;
+use Livewire\Attributes\On;
 class PavilionForm extends Component
 {
 
-    #[Locked]
-    public $TYPE_PAVILION = 699076,$type_chambre=699077,$type_unite=699305;
+public $TYPE_PAVILION = 699076,$type_chambre=699077,$type_unite=699305;
+public ?int $lieuId = null;
+public array $specialTypes = [
+    'pavilion' => 699076,
+    'chambre'  => 699077,
+    'unite'    => 699305,
+];
+public array $specialSousTypes = [
+    'filles' => 699297,
+    'garcons'  => 699298,
+];
 
 
     public  $sous_type,$Nombre_chambre	;
-    public  $type_structure, $residence=null ;
+    public  $type_structure,$etat, $residence=null ;
     public $structure_appartenance;
     public $libelle_fr, $libelle_ar, $capacite_theorique, $capacite_reelle, $observation;
 
-    #[Locked]
     public $residences = [];
-    #[Locked]
+
     public $types = [];
-    #[Locked]
+
     public $sous_types = [];
-    #[Locked]
+    public $etats = [];
+
     public $structures = [];
 
     public $chambres = [];
-    #[Locked]
+
         protected array $rules = [
         'residence' => 'required|integer',
         'type_structure' => 'required|integer',
-        'sous_type' => 'nullable|integer',
+        'sous_type' => 'required|integer',
+        'etat' => 'required|integer',
         'structure_appartenance' => 'nullable|integer',
         'libelle_fr' => 'required|string|max:255',
-        'libelle_ar' => 'required|string|max:255',
-        'capacite_theorique' => 'nullable|integer|min:1',
-        'capacite_reelle' => 'nullable|integer|min:0',
+        'libelle_ar' => 'nullable|string|max:255',
+        'capacite_theorique' => 'required|integer|min:1',
+        'capacite_reelle' => 'required|integer|min:0',
         'observation' => 'nullable|string|max:1000',
         'chambres' => 'nullable|array|min:1',
         'chambres.*.from' => 'nullable|integer|min:1',
         'chambres.*.to' => 'nullable|integer|min:1',
         'chambres.*.type' => 'nullable|integer|min:1',
     ];
+#[On('lieu-edit-data')]
+public function loadLieu(array $lieu)
+{
+    $this->lieu = $lieu;
 
+$details = $lieu['information_details'] ?? [];
+$this->lieuId                 = $lieu['id'];
+$this->residence              = $lieu['etablissement'];
+$this->type_structure         =$lieu['typeLieu'];
+$this->sous_type              = $lieu['sousTypeLieu'];
+$this->etat                   = $lieu['etat'];
+$this->loadStructures();
+$this->structure_appartenance = $lieu['parent'];
+$this->libelle_fr             = $lieu['libelle_fr'] ?? '';
+$this->libelle_ar             = $lieu['libelle_ar'] ?? '';
+$this->capacite_theorique     = $lieu['capacite_theorique'] ?? '';
+$this->capacite_reelle        = $lieu['capacite_reelle'] ?? '';
+$this->observation            = $details['observation'] ?? '';
+
+}
 public function updatedResidence()
 {
     $this->loadStructures();
@@ -56,10 +86,17 @@ public function updatedResidence()
 public function updatedTypeStructure()
 {
     $this->loadStructures();
+    $this->validatestricture();
+}
+public function validatestricture()
+{
+  if ((int)$this->type_structure==$this->TYPE_PAVILION || (int)$this->type_structure==$this->type_chambre ) {
+                $this->addError("structure_appartenance", 'The structure appartenance field is required.');
+            }
 }
 public function loadStructures()
 {
-       $type = (int) $this->type_structure;
+    $type = (int) $this->type_structure;
 
     $typeLieu = match ($type) {
         $this->TYPE_PAVILION => $this->type_unite,
@@ -73,16 +110,24 @@ public function loadStructures()
 }
     public function mount()
     {
+
         $this->residences = Onou_cm_etablissement::pluck('denomination_fr', 'id')->toArray();
 
-        $this->types = Cache::remember('nomenclature_types_lieux', 86400, function () {
-            return Nomenclature::where('id_list', 339)->pluck('libelle_court_fr', 'id')->toArray();
-        });
 
+$this->types = Cache::remember('nomenclature_types_lieux_filtered', 86400, function () {
+    return Nomenclature::where('id_list', 339)
+        ->whereIn('id', array_values($this->specialTypes)) // use only the values of the array
+        ->pluck('libelle_court_fr', 'id')
+        ->toArray();
+});
         $this->sous_types = Cache::remember('nomenclature_sous_types_lieux', 86400, function () {
-            return Nomenclature::where('id_list', 343)->pluck('libelle_court_fr', 'id')->toArray();
+            return Nomenclature::where('id_list', 343)
+            ->whereIn('id', array_values($this->specialSousTypes))->pluck('libelle_court_fr', 'id')->toArray();
         });
          $this->loadStructures();
+        $this->etats = Cache::remember('nomenclature_etat_lieux', 86400, function () {
+            return Nomenclature::whereIn('id_list', [340, 350])->pluck('libelle_court_fr', 'id')->toArray();
+        });
         $this->chambres = [
             ['from' => null, 'to' => null, 'type' => null],
         ];
@@ -117,13 +162,12 @@ public function validateChambres()
             }
         }
 
-        if (!is_numeric($type) || $type <= 0) {
-            $this->addError("chambres.$index.type", 'Type doit être un nombre positif.');
-        }
+
 
         $lastTo = $to;
     }
 }
+
     public function resetPavilionForm()
     {
         $this->resetForm();
@@ -132,7 +176,7 @@ public function validateChambres()
     public function resetForm()
     {
         $this->reset([
-            'residence', 'type_structure', 'sous_type', 'structure_appartenance',
+            'residence','etat', 'type_structure', 'sous_type', 'structure_appartenance',
             'libelle_fr', 'libelle_ar', 'capacite_theorique', 'capacite_reelle', 'observation', 'chambres'
         ]);
         $this->chambres = [['from' => null, 'to' => null, 'type' => null]];
@@ -165,11 +209,14 @@ public function validateChambres()
     }
 
 
-    app(CreateLieu::class)->handle($validated, $this->TYPE_PAVILION, $this->type_chambre);
+    $success= app(CreateLieu::class)->handle($validated, $this->TYPE_PAVILION, $this->type_chambre,$this->lieuId);
 
     $this->resetForm();
     $this->dispatch('close-lieu-modal');
-
+     if ($success) {
+    session()->flash('success', 'Lieu a été mise à jour avec succès.');
+     $this->redirectRoute('onouLieu.show', navigate:true);
+     }
 
     }
 

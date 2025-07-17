@@ -31,6 +31,13 @@ class FindLieuById
             id: $lieu->id,
             libelle_fr: $lieu->libelle_fr,
             libelle_ar: $lieu->libelle_ar,
+            etablissement:$lieu->etablissement,
+            sousTypeLieu:$lieu->sous_type_lieu,
+            typeLieu:$lieu->type_lieu,
+            parent:$lieu->lieu,
+            etat:$lieu->etat,
+            capacite_theorique:$lieu->capacite_theorique,
+            capacite_reelle:$lieu->capacite_reelle,
             information_details: $this->information_details($lieu)
         );
     }
@@ -38,18 +45,23 @@ class FindLieuById
 
     private function information_details(?Onou_cm_lieu $lieu): array
     {
-        $lieuDetails = Collection::make($lieu)
-            ->except(['id'])
-            ->map(function ($value, $key) {
-                return $value;
-            })
-            ->toArray();
+        // $lieuDetails = Collection::make($lieu)
+        //     ->except(['id'])
+        //     ->map(function ($value, $key) {
+        //         return $value;
+        //     })
+        //     ->toArray();
         // Add additional details
+        $lieuDetails['Nom FR'] = $lieu->libelle_fr ?? '';
+        $lieuDetails['Nom AR'] = $lieu->libelle_ar ?? '';
+        $lieuDetails['Etablissement'] = $lieu->etablissementLieu->full_name ?? '';
+        $lieuDetails['Type'] = $lieu->typeLieu->full_name ?? '';
+        $lieuDetails['Sous Type'] = $lieu->sousTypeLieu->full_name ?? '';
+        $lieuDetails['Parent'] = $lieu->parent->full_name ?? '';
+         $lieuDetails['Etat'] = $lieu->etatLieu->full_name ?? '';
+        $lieuDetails['Capcite theorique'] = $lieu->capacite_theorique ?? '';
+        $lieuDetails['Capcite reelle'] = $lieu->capacite_reelle ?? '';
 
-        $lieuDetails['sous_type_lieu'] = $lieu->sousTypeLieu->full_name ?? '';
-        $lieuDetails['type_lieu'] = $lieu->typeLieu->full_name ?? '';
-        $lieuDetails['etablissement'] = $lieu->etablissementLieu->full_name ?? '';
-        $lieuDetails['lieu'] = $lieu->parent->full_name ?? '';
 
 
         return (empty($lieu)) ? [] : $lieuDetails;

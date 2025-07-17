@@ -20,5 +20,6 @@ class vm_heb_processing_by_dou extends Model
             'accepted' => 0,
             'rejected' => 0,
             'pending' => 0];
+
     }
 }

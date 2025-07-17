@@ -17,10 +17,8 @@
                     <option value="{{ $id }}">{{ $label }}</option>
                 @endforeach
             </select>
+            @error('residence') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
         </div>
-
-
-
         {{-- Type de structure --}}
 <div>
     <label class="block text-sm font-medium text-gray-700">
@@ -33,6 +31,7 @@
             <option value="{{ $id }}">{{ $label }}</option>
         @endforeach
     </select>
+    @error('type_structure') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
 </div>
 
         {{-- Sous type --}}
@@ -48,6 +47,7 @@
                    <option value="{{ $id }}">{{ $label }}</option>
                  @endforeach
             </select>
+            @error('sous_type') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
         </div>
 
         {{-- Structure d'appartenance --}}
@@ -63,20 +63,37 @@
                 @endforeach
 
             </select>
+            @error('structure_appartenance') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
         </div>
+                {{-- Etats --}}
+        <div>
+            <label for="structure_appartenance" class="block text-sm font-medium text-gray-700">
+                Etat de lieu
+            </label>
+            <select id="etat" wire:model.live="etat"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                <option value="">Sélectionner</option>
+                @foreach ($etats as $id => $label)
+                    <option value="{{ $id }}">{{ $label }}</option>
+                @endforeach
 
+            </select>
+            @error('etat') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+        </div>
         {{-- Libellé FR / AR --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700">Libellé Fr</label>
                 <input type="text" wire:model.live="libelle_fr"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
-            </div>
+            @error('libelle_fr') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700">Libellé Ar</label>
                 <input type="text" wire:model.live="libelle_ar"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
-            </div>
+            @error('libelle_ar') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                </div>
         </div>
 
         {{-- Capacités --}}
@@ -85,12 +102,14 @@
                 <label class="block text-sm font-medium text-gray-700">Capacité Théorique</label>
                 <input type="number" min=1 wire:model.live="capacite_theorique"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
-            </div>
+            @error('capacite_theorique') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700">Capacité Réelle</label>
                 <input type="number" min=0 wire:model.live="capacite_reelle"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
-            </div>
+            @error('capacite_reelle') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                </div>
 
         </div>
 
