@@ -76,11 +76,12 @@ class OnouCmDemandeTable extends DataTableComponent
             ->setTrAttributes(fn ($row) => $this->getTrAttributesConfig($row))
             ->setTdAttributes(fn ($column, $row) => $this->getTdAttributesConfig($row))
             ->setLoadingPlaceholderEnabled()
-            ->setLoadingPlaceholderContent(
-                '<div class="flex items-center justify-center h-64">
+            ->setLoadingPlaceholderContent('<div class="flex items-center justify-center h-64">
                     <div class="animate-spin rounded-full h-12 w-12 border-b-3 border-gray-900"></div>
                 </div>'
             );
+
+        $this->setConfigurableArea('after-tools', 'partials.filters.domain-filter');
     }
 
     private function getTrAttributesConfig($row): array
@@ -161,12 +162,6 @@ class OnouCmDemandeTable extends DataTableComponent
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->affectationlieu->lieuaffectation->libelle_fr ?? '';
-                    }
-                ),
-            Column::make('Comune de résidance', 'id')
-                ->format(
-                    function ($value, $row, Column $column) {
-                        return $row->nc_commune_residence->full_name ?? '';
                     }
                 ),
             Column::make('Comune de résidance', 'id')
