@@ -41,7 +41,8 @@ class LieuDetails extends Component
    $lieu = Onou_cm_lieu::withCount(['children', 'affectation'])->findOrFail($this->lieuId);
 
 
-    if ($lieu->children_count > 0 || $lieu->Affectation_count > 0) {
+   if (($lieu->children_count !== null && $lieu->children_count > 0) ||
+    ($lieu->Affectation_count !== null && $lieu->Affectation_count > 0)) {
      session()->flash('error', 'Impossible de supprimer ce lieu car il a des sous Lieus ou des affectations.');
      $this->redirectRoute('onouLieu.show', navigate:true);
         return;
