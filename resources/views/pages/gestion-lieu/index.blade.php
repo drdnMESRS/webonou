@@ -11,7 +11,7 @@
         </div>
 
         <div>
-            <x-common.modal id="lieu-modal" title="Ajouter Lieu " size="auto" padding="5">
+            <x-common.modal id="lieu-modal" title="Lieu Details" size="auto" padding="5">
                 <livewire:onou.forms.lieu.pavilion-form />
             </x-common.modal>
 

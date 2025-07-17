@@ -47,9 +47,9 @@ public array $specialSousTypes = [
         'sous_type' => 'required|integer',
         'structure_appartenance' => 'nullable|integer',
         'libelle_fr' => 'required|string|max:255',
-        'libelle_ar' => 'required|string|max:255',
-        'capacite_theorique' => 'nullable|integer|min:1',
-        'capacite_reelle' => 'nullable|integer|min:0',
+        'libelle_ar' => 'nullable|string|max:255',
+        'capacite_theorique' => 'required|integer|min:1',
+        'capacite_reelle' => 'required|integer|min:0',
         'observation' => 'nullable|string|max:1000',
         'chambres' => 'nullable|array|min:1',
         'chambres.*.from' => 'nullable|integer|min:1',
@@ -70,8 +70,8 @@ $this->loadStructures();
 $this->structure_appartenance = $lieu['parent'];
 $this->libelle_fr             = $lieu['libelle_fr'] ?? '';
 $this->libelle_ar             = $lieu['libelle_ar'] ?? '';
-$this->capacite_theorique     = isset($details['capacite_theorique']) ? (int) $details['capacite_theorique'] : null;
-$this->capacite_reelle        = isset($details['capacite_reelle']) ? (int) $details['capacite_reelle'] : null;
+$this->capacite_theorique     = $lieu['capacite_theorique'] ?? '';
+$this->capacite_reelle        = $lieu['capacite_reelle'] ?? '';
 $this->observation            = $details['observation'] ?? '';
 
 }
@@ -83,6 +83,13 @@ public function updatedResidence()
 public function updatedTypeStructure()
 {
     $this->loadStructures();
+    $this->validatestricture();
+}
+public function validatestricture()
+{
+  if ((int)$this->type_structure==$this->TYPE_PAVILION || (int)$this->type_structure==$this->type_chambre ) {
+                $this->addError("structure_appartenance", 'The structure appartenance field is required.');
+            }
 }
 public function loadStructures()
 {
@@ -149,9 +156,7 @@ public function validateChambres()
             }
         }
 
-        if (!is_numeric($type) || $type <= 0) {
-            $this->addError("chambres.$index.type", 'Type doit être un nombre positif.');
-        }
+
 
         $lastTo = $to;
     }

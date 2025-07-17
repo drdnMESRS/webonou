@@ -15,6 +15,8 @@ class LieuDTO extends BaseDTO
         public ?int $typeLieu = null,
         public ?int $sousTypeLieu = null,
         public ?int $parent = null,
+        public ?int $capacite_theorique=null,
+        public ?int $capacite_reelle=null,
         public ?array $information_details = null,
     ) {
     }
