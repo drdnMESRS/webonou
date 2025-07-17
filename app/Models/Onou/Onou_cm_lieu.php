@@ -75,6 +75,10 @@ class Onou_cm_lieu extends Model
     {
         return $this->belongsTo(Nomenclature::class, 'type_lieu', 'id');
     }
+      public function etatLieu(): BelongsTo
+    {
+        return $this->belongsTo(Nomenclature::class, 'etat', 'id');
+    }
 
     public function etablissementLieu(): BelongsTo
     {
@@ -101,5 +105,9 @@ class Onou_cm_lieu extends Model
     public function children(): HasMany
     {
         return $this->hasMany(Onou_cm_lieu::class, 'lieu', 'id');
+    }
+        public function affectation(): HasMany
+    {
+        return $this->hasMany(Onou_cm_affectation_individu::class, 'lieu', 'id');
     }
 }

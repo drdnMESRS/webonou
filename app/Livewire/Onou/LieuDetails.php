@@ -5,6 +5,7 @@ namespace App\Livewire\Onou;
 use App\Actions\Pages\GestionLieu\FindLieuById;
 use App\Actions\Pages\Residances\FindResidenceById;
 use Livewire\Attributes\Locked;
+use App\Models\Onou\Onou_cm_lieu;
 use Livewire\Attributes\On;
 use App\Livewire\Onou\Forms\Lieu\PavilionForm;
 use Livewire\Component;
@@ -35,7 +36,24 @@ class LieuDetails extends Component
         $this->showLieuDetails = true;
          $this->dispatch('lieu-edit-data', $this->lieu); // Livewire: send ID to PavilionForm
     }
+    public function deleteLieu()
+{
+   $lieu = Onou_cm_lieu::withCount(['children', 'affectation'])->findOrFail($this->lieuId);
 
+
+    if ($lieu->children_count > 0 || $lieu->Affectation_count > 0) {
+     session()->flash('error', 'Impossible de supprimer ce lieu car il a des sous Lieus ou des affectations.');
+     $this->redirectRoute('onouLieu.show', navigate:true);
+        return;
+    }else{
+    $lieu->delete();
+    session()->flash('success', 'Lieu est supprimer avec succès.');
+     $this->redirectRoute('onouLieu.show', navigate:true);
+      return;
+    }
+
+
+}
     public function render()
     {
         return view('livewire.onou.lieu-details');

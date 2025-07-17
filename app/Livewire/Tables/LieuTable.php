@@ -26,8 +26,8 @@ public array $specialTypes = [
         return Onou_cm_lieu::query()
                 ->select(
                     'onou_cm_lieu.*'
-                )
-                ->with(['typeLieu', 'etablissementLieu', 'sousTypeLieu', 'parent'])
+                )->withCount(['children', 'affectation'])
+                ->with(['etatLieu','typeLieu', 'etablissementLieu', 'sousTypeLieu', 'parent'])
                 ->whereIn('type_lieu', array_values($this->specialTypes))
                 ->remember(60 * 60 * 3); // Cache for 24 hours
     }
@@ -85,6 +85,21 @@ public array $specialTypes = [
                         return $row->parent ? $row->parent->full_name : 'N/A';
                     }
                 )->sortable()->searchable(),
+                 Column::make('Etat', 'id')
+                ->format(
+                    function ($value, $row, Column $column) {
+
+                        return $row->etatLieu ? $row->etatLieu->full_name :'';
+                    })
+                ->sortable()
+                ->searchable(),
+                Column::make('Sous Lieu', 'id')
+                ->format(
+                    function ($value, $row, Column $column) {
+
+                        return $row->typeLieu->id == $this->specialTypes['chambre'] ? '':$row->children_count;
+                    })
+                ->sortable(),
                 Column::make('Capcite theorique', 'capacite_theorique')
                 ->format(
                     function ($value, $row, Column $column) {
@@ -97,6 +112,14 @@ public array $specialTypes = [
                         return $row->capacite_reelle ;
                     }
                 )->sortable()->searchable(),
+                                Column::make('etudiants affectés', 'id')
+                ->format(
+                    function ($value, $row, Column $column) {
+
+                        return $row->typeLieu->id == $this->specialTypes['chambre']?$row->affectation_count:'';
+                    })
+                ->sortable(),
+
         ];
     }
 }

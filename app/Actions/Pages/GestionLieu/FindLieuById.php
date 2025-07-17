@@ -35,6 +35,7 @@ class FindLieuById
             sousTypeLieu:$lieu->sous_type_lieu,
             typeLieu:$lieu->type_lieu,
             parent:$lieu->lieu,
+            etat:$lieu->etat,
             capacite_theorique:$lieu->capacite_theorique,
             capacite_reelle:$lieu->capacite_reelle,
             information_details: $this->information_details($lieu)
@@ -57,8 +58,10 @@ class FindLieuById
         $lieuDetails['Type'] = $lieu->typeLieu->full_name ?? '';
         $lieuDetails['Sous Type'] = $lieu->sousTypeLieu->full_name ?? '';
         $lieuDetails['Parent'] = $lieu->parent->full_name ?? '';
+         $lieuDetails['Etat'] = $lieu->etatLieu->full_name ?? '';
         $lieuDetails['Capcite theorique'] = $lieu->capacite_theorique ?? '';
         $lieuDetails['Capcite reelle'] = $lieu->capacite_reelle ?? '';
+
 
 
         return (empty($lieu)) ? [] : $lieuDetails;

@@ -15,7 +15,7 @@
                 <livewire:onou.forms.lieu.pavilion-form />
             </x-common.modal>
 
-            <button id="open-my-modal-button"
+            <button  id="open-my-modal-button"
                     data-modal-target="lieu-modal"
                     data-modal-toggle="lieu-modal" class="block
                    text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none
@@ -30,7 +30,8 @@
 
     <!-- if ssession contains 'success' message, display it -->
 
-    @if (session()->has('success'))
+
+ @if (session()->has('success'))
         <x-common.alert type="success"
                         title="Success"
                         message="{{ session('success') }}"
@@ -44,7 +45,6 @@
                         class="mt-8 shadow-lg"
                         id="my-custom-alert" />
     @endif
-
 
         <livewire:tables.lieu-table />
         <livewire:onou.lieu-details />

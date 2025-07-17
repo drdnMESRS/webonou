@@ -35,7 +35,6 @@ window.addEventListener('page-reload', function(e) {
                 if (instance) {
                     instance.show();
                 } else {
-                    // Fallback: force show if Flowbite not registered
                     modal.classList.remove('hidden');
                     modal.classList.add('flex');
                 }

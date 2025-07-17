@@ -18,6 +18,7 @@ class CreateLieu
         'type_lieu' => $validated['type_structure'],
         'sous_type_lieu' => $validated['sous_type'],
         'lieu' => $validated['structure_appartenance'],
+        'etat' => $validated['etat'],
         'libelle_fr' => $validated['libelle_fr'],
         'libelle_ar' => $validated['libelle_ar'],
         'capacite_theorique' => $validated['capacite_theorique'],
@@ -55,6 +56,8 @@ class CreateLieu
             }
         }
     }
+
+
 
     return $lieu;
     }
