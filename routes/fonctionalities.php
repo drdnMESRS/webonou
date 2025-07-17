@@ -28,3 +28,9 @@ Route::get('/pages/onou/OnouCmLieusGerer',
     [App\Http\Controllers\Pages\GestionLieuController::class, 'index'])
     ->name('onouLieu.show')
     ->middleware(['auth', 'ProgresRole']);
+
+Route::get('/pages/onou/DossierInscriptionAdministrativeDemanderHebDou',
+    [App\Http\Controllers\Pages\GestionDossierHebController::class, 'create'])
+    ->name('diaHeb.create')
+    ->middleware(['auth', 'ProgresRole']);
+

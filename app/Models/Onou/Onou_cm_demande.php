@@ -90,6 +90,8 @@ class Onou_cm_demande extends Model
    {
     return $this->belongsTo(Onou_cm_affectation_individu::class, 'affectation','id');
    }
+
+
     public static function fetchDemandeById(int $id, ?array $getSelectFields = ['*'])
     {
         return cache()->remember('demande_'.$id, 60 * 60 * 12, function () use ($getSelectFields, $id) {
@@ -125,6 +127,7 @@ class Onou_cm_demande extends Model
                 ->leftJoin('onou.onou_cm_etablissement as choix1', 'choix1.id', '=', 'demande.choix1')
                 ->leftJoin('onou.onou_cm_etablissement as choix2', 'choix2.id', '=', 'demande.choix2')
                 ->leftJoin('onou.onou_cm_etablissement as choix3', 'choix3.id', '=', 'demande.choix3')
+                ->leftJoin('onou.onou_droit_renouvellement_heb as droit_renouvellement', 'droit_renouvellement.id_individu', '=', 'demande.individu')
 
                 ->where([
                     ['demande.id', '=', $id],
