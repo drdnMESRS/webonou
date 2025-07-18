@@ -59,6 +59,7 @@ public array $specialSousTypes = [
         'chambres.*.type' => 'nullable|integer|min:1',
     ];
 #[On('lieu-edit-data')]
+#[On('lieu-edit')]
 public function loadLieu(array $lieu)
 {
     $this->lieu = $lieu;
@@ -82,7 +83,10 @@ public function updatedResidence()
 {
     $this->loadStructures();
 }
-
+public function updatedStructureAppartenance()
+{
+    $this->validatestricture();
+}
 public function updatedTypeStructure()
 {
     $this->loadStructures();
@@ -90,14 +94,19 @@ public function updatedTypeStructure()
 }
 public function validatestricture()
 {
-  if ((int)$this->type_structure==$this->TYPE_PAVILION || (int)$this->type_structure==$this->type_chambre ) {
-                $this->addError("structure_appartenance", 'The structure appartenance field is required.');
-            }
+    $typeStructure = (int) $this->type_structure;
+    if (
+        is_null($this->structure_appartenance) &&
+        ($typeStructure === $this->TYPE_PAVILION || $typeStructure === $this->type_chambre)
+    ) {
+        $this->addError('structure_appartenance', 'The structure appartenance field is required.');
+    } else {
+        $this->resetErrorBag('structure_appartenance');
+    }
 }
 public function loadStructures()
 {
     $type = (int) $this->type_structure;
-
     $typeLieu = match ($type) {
         $this->TYPE_PAVILION => $this->type_unite,
         $this->type_chambre => $this->TYPE_PAVILION,
@@ -114,7 +123,7 @@ public function loadStructures()
         $this->residences = Onou_cm_etablissement::pluck('denomination_fr', 'id')->toArray();
 
 
-$this->types = Cache::remember('nomenclature_types_lieux_filtered', 86400, function () {
+    $this->types = Cache::remember('nomenclature_types_lieux_filtered', 86400, function () {
     return Nomenclature::where('id_list', 339)
         ->whereIn('id', array_values($this->specialTypes)) // use only the values of the array
         ->pluck('libelle_court_fr', 'id')
@@ -124,7 +133,7 @@ $this->types = Cache::remember('nomenclature_types_lieux_filtered', 86400, funct
             return Nomenclature::where('id_list', 343)
             ->whereIn('id', array_values($this->specialSousTypes))->pluck('libelle_court_fr', 'id')->toArray();
         });
-         $this->loadStructures();
+        $this->loadStructures();
         $this->etats = Cache::remember('nomenclature_etat_lieux', 86400, function () {
             return Nomenclature::whereIn('id_list', [340, 350])->pluck('libelle_court_fr', 'id')->toArray();
         });
@@ -172,7 +181,7 @@ public function validateChambres()
     {
         $this->resetForm();
     }
-
+#[On('reset-pavilion-form')]
     public function resetForm()
     {
         $this->reset([

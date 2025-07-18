@@ -51,6 +51,7 @@
         </div>
 
         {{-- Structure d'appartenance --}}
+        @if((int)$type_structure !== $type_unite)
         <div>
             <label for="structure_appartenance" class="block text-sm font-medium text-gray-700">
                 Structure d'appartenance
@@ -59,12 +60,13 @@
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                 <option value="">Sélectionner</option>
                 @foreach ($structures as $id => $label)
-                    <option value="{{ $id }}">{{ $label }}</option>
+                   <option value="{{ $id }}" {{ $structure_appartenance == $id ? 'selected' : '' }}>{{ $label }}</option>
                 @endforeach
 
             </select>
             @error('structure_appartenance') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
         </div>
+        @endif
                 {{-- Etats --}}
         <div>
             <label for="structure_appartenance" class="block text-sm font-medium text-gray-700">
