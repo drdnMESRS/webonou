@@ -22,8 +22,6 @@ class FindDemandeById
 
         $historique_heb = Onou_cm_demande::fetchAllDemandeByIdividu($demande->id_individu, $this->getSelectFieldsHis());
 
-
-
         $result = (new CheckConformeHeb(collect($demande)->toArray()))->handle();
 
         if (! $demande) {

@@ -145,10 +145,10 @@ class OnouCmDemandeTable extends DataTableComponent
                         }
                     }
                 ),
-                Column::make('Residence', 'residenceaffectation.id')
+            Column::make('Residence', 'residenceaffectation.id')
                 ->format(
                     function ($value, $row, Column $column) {
-                        return $row->residenceaffectation->denomination_fr?? '';
+                        return $row->residenceaffectation->denomination_fr ?? '';
                     }
                 ),
             Column::make('PAVILLON', 'affectationlieu.id')

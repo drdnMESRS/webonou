@@ -9,7 +9,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FindLieuById
 {
-
     public function handle(int $id): LieuDTO
     {
         // Validate the ID if necessary
@@ -21,27 +20,25 @@ class FindLieuById
         $lieu = Onou_cm_lieu::findOrFail($id)->withRelationshipAutoloading();
 
         // If the Lieu is not found, throw an exception
-        if (!$lieu) {
-            throw new NotFoundHttpException('Lieu not found with ID: ' . $id);
+        if (! $lieu) {
+            throw new NotFoundHttpException('Lieu not found with ID: '.$id);
         }
-
 
         // Convert the Lieu model to a DTO
         return new LieuDTO(
             id: $lieu->id,
             libelle_fr: $lieu->libelle_fr,
             libelle_ar: $lieu->libelle_ar,
-            etablissement:$lieu->etablissement,
-            sousTypeLieu:$lieu->sous_type_lieu,
-            typeLieu:$lieu->type_lieu,
-            parent:$lieu->lieu,
-            etat:$lieu->etat,
-            capacite_theorique:$lieu->capacite_theorique,
-            capacite_reelle:$lieu->capacite_reelle,
+            etablissement: $lieu->etablissement,
+            sousTypeLieu: $lieu->sous_type_lieu,
+            typeLieu: $lieu->type_lieu,
+            parent: $lieu->lieu,
+            etat: $lieu->etat,
+            capacite_theorique: $lieu->capacite_theorique,
+            capacite_reelle: $lieu->capacite_reelle,
             information_details: $this->information_details($lieu)
         );
     }
-
 
     private function information_details(?Onou_cm_lieu $lieu): array
     {
@@ -58,14 +55,10 @@ class FindLieuById
         $lieuDetails['Type'] = $lieu->typeLieu->full_name ?? '';
         $lieuDetails['Sous Type'] = $lieu->sousTypeLieu->full_name ?? '';
         $lieuDetails['Parent'] = $lieu->parent->full_name ?? '';
-         $lieuDetails['Etat'] = $lieu->etatLieu->full_name ?? '';
+        $lieuDetails['Etat'] = $lieu->etatLieu->full_name ?? '';
         $lieuDetails['Capcite theorique'] = $lieu->capacite_theorique ?? '';
         $lieuDetails['Capcite reelle'] = $lieu->capacite_reelle ?? '';
 
-
-
         return (empty($lieu)) ? [] : $lieuDetails;
     }
-
-
 }

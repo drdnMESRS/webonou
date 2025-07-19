@@ -16,7 +16,6 @@ class GestionDossierHebController extends Controller
         return view('pages.dossier-hebergement.index');
     }
 
-
     public function create()
     {
         return view('pages.dossier-hebergement.create');

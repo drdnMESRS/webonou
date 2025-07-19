@@ -36,7 +36,7 @@ class ViewServiceProvider extends ServiceProvider
             });
 
             // Update the session with the current academic year if empty
-            if (!session()->has('activeAcademicYear_'.auth()->user()->individu)) {
+            if (! session()->has('activeAcademicYear_'.auth()->user()->individu)) {
                 $currentAcademicYear = $academic_years->where('est_annee_en_cours', true)->first();
                 (new AcademicYearSession)->update_academic_year($currentAcademicYear->id ?? null);
             }
