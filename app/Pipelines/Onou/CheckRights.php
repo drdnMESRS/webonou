@@ -65,15 +65,28 @@ class CheckRights extends Alerts
             $this->flush_alert();
         }
 
-        if (! $demande['retard_scolaire']) {
-            $this->type = 'checkretard_scolaire';
+         if (!$demande['retard_scolaire']) {
+             $this->type = 'checkretard_scolaire';
+             $this->status = 'danger';
+             $this->message = 'Etudiant a un retard scholaire, il n a pas le droit a renouvler';
+             $this->flush_alert();
+
+         } else {
+             $this->status = 'success';
+             $this->type = 'checkretard_scolaire';
+             $this->message = 'Situation pidagogique réguliere';
+             $this->flush_alert();
+         }
+
+        if (!$demande['retard_niveau']) {
+            $this->type = 'checkretard_niveau';
             $this->status = 'danger';
-            $this->message = 'Etudiant a un retard scholaire, il n a pas le droit a renouvler';
+            $this->message = 'Etudiant a un retard scholaire dan un niveau + de 2 redeblement, il n a pas le droit a renouvler';
             $this->flush_alert();
 
         } else {
             $this->status = 'success';
-            $this->type = 'checkretard_scolaire';
+            $this->type = 'checkretard_niveau';
             $this->message = 'Situation pidagogique réguliere';
             $this->flush_alert();
         }

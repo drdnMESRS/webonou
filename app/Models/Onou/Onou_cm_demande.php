@@ -161,6 +161,7 @@ class Onou_cm_demande extends Model
                 ->leftJoin('onou.onou_cm_lieu as lieu', 'lieu.id', '=', 'affectation.lieu')
                 ->where([
                     ['individu.id', '=', $id],
+                    ['demande.rang', '=', 1],
                 ])
                 ->get();
         });
