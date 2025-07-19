@@ -22,7 +22,7 @@ class DouLieuScope implements Scope
         // find the active role and its etablissement
         if (app(RoleManagement::class)->get_active_type_etablissement() == 'DO') {
             $children = Cache::remember(
-                'onou_cm_etablissement_children_' . $id,
+                'onou_cm_etablissement_children_'.$id,
                 60 * 60 * 24, // Cache for 24 hours
                 function () use ($id) {
                     return Onou_cm_etablissement::query()
