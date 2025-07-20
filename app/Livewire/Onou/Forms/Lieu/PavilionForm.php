@@ -126,6 +126,7 @@ class PavilionForm extends Component
         $this->validatesurface();
     }
 
+
     public function validatestricture()
     {
         $typeStructure = (int) $this->type_structure;
@@ -266,7 +267,7 @@ class PavilionForm extends Component
                 return;
             }
         }
-            if ((int) $validated['type_structure'] === $this->type_chambre) {
+            if ((int) $validated['type_structure'] === $this->type_chambre && $validated['surface']==null ) {
             $this->validatesurface();
             if ($this->getErrorBag()->isNotEmpty()) {
                 return;
