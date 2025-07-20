@@ -2,6 +2,7 @@
 
 namespace App\Actions\Pages\Dossier_demande_Hebergement;
 
+use App\Models\Onou\Onou_cm_affectation_individu;
 use App\Models\Onou\Onou_cm_demande;
 use App\Models\Scopes\Dou\DouScope;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -25,6 +26,7 @@ class UpdateDemandById
             ->where('id', $id)
             ->withoutGlobalScope(DouScope::class)
             ->first();
+
         // dd($id, $data, $demand);
         if (! $demand) {
             throw new NotFoundHttpException("Demand with ID $id not found.");

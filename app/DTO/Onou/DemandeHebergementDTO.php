@@ -13,6 +13,10 @@ class DemandeHebergementDTO extends BaseDTO
         public ?array $dossierInscriptionAdministrative = [],
         public ?array $demandeHebergement = [],
         public ?array $historiqueHebergement = [],
-        public ?array $adressIndividue = []
+        public ?array $historiqueInscription = [],
+        public ?array $adressIndividue = [],
+        public ?int $id_dia=0,
+        public ?int $id_individu=0,
+
     ) {}
 }
