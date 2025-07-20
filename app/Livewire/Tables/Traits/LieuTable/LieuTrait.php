@@ -2,39 +2,38 @@
 
 namespace App\Livewire\Tables\Traits\LieuTable;
 
-
 use App\Models\Nc\Nomenclature;
 use App\Models\Onou\Onou_cm_etablissement;
-use App\Models\Onou\Onou_cm_lieu;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
-Trait LieuTrait
+trait LieuTrait
 {
-public array $specialTypes = [
-    'pavilion' => 699076,
-    'chambre'  => 699077,
-    'unite'    => 699305,
-];
+    public array $specialTypes = [
+        'pavilion' => 699076,
+        'chambre' => 699077,
+        'unite' => 699305,
+    ];
+
     public function filters(): array
     {
         return [
             'etablissement' => SelectFilter::make('Residence')
-                    ->options(
-                        Onou_cm_etablissement::query()
-                            ->get()
-                            ->mapWithKeys(
-                                function ($item) {
-                                    return [
-                                        $item->id => $item->full_name
-                                    ];
-                                }
-                            )->toArray()
-                    )
-                    ->filter(function (Builder $builder, $value) {
-                        return $builder->where('etablissement', $value);
-                    }),
+                ->options(
+                    Onou_cm_etablissement::query()
+                        ->get()
+                        ->mapWithKeys(
+                            function ($item) {
+                                return [
+                                    $item->id => $item->full_name,
+                                ];
+                            }
+                        )->toArray()
+                )
+                ->filter(function (Builder $builder, $value) {
+                    return $builder->where('etablissement', $value);
+                }),
             'type' => SelectFilter::make('Type')
                 ->options(
                     Cache::remember(
@@ -48,7 +47,7 @@ public array $specialTypes = [
                                 ->mapWithKeys(
                                     function ($item) {
                                         return [
-                                            $item->id => $item->full_name
+                                            $item->id => $item->full_name,
                                         ];
                                     }
                                 )->toArray();
@@ -70,7 +69,7 @@ public array $specialTypes = [
                                 ->mapWithKeys(
                                     function ($item) {
                                         return [
-                                            $item->id => $item->full_name
+                                            $item->id => $item->full_name,
                                         ];
                                     }
                                 )->toArray();
@@ -86,12 +85,12 @@ public array $specialTypes = [
                         60 * 60 * 24, // Cache for 24 hours
                         function () {
                             return Nomenclature::query()
-                                ->byListId(340,350)
+                                ->byListId(340, 350)
                                 ->get()
                                 ->mapWithKeys(
                                     function ($item) {
                                         return [
-                                            $item->id => $item->full_name
+                                            $item->id => $item->full_name,
                                         ];
                                     }
                                 )->toArray();
@@ -103,6 +102,4 @@ public array $specialTypes = [
 
         ];
     }
-
-
 }

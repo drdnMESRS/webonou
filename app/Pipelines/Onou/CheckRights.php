@@ -3,7 +3,6 @@
 namespace App\Pipelines\Onou;
 
 use App\CommonClasses\Onou\Alerts;
-use Carbon\Carbon;
 
 class CheckRights extends Alerts
 {
@@ -14,7 +13,7 @@ class CheckRights extends Alerts
     public function handle(array $demande, \Closure $next)
     {
 
-        if (!$demande['reinscription']) {
+        if (! $demande['reinscription']) {
             $this->status = 'danger';
             $this->type = 'checkreinscription';
             $this->message = 'Aucune reinscription est effectué pour cette année universitaire';
@@ -27,7 +26,7 @@ class CheckRights extends Alerts
             $this->flush_alert();
         }
 
-        if (!$demande['abondan']) {
+        if (! $demande['abondan']) {
             $this->status = 'danger';
             $this->type = 'checkreabondan';
             $this->message = 'Etudiant est declaré abondant veuillez contacté l université';
@@ -40,7 +39,7 @@ class CheckRights extends Alerts
             $this->flush_alert();
         }
 
-        if (!$demande['frais_hebergement']) {
+        if (! $demande['frais_hebergement']) {
             $this->status = 'danger';
             $this->type = 'checkfrais_hebergement';
             $this->message = 'Etudiant à un demande non payé l année passe il n a pas le droit a renouvler';
@@ -53,7 +52,7 @@ class CheckRights extends Alerts
             $this->flush_alert();
         }
 
-        if (!$demande['deuxieme_diplome']) {
+        if (! $demande['deuxieme_diplome']) {
             $this->status = 'danger';
             $this->type = 'checkdeuxieme_diplome';
             $this->message = 'Etudiant a déja un deuxieme diplome, il n a pas le droit a renouvler';
