@@ -43,7 +43,7 @@ class LieuDetails extends Component
 
    if (($lieu->children_count !== null && $lieu->children_count > 0) ||
     ($lieu->Affectation_count !== null && $lieu->Affectation_count > 0)) {
-     session()->flash('error', 'Impossible de supprimer ce lieu car il a des sous Lieus ou des affectations.');
+     session()->flash('error', 'Impossible de supprimer ce lieu car il a des sous Lieux ou des affectations.');
      $this->redirectRoute('onouLieu.show', navigate:true);
         return;
     }else{
@@ -51,8 +51,8 @@ class LieuDetails extends Component
     $lieu->delete();
     session()->flash('success', 'Lieu est supprimé avec succès.');
        } catch (\Exception $e) {
-    session()->flash('error', 'Impossible de supprimer ce lieu car il a des sous Lieus ou des affectations.');
-   // session()->flash('error', $e->getMessage());
+    session()->flash('error', 'Impossible de supprimer ce lieu car il a des sous Lieux ou des affectations.');
+   
        }
 
 $this->redirectRoute('onouLieu.show', navigate: true);
