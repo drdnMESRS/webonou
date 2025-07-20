@@ -101,6 +101,13 @@ class LieuTable extends DataTableComponent
                         return $row->typeLieu->id == $this->specialTypes['chambre'] ? '' : $row->children_count;
                     })
                 ->sortable(),
+
+            Column::make('Superficie (m2)', 'surface_globale')
+                ->format(
+                    function ($value, $row, Column $column) {
+                        return $row->surface_globale;
+                    }
+                )->sortable(),
             Column::make('Capcite theorique', 'capacite_theorique')
                 ->format(
                     function ($value, $row, Column $column) {

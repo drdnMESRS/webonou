@@ -82,6 +82,15 @@
             </select>
             @error('etat') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
         </div>
+        {{--Surface--}}
+        @if((int)$type_structure == $type_chambre)
+         <div>
+                <label class="block text-sm font-medium text-gray-700">Superficie (m2)</label>
+                <input type="number" min=0 step="0.01" wire:model.live="surface"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+            @error('surface') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                </div>
+        @endif
         {{-- Libellé FR / AR --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -158,9 +167,17 @@
         <span class="text-red-600 text-xs">{{ $message }}</span>
     @enderror
 </div>
-
+{{-- Type --}}
+<div class="w-1/4">
+    <label class="block text-sm font-medium text-gray-700">Superficie (m2)</label>
+    <input type="text" wire:model.live="chambres.{{ $index }}.surface"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+    @error("chambres.$index.surface")
+        <span class="text-red-600 text-xs">{{ $message }}</span>
+    @enderror
+</div>
                 {{-- Button --}}
-                <div class="w-1/4 flex {{ $errors->has("chambres.$index.from") || $errors->has("chambres.$index.to") || $errors->has("chambres.$index.type") ? 'items-center' : 'items-end' }} pb-1">
+                <div class="w-1/4 flex {{ $errors->has("chambres.$index.from") || $errors->has("chambres.$index.to") || $errors->has("chambres.$index.type") || $errors->has("chambres.$index.surface") ? 'items-center' : 'items-end' }} pb-1">
                     @if($loop->last)
                              <button type="button" wire:click="addChambre"
         @if (!$this->canAddChambre || $errors->has('chambres.*')) disabled @endif
