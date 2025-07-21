@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Onou\Forms\Demandehebergement;
+namespace App\Livewire\Onou\Forms\Demandehebergements;
 
 use App\Actions\Pages\Dossier_demande_Hebergement\FindStudentByYearMatricule;
 use App\Strategies\Onou\ProcessCmDemande as ProcessCmDemandeInterface;
