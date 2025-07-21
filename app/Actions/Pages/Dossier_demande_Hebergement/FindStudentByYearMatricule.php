@@ -281,7 +281,7 @@ class FindStudentByYearMatricule
             DB::raw('concat(anneeacd.premiere_annee,\'/\',anneeacd.deuxieme_annee) as année_académique '),
             'etablissement.ll_etablissement_arabe as etablissement_arabe ',
             'etablissement.ll_etablissement_latin as etablissement ',
-             'structure.ll_structure_arabe  as structure_arabe ',
+            'structure.ll_structure_arabe  as structure_arabe ',
             'structure.ll_structure_latin as structure',
             // 'CONCAT (etablissement.identifiant ,etablissement.ll_etablissement_arabe) as etablissement_arabe ',
             // 'CONCAT (etablissement.identifiant,etablissement.ll_etablissement_latin) as etablissement ',
@@ -299,6 +299,8 @@ class FindStudentByYearMatricule
             // // 'commune.libelle_long_f as commune',
             // 'cycle.libelle_long_ar as cycle_arabe',
             // 'cycle.libelle_long_lt as cycle',
+            DB::raw('concat(decision.libelle_long_ar,\'(\',bilan.moyenne,\')\') as résultat_arabe '),
+            DB::raw('concat(decision.libelle_long_f,\'(\',bilan.moyenne,\')\') as résultat '),
 
             'inscription.est_transfert as est_transfert ',
             'inscription.frais_inscription_paye as frais_inscription_paye',

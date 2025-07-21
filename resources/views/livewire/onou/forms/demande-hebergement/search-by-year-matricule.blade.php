@@ -1,3 +1,4 @@
+<div>
 <div class="flex flex-col space-y-2 items-end">
     <div class="flex space-x-2">
         <div class="flex flex-col">
@@ -33,8 +34,8 @@
         </button>
 
     </div>
-
-    <div class="text-center">
+</div>
+<div class="flex justify-center">
         <livewire:common.loader />
     </div>
     <div x-data="{ showDtudentDetails: @entangle('showDtudentDetails') }" class=" mx-auto py-4">
@@ -98,7 +99,7 @@
                     <x-common.modal id="accept-modal" title="Accepter la demande " size="auto">
                         @include($accept_view, [
                             'data' => $demande,
-                            'action' => $demande?($demande['id'] ? 'accept' : 'create'):''
+                            'action' => $demande ? ($demande['id'] ? 'accept' : 'create') : '',
                         ])
                     </x-common.modal>
 
