@@ -3,7 +3,6 @@
 namespace App\Actions\Pages\Dossier_demande_Hebergement;
 
 use App\Models\Onou\Onou_cm_demande;
-use App\Models\Scopes\Dou\DouScope;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CreateDemand
@@ -22,9 +21,11 @@ class CreateDemand
         // dd($id, $data, $demand);
         if (! $demand) {
             throw new NotFoundHttpException("Demand cant\'t create");
+
             return null;
         }
-      cache()->delete('History_demande_'.$demand->individu); // Clear cache for this demand
+        cache()->delete('History_demande_'.$demand->individu); // Clear cache for this demand
+
         return $demand;
     }
 }

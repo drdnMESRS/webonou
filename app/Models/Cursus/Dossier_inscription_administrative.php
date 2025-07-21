@@ -7,15 +7,13 @@ use App\Models\Lmd\Filiere_lmd;
 use App\Models\Lmd\Niveau;
 use App\Models\Lmd\Ouverture_offre_formation;
 use App\Models\Ppm\Ref_etablissement;
-use App\Models\Scopes\Dou\AcademicyearScope;
 use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Query\JoinClause;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class Dossier_inscription_administrative extends Authenticatable
 {
@@ -52,6 +50,7 @@ class Dossier_inscription_administrative extends Authenticatable
     {
         return $this->belongsTo(Filiere_lmd::class, 'id_filiere', 'id');
     }
+
     public static function fetchDemandeByYearMatricule(string $anne_bac, string $matricule, ?array $getSelectFields = ['*'])
     {
         // return cache()->remember('demande_' . $anne_bac . '_' . $matricule, 60 * 60 * 12, function () use ($getSelectFields, $anne_bac, $matricule) {
@@ -62,11 +61,11 @@ class Dossier_inscription_administrative extends Authenticatable
                 $join->on('individu.id', '=', 'etudiant.id_individu')
                     ->where('individu.active', '=', 1);
             })
-            ->leftJoin('onou.onou_cm_demande as demandeact',  function ($join) {
+            ->leftJoin('onou.onou_cm_demande as demandeact', function ($join) {
                 $join->on('demandeact.individu', '=', 'individu.id')
                     ->where('demandeact.annee_academique', '=', (new \App\Actions\Sessions\AcademicYearSession)->get_academic_year());
             })
-            ->leftJoin('cursus.dossier_inscription_administrative as inscription',  function ($join) {
+            ->leftJoin('cursus.dossier_inscription_administrative as inscription', function ($join) {
                 $join->on('inscription.id_dossier_etudiant', '=', 'etudiant.id')
                     ->where('inscription.id_annee_academique', '=', (new \App\Actions\Sessions\AcademicYearSession)->get_academic_year());
             })
@@ -108,9 +107,9 @@ class Dossier_inscription_administrative extends Authenticatable
             ])
             ->firstOrFail();
 
-
         //  });
     }
+
     public static function fetchAllInscrptionByIdividu(int $id, ?array $getSelectFields = ['*'])
     {
         // return cache()->remember('demande_' . $anne_bac . '_' . $matricule, 60 * 60 * 12, function () use ($getSelectFields, $anne_bac, $matricule) {
@@ -141,7 +140,7 @@ class Dossier_inscription_administrative extends Authenticatable
             ->leftJoin('lmd.offre_formation as offre', 'offre.id', '=', 'ouverture.id_offre_formation')
             ->leftJoin('lmd.cycle as cycle', 'cycle.id', '=', 'niveau.id_cycle')
             ->leftJoin('ppm.ref_structure as structure', 'structure.id', '=', 'ouverture.id_structure')
-            //->leftJoin('nc.nomenclature AS nationalite', 'nationalite.id', '=', 'individu.nationalite')
+            // ->leftJoin('nc.nomenclature AS nationalite', 'nationalite.id', '=', 'individu.nationalite')
             // ->leftJoin('ppm.ref_coordonnee as coordonnee', function (JoinClause $join) {
             //     $join->on('coordonnee.individu', '=', 'individu.id')
             //         ->where([
@@ -161,11 +160,10 @@ class Dossier_inscription_administrative extends Authenticatable
             // ->leftJoin('onou.onou_droit_renouvellement_heb as droit_renouvellement', 'droit_renouvellement.id_individu', '=', 'etudiant.id_individu')
 
             ->where([
-                ['etudiant.id_individu', '=', $id]
-                //['individu.active', '=', 1],
+                ['etudiant.id_individu', '=', $id],
+                // ['individu.active', '=', 1],
             ])
            ->orderby('anneeacd.id')->get();
-
 
         //  });
     }

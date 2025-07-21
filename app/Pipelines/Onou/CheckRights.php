@@ -61,7 +61,7 @@ class CheckRights extends Alerts
             $this->flush_alert();
         }
 
-        if (!$demande['retard_scolaire']) {
+        if (! $demande['retard_scolaire']) {
             $this->type = 'checkretard_scolaire';
             $this->status = 'danger';
             $this->message = 'Etudiant a un retard scholaire, il n a pas le droit a renouvler';
@@ -72,9 +72,8 @@ class CheckRights extends Alerts
             $this->message = 'Situation pidagogique réguliere';
             $this->flush_alert();
         }
-      
-        
-        if (!$demande['retard_niveau']) {
+
+        if (! $demande['retard_niveau']) {
             $this->type = 'checkretard_niveau';
             $this->status = 'danger';
             $this->message = 'Etudiant a un retard scholaire dan un niveau + de 2 redeblement, il n a pas le droit a renouvler';
@@ -87,7 +86,6 @@ class CheckRights extends Alerts
             $this->flush_alert();
         }
 
-
         $existing = session('checks', []);
         $existing[$this->type] = [
             'status' => $this->status,
@@ -95,8 +93,6 @@ class CheckRights extends Alerts
             'title' => $this->title,
         ];
         session(['checks' => $existing]);
-
-
 
         $next($demande);
     }

@@ -19,13 +19,14 @@ class FindStudentByYearMatricule
         $student = Dossier_inscription_administrative::fetchDemandeByYearMatricule($annee_bac, $matricule, $this->getSelectFields());
 
         if (is_null($student)) {
-            throw new NotFoundHttpException('Student not found with Year and Matricule: ' . $annee_bac . ' ' . $matricule);
+            throw new NotFoundHttpException('Student not found with Year and Matricule: '.$annee_bac.' '.$matricule);
         }
         // Fetching the historical data for the individual
 
         $historique_heb = Onou_cm_demande::fetchAllDemandeByIdividu($student->id_individu, $this->getSelectFieldsHis());
         $historique_dia = Dossier_inscription_administrative::fetchAllInscrptionByIdividu($student->id_individu, $this->getSelectFieldsHisInc());
         $result = (new CheckConformeHeb(collect($student)->toArray()))->handle();
+
         return $this->mapToDTO($student, $historique_heb, $historique_dia)->toArray();
     }
 
@@ -147,7 +148,6 @@ class FindStudentByYearMatricule
     private function mapToDTO($demande, $historique, $historique_dia): DemandeHebergementDTO
     {
 
-
         return (new DemandeHebergementDTO)->FromArray([
             'id' => $demande->id_demandeact,
             'actual_page' => $this->getPageFromUrl(),
@@ -196,8 +196,8 @@ class FindStudentByYearMatricule
             'numero_inscription' => $demande->numero_inscription,
             'frais_inscription_paye' => $demande->frais_inscription_paye,
             // 'code_etablissement' => $demande->etab_identifiant,
-            'etablissement_arabe' => $demande->etab_identifiant . ' - ' . $demande->ll_etablissement_arabe,
-            'etablissement' => $demande->etab_identifiant . ' - ' . $demande->ll_etablissement_latin,
+            'etablissement_arabe' => $demande->etab_identifiant.' - '.$demande->ll_etablissement_arabe,
+            'etablissement' => $demande->etab_identifiant.' - '.$demande->ll_etablissement_latin,
             // 'offre_code' => $demande->code,
             'offre_de_formation' => $demande->libelle_long_fr,
             'offre_de_formation_arabe' => $demande->of_libelle_long_ar,
@@ -227,7 +227,7 @@ class FindStudentByYearMatricule
     {
         $name = '';
         foreach ($columns as $column) {
-            $name .= ' ' . $demande->$column;
+            $name .= ' '.$demande->$column;
         }
 
         return $name;
@@ -272,6 +272,7 @@ class FindStudentByYearMatricule
 
         ];
     }
+
     private function getSelectFieldsHisInc(): array
     {
         return [
@@ -289,7 +290,6 @@ class FindStudentByYearMatricule
             'niveau.libelle_long_lt as niveau',
             'offre.libelle_long_ar as offre_de_formation_arabe',
             'offre.libelle_long_fr as  offre_de_formation',
-
 
             // 'domaine.ll_domaine_arabe as domaine_arabe',
             // 'domaine.ll_domaine as domaine',
