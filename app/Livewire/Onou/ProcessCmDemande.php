@@ -87,11 +87,11 @@ class ProcessCmDemande extends Component
         // prepare the new data to update
         $values = [
             $this->processCmDemande->field($this->action) => $this->field_update,
-
         ];
         if($this->action==='create'){
             $values['id_dia']=$this->data['id_dia'];
             $values['id_individu']=$this->data['id_individu'];
+
         }
         try {
             // call the process method to handle the update

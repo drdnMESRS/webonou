@@ -41,7 +41,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
             'dou' => app(RoleManagement::class)->get_active_role_etablissement(),
             'approuvee_heb_dou' => ($action === 'accept') || ($action === 'create'),
             'date_approuve_heb_dou' => now(),
-           // 'affectation'=>null,
+            'affectation'=>null,
         ]);
 
         if ($action === 'reject') {
@@ -61,7 +61,6 @@ class DoProcessingCmDemande implements ProcessCmDemande
 
         $demand = [];
         if ($action === 'create') {
-
             $data = array_merge($data, [
                 'annee_academique' => (new \App\Actions\Sessions\AcademicYearSession)->get_academic_year(),
                 'id_dia' => $data['id_dia'],
@@ -73,7 +72,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
 
             $demand = (new UpdateDemandById)->handle($id, $data);
               if(isset($demand['affectation']) ){
-               // Onou_cm_affectation_individu::delete($demand['affectation']);
+
             }
         }
 
@@ -282,6 +281,10 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 'data.id_dia' => [
                     'required',
                     'integer',
+                ],
+                 'data.affectation' => [
+                    'integer',
+                    'nullable',
                 ],
 
             ];
