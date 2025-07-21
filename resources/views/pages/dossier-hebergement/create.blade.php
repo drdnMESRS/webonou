@@ -9,10 +9,7 @@
         </p>
     </div>
 
-
-
     <div class="border-b border-gray-300 dark:border-gray-600 my-4"></div>
-
 
     <!-- if ssession contains 'success' message, display it -->
 
@@ -30,8 +27,6 @@
                         class="mt-8 shadow-lg"
                         id="my-custom-alert" />
     @endif
-
-
-
-
+ <livewire:onou.forms.search-by-year-matricule />
 </x-layouts.app>
+

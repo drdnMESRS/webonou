@@ -24,10 +24,10 @@ class CommonController extends Controller
     {
 
         $academicYearSession->update_academic_year($request->academic_year);
-
+        $redirectTo = $request->input('redirect_to');
         Session::regenerate();
 
-        return redirect('/dashboard');
+        return redirect($redirectTo);
     }
 
     public function change_active_role(Request $request)

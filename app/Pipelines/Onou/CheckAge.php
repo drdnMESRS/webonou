@@ -19,12 +19,20 @@ class CheckAge extends Alerts
         if ($age > 28) {
             $this->status = 'danger';
             $this->message = 'Age depassé '.$birthday->diffForHumans(Carbon::now(), Carbon::DIFF_ABSOLUTE);
-            $this->flush_alert();
 
         } else {
             $this->message = 'Age conforme '.$birthday->diffForHumans(Carbon::now(), Carbon::DIFF_ABSOLUTE);
-            $this->flush_alert();
+
         }
+
+        $existing = session('checks', []);
+        $existing[$this->type] = [
+            'status' => $this->status,
+            'message' => $this->message,
+            'title' => $this->title,
+        ];
+        session(['checks' => $existing]);
+        $this->flush_alert();
         $next($demande);
     }
 }

@@ -25,6 +25,7 @@ class UpdateDemandById
             ->where('id', $id)
             ->withoutGlobalScope(DouScope::class)
             ->first();
+
         // dd($id, $data, $demand);
         if (! $demand) {
             throw new NotFoundHttpException("Demand with ID $id not found.");
