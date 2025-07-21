@@ -45,10 +45,13 @@ class Onou_cm_demande extends Model
         'approuvee_heb_dou',
         'date_approuve_heb_dou',
         'affectation',
+        'individu',
+        'id_dia',
         'observ_heb_dou',
         'approuvee_heb_resid',
         'date_approuve_heb_resid',
         'observ_heb_resid',
+        'annee_academique',
     ];
 
     /**

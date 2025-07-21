@@ -4,6 +4,7 @@
 
     <form action="{{ route('change_academic_year') }}" method="POST">
         @csrf
+          <input type="hidden" name="redirect_to" value="{{ url()->current() }}">
         <select name="academic_year"
                 class="flex items-center justify-center p-2 w-auto rounded-lg bg-indigo-300"
                 onchange="this.form.submit()">

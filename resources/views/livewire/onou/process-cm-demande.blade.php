@@ -1,9 +1,8 @@
 
 <div>
-
     <form wire:submit.prevent="update">
         @csrf
-        @if($action === 'accept')
+        @if($action === 'accept'||$action === 'create' )
             @include($acceptformView, ['formFields' => $formFields])
         @elseif($action === 'reject')
             @include($rejectformView, ['formFields' => $formFields])

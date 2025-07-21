@@ -39,6 +39,7 @@ class DemandeDetails extends Component
         $this->reset(['demande', 'demandeId']);
         $this->demande = (new FindDemandeById)->handle($id);
         $this->demandeId = $id;
+        $this->demande['rederctpage']='diaHeb.show';
         $this->showDemandeDetails = true;
     }
 
