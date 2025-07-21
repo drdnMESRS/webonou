@@ -9,7 +9,7 @@ config:
 hosts:
   production:
     remote_user: root
-    hostname: '192.168.120.130'
+    hostname: '10.10.10.130'
     deploy_path: '/var/www/webonou'
     composer_options: '--verbose --prefer-dist --no-progress --no-interaction --optimize-autoloader'
     shared_files:
@@ -23,6 +23,8 @@ hosts:
 tasks:
   build:
     - run: uptime
+    - run: echo "Building assets..."
+    - run: npm run build --if-present
   deploy:
     - deploy:prepare
     - deploy:vendors
