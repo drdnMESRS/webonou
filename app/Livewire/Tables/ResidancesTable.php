@@ -38,7 +38,7 @@ class ResidancesTable extends DataTableComponent
             Column::make('Code', 'etablissement.identifiant')
                 ->sortable()
                 ->searchable(),
-            Column::make('ll_structure_latin', 'id')
+            Column::make('nom de residence', 'id')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->full_name;
@@ -51,8 +51,8 @@ class ResidancesTable extends DataTableComponent
                     })
                 ->sortable()
                 ->searchable(),
-            Column::make('capacite_theorique', 'capacite_theorique'),
-            Column::make('capacite_reelle', 'capacite_relle'),
+            Column::make('capacite theorique', 'capacite_theorique'),
+            Column::make('capacite reelle', 'capacite_relle'),
         ];
     }
 }

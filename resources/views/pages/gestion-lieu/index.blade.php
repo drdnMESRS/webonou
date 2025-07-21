@@ -10,7 +10,7 @@
             </p>
         </div>
 
-        <div>
+        <div class="flex justify-between">
             <x-common.modal id="lieu-modal" title="Lieu Details" size="auto" padding="5">
                 <livewire:onou.forms.lieu.pavilion-form />
             </x-common.modal>
@@ -20,18 +20,16 @@
     data-modal-target="lieu-modal"
     data-modal-toggle="lieu-modal"
     onclick="Livewire.dispatch('reset-pavilion-form')"
-    class="block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none
+    class="mx-5 block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none
            focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center
            dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
     type="button">
     <i class="fa fa-plus"></i> Ajouter
     </button>
+ <livewire:actions.export-data table="lieux"/>
         </div>
+ </div>
 
-
-    </div>
-
-    <!-- if ssession contains 'success' message, display it -->
 
 
  @if (session()->has('success'))
