@@ -102,7 +102,7 @@ private function getEtudiantsExportInfo(): array
             'Commune', 'Etablissement', 'Domaine', 'Filière', 'Niveau',
             'Frais Inscription Payé', 'Paiement Hébergement',
         ],
-        'filename' => 'etudiants.xlsx',
+        'filename' => 'Etudiants.xlsx',
         'map' => fn($item) => [
             'NIN' => $item->individu_detais->identifiant ?? '',
             'Nom' => $item->individu_detais->full_name ?? '',
@@ -128,7 +128,7 @@ private function getEtudiantsExportInfo(): array
         return [
             'query' => $query,
             'columns' => ['Code', 'nom de residence','Type','capacite theorique','capacite reelle'],
-            'filename' => 'residences.xlsx',
+            'filename' => 'Residences.xlsx',
             'map' => fn($item) => [
                 'id' => $item->etablissement->identifiant,
                 'nom de residence' => $item->denomination_fr,
@@ -146,7 +146,7 @@ private function getEtudiantsExportInfo(): array
         return [
             'query' => $query,
             'columns' => ['nom de residence','Capacite','Total','Pending','Accepted','Rejected','%'],
-            'filename' => 'statistiques.xlsx',
+            'filename' => 'Statistiques.xlsx',
             'map' => fn($item) => [
                 'nom de residence' => $item->etablissement->denomination_fr,
                 'Capacite' => $item->capacite ? $item->capacite:0,
