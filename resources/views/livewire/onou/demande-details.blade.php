@@ -47,7 +47,7 @@
 
             <div class="flex justify-between items-center mt-4">
                <div>
-                   <x-common.modal id="accept-modal" title="Accepter la demande " size="auto">
+                   <x-common.modal id="accept-modal" title="Accepter la demande" size="auto">
                        @include($accept_view, ['data'=>$demande, 'action'=>'accept'])
                    </x-common.modal>
 
