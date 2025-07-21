@@ -21,7 +21,7 @@ class SearchByYearMatricule extends Component
 
     public $matricule_bac;
 
-    public $demande = [];
+    public $demande = []; 
     #[Locked]
     public ?string $accept_view = null;
     #[Locked]
@@ -59,6 +59,6 @@ class SearchByYearMatricule extends Component
 
     public function render()
     {
-        return view('livewire.onou.forms.لهف -form.search-by-year-matricule');
+        return view('livewire.onou.forms.demandehebergement-form.search-by-year-matricule');
     }
 }
