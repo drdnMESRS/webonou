@@ -21,7 +21,7 @@ class SearchByYearMatricule extends Component
 
     public $matricule_bac;
 
-    public $demande = [];
+    public $demande = []; 
     #[Locked]
     public ?string $accept_view = null;
     #[Locked]
