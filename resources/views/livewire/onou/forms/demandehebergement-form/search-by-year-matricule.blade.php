@@ -16,10 +16,10 @@
                 <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
             @enderror
         </div>
-        <button wire:click="searchByYearMatricule"
+        <button wire:click="searchByYearMatricule" wire:target="searchByYearMatricule"
             class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm">
 
-            <div wire:loading>
+            <div wire:loading wire:target="searchByYearMatricule">
                 <svg aria-hidden="true" role="status" class="inline w-4 h-4 me-3 text-white animate-spin"
                     viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path

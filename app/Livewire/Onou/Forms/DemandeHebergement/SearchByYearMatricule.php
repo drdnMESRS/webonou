@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Onou\Forms\DemandeHebergement;
+namespace App\Livewire\Onou\Forms\Demandehebergement;
 
 use App\Strategies\Onou\ProcessCmDemande as ProcessCmDemandeInterface;
 use App\Actions\Pages\Dossier_demande_Hebergement\FindStudentByYearMatricule;
@@ -59,6 +59,6 @@ class SearchByYearMatricule extends Component
 
     public function render()
     {
-        return view('livewire.onou.forms.demande-hebergement.search-by-year-matricule');
+        return view('livewire.onou.forms.demandehebergement-form.search-by-year-matricule');
     }
 }
