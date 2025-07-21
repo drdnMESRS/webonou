@@ -28,7 +28,8 @@ class ExportData extends Component
             $info = $this->getModelInfo($this->table);
 
              $this->rows = $info['query']
-                 ->limit(100)->get()
+                // ->limit(100)
+                 ->get()
                  ->map($info['map'])
                  ->toArray();
             $this->headings = $info['columns'];
