@@ -28,7 +28,7 @@ class ExportData extends Component
             $info = $this->getModelInfo($this->table);
 
              $this->rows = $info['query']
-                // ->limit(100)
+                // ->limit(10)
                  ->get()
                  ->map($info['map'])
                  ->toArray();
@@ -81,21 +81,45 @@ class ExportData extends Component
         ];
     }
 
-    private function getEtudiantsExportInfo(): array
-    {
-        $query = Onou_cm_demande::query();
+private function getEtudiantsExportInfo(): array
+{
+    $query = Onou_cm_demande::query()
+        ->with([
+            'individu_detais',
+            'residenceaffectation',
+            'affectationlieu.lieuaffectation.parent',
+            'nc_commune_residence',
+            'dossier_inscription_administrative.etablissement',
+            'dossier_inscription_administrative.domaine',
+            'dossier_inscription_administrative.filiere',
+            'dossier_inscription_administrative.niveau',
+        ]);
 
-        return [
-            'query' => $query,
-            'columns' => ['id', 'nom', 'prenom'],
-            'filename' => 'etudiants.xlsx',
-            'map' => fn($item) => [
-                'id' => $item->id,
-                'nom' => $item->nom,
-                'prenom' => $item->prenom,
-            ],
-        ];
-    }
+    return [
+        'query' => $query,
+        'columns' => [
+            'NIN', 'Nom', 'Sexe', 'Résidence', 'Pavillon', 'Chambre',
+            'Commune', 'Etablissement', 'Domaine', 'Filière', 'Niveau',
+            'Frais Inscription Payé', 'Paiement Hébergement',
+        ],
+        'filename' => 'etudiants.xlsx',
+        'map' => fn($item) => [
+            'NIN' => $item->individu_detais->identifiant ?? '',
+            'Nom' => $item->individu_detais->full_name ?? '',
+            'Sexe' => $item->individu_detais->civilite === 1 ? 'Garçon' : 'Fille',
+            'Résidence' => $item->residenceaffectation->denomination_fr ?? '',
+            'Pavillon' => $item->affectationlieu->lieuaffectation->parent->libelle_fr ?? '',
+            'Chambre' => $item->affectationlieu->lieuaffectation->libelle_fr ?? '',
+            'Commune' => $item->nc_commune_residence->full_name ?? '',
+            'Etablissement' => $item->dossier_inscription_administrative->etablissement->full_name ?? '',
+            'Domaine' => $item->dossier_inscription_administrative->domaine->full_name ?? '',
+            'Filière' => $item->dossier_inscription_administrative->filiere->full_name ?? '',
+            'Niveau' => $item->dossier_inscription_administrative->niveau->full_name ?? '',
+            'Frais Inscription Payé' => $item->dossier_inscription_administrative->frais_inscription_paye ? 'Oui' : 'Non',
+            'Paiement Hébergement' => $item->hebergement_paye ? 'Oui' : 'Non',
+        ],
+    ];
+}
 
     private function getResidencesExportInfo(): array
     {
