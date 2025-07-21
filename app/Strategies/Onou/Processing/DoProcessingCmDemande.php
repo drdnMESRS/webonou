@@ -6,11 +6,9 @@ use App\Actions\Pages\Dossier_demande_Hebergement\CreateDemand;
 use App\Actions\Pages\Dossier_demande_Hebergement\UpdateDemandById;
 use App\Actions\Sessions\RoleManagement;
 use App\Models\Nc\Nomenclature;
-use App\Models\Onou\Onou_cm_affectation_individu;
 use App\Models\Onou\Onou_cm_demande;
 use App\Models\Onou\Onou_cm_etablissement;
 use App\Models\Scopes\Dou\DouScope;
-use App\Pipelines\Onou\CheckAge;
 use App\Strategies\Onou\ProcessCmDemande;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
@@ -28,7 +26,6 @@ class DoProcessingCmDemande implements ProcessCmDemande
     public function process_demande(?int $id, ?array $data, ?string $action = 'accept'): bool
     {
 
-
         if (is_null($data) || ! is_array($data) || ! in_array($action, ['accept', 'reject', 'create'])) {
             throw new \Exception('Invalid parameters provided for processing the demand.');
         }
@@ -41,7 +38,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
             'dou' => app(RoleManagement::class)->get_active_role_etablissement(),
             'approuvee_heb_dou' => ($action === 'accept') || ($action === 'create'),
             'date_approuve_heb_dou' => now(),
-            'affectation'=>null,
+            'affectation' => null,
         ]);
 
         if ($action === 'reject') {
@@ -67,11 +64,12 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 'individu' => $data['id_individu'],
             ]);
             $demand = (new CreateDemand)->handle($data);
+
             return true;
         } else {
 
             $demand = (new UpdateDemandById)->handle($id, $data);
-              if(isset($demand['affectation']) ){
+            if (isset($demand['affectation'])) {
 
             }
         }
@@ -89,7 +87,6 @@ class DoProcessingCmDemande implements ProcessCmDemande
         return 'pages.processing-cm-demande.do-process-cm-demande';
     }
 
-
     /**
      * Get the form fields for processing the demand.
      *
@@ -99,7 +96,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
      */
     public function formFields(?int $civility = null, ?string $action = 'accept'): array
     {
-        $options = cache()->remember('residences_' . auth()->id() . '_' . $civility, 60 * 60 * 24, function () use ($civility) {
+        $options = cache()->remember('residences_'.auth()->id().'_'.$civility, 60 * 60 * 24, function () use ($civility) {
             // if civility is not null, we can return only R1
             return $this->getResidences($civility)
                 ->pluck('denomination_ar', 'id')
@@ -130,7 +127,6 @@ class DoProcessingCmDemande implements ProcessCmDemande
             ],
         ];
 
-
         if ($action === 'reject') {
             return $reject_fields;
         }
@@ -147,7 +143,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
     public function field(?string $action = 'accept'): string
     {
         // TODO: Implement field() method.
-        return ($action === 'reject') ?   'observ_heb_dou' : 'residence';
+        return ($action === 'reject') ? 'observ_heb_dou' : 'residence';
     }
 
     /**
@@ -232,17 +228,17 @@ class DoProcessingCmDemande implements ProcessCmDemande
             // if civility is not null and civility is mal (1), we can return only R1
             $options = ($civility === 1) ?
                 Onou_cm_etablissement::query()
-                ->select('onou_cm_etablissement.*')
-                ->with(['etablissement', 'type_nc'])
-                ->garcon()
-                ->open() // R1
-                ->remember(60 * 60 * 24) : // if civility is not null and civility is femal (2), we can return only R1
+                    ->select('onou_cm_etablissement.*')
+                    ->with(['etablissement', 'type_nc'])
+                    ->garcon()
+                    ->open() // R1
+                    ->remember(60 * 60 * 24) : // if civility is not null and civility is femal (2), we can return only R1
                 Onou_cm_etablissement::query()
-                ->select('onou_cm_etablissement.*')
-                ->with(['etablissement', 'type_nc'])
-                ->fille()
-                ->open() // R1
-                ->remember(60 * 60 * 24);
+                    ->select('onou_cm_etablissement.*')
+                    ->with(['etablissement', 'type_nc'])
+                    ->fille()
+                    ->open() // R1
+                    ->remember(60 * 60 * 24);
         }
 
         return $options;
@@ -282,13 +278,14 @@ class DoProcessingCmDemande implements ProcessCmDemande
                     'required',
                     'integer',
                 ],
-                 'data.affectation' => [
+                'data.affectation' => [
                     'integer',
                     'nullable',
                 ],
 
             ];
         }
+
         return [
             'field_update' => [
                 'required',

@@ -25,8 +25,6 @@ class ProcessCmDemande extends Component
 
     public ?int $field_update = null;
 
-
-
     #[locked]
     public ?string $acceptformView = null;
 
@@ -88,9 +86,9 @@ class ProcessCmDemande extends Component
         $values = [
             $this->processCmDemande->field($this->action) => $this->field_update,
         ];
-        if($this->action==='create'){
-            $values['id_dia']=$this->data['id_dia'];
-            $values['id_individu']=$this->data['id_individu'];
+        if ($this->action === 'create') {
+            $values['id_dia'] = $this->data['id_dia'];
+            $values['id_individu'] = $this->data['id_individu'];
 
         }
         try {
@@ -105,7 +103,7 @@ class ProcessCmDemande extends Component
             // get the actual url to redirect
 
         } catch (\Exception $e) {
-            session()->flash('error', 'Validation failed: ' . $e->getMessage());
+            session()->flash('error', 'Validation failed: '.$e->getMessage());
             $this->redirectRoute($this->data['rederctpage'], ['page' => $pageact], navigate: true);
 
             return;

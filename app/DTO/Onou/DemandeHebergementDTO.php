@@ -15,8 +15,8 @@ class DemandeHebergementDTO extends BaseDTO
         public ?array $historiqueHebergement = [],
         public ?array $historiqueInscription = [],
         public ?array $adressIndividue = [],
-        public ?int $id_dia=0,
-        public ?int $id_individu=0,
+        public ?int $id_dia = 0,
+        public ?int $id_individu = 0,
 
     ) {}
 }

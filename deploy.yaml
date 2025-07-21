@@ -1,0 +1,38 @@
+import:
+  - recipe/laravel.php
+
+config:
+  application: 'WebOnou'
+  repository: 'https://github.com/drdnMESRS/webonou.git'
+  branch: 'main'
+
+hosts:
+  production:
+    remote_user: root
+    hostname: '192.168.120.130'
+    deploy_path: '/var/www/webonou'
+    composer_options: '--verbose --prefer-dist --no-progress --no-interaction --optimize-autoloader'
+    shared_files:
+      - '.env'
+    shared_dirs:
+      - 'storage'
+    writable_dirs:
+      - 'storage'
+      - 'bootstrap/cache'
+
+tasks:
+  build:
+    - run: uptime
+  deploy:
+    - deploy:prepare
+    - deploy:vendors
+    - artisan:storage:link
+    - artisan:view:cache
+    - artisan:config:cache
+    - artisan:optimize
+    - artisan:down
+    - artisan:up
+    - deploy:publish
+
+after:
+  deploy:failed: deploy:unlock

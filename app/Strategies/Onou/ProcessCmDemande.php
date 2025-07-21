@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 interface ProcessCmDemande
 {
     public function process_demande(?int $id, ?array $data, ?string $action = 'accept'): bool;
- //   public function enregistrer_demande(?string $annee,?string matricule, ?array $data, ?string $action = 'accept'): bool;
+    //   public function enregistrer_demande(?string $annee,?string matricule, ?array $data, ?string $action = 'accept'): bool;
 
     public function getView(): string;
 
