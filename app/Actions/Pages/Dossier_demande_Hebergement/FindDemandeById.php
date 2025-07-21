@@ -22,8 +22,6 @@ class FindDemandeById
 
         $historique_heb = Onou_cm_demande::fetchAllDemandeByIdividu($demande->id_individu, $this->getSelectFieldsHis());
 
-
-
         $result = (new CheckConformeHeb(collect($demande)->toArray()))->handle();
 
         if (! $demande) {
@@ -141,6 +139,7 @@ class FindDemandeById
             'droit_renouvellement.frais_hebergement as frais_hebergement',
             'droit_renouvellement.deuxieme_diplome as deuxieme_diplome',
             'droit_renouvellement.retard_scolaire as retard_scolaire',
+            'droit_renouvellement.retard_niveau as retard_niveau',
 
         ];
     }

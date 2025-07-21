@@ -85,15 +85,16 @@ class Onou_cm_demande extends Model
     {
         return $this->belongsTo(Nomenclature::class, 'commune_residence', 'id');
     }
-    public function residenceaffectation()
-   {
-    return $this->belongsTo(Onou_cm_etablissement::class, 'residence','id');
-   }
-   public function affectationlieu()
-   {
-    return $this->belongsTo(Onou_cm_affectation_individu::class, 'affectation','id');
-   }
 
+    public function residenceaffectation()
+    {
+        return $this->belongsTo(Onou_cm_etablissement::class, 'residence', 'id');
+    }
+
+    public function affectationlieu()
+    {
+        return $this->belongsTo(Onou_cm_affectation_individu::class, 'affectation', 'id');
+    }
 
     public static function fetchDemandeById(int $id, ?array $getSelectFields = ['*'])
     {
@@ -163,6 +164,7 @@ class Onou_cm_demande extends Model
                 ->leftJoin('onou.onou_cm_lieu as lieu', 'lieu.id', '=', 'affectation.lieu')
                 ->where([
                     ['individu.id', '=', $id],
+                    ['demande.rang', '=', 1],
                 ])
                 ->get();
         });
