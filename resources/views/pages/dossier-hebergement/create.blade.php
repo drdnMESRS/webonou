@@ -27,6 +27,6 @@
                         class="mt-8 shadow-lg"
                         id="my-custom-alert" />
     @endif
- <livewire:onou.forms.demande-hebergement.search-by-year-matricule />
+ <livewire:onou.forms.demandeHebergement.search-by-year-matricule />
 </x-layouts.app>
 
