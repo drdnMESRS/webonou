@@ -61,7 +61,7 @@
 
         </x-common.grid>
         <br>
-        <livewire:actions.export-data table="statistiques"/>
+
           <livewire:tables.onou-cm-stat-table />
     </x-common.container>
 
