@@ -30,6 +30,7 @@ class UpdateDemandById
         if (! $demand) {
             throw new NotFoundHttpException("Demand with ID $id not found.");
         }
+
         if ($demand) {
             // Assuming $data is an associative array with the fields to update
             $demand->update($data);

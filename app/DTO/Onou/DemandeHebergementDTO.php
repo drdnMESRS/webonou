@@ -8,6 +8,7 @@ class DemandeHebergementDTO extends BaseDTO
 {
     public function __construct(
         public ?int $id = 0,
+        public ?bool $frais_hebregement_pay=false,
         public ?int $actual_page = null,
         public ?array $individu = null,
         public ?array $dossierInscriptionAdministrative = [],

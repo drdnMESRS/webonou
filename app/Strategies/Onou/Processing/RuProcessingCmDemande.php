@@ -44,6 +44,11 @@ class RuProcessingCmDemande implements ProcessCmDemande
         if (is_null($id) || is_null($data) || ! is_array($data)) {
             throw new \InvalidArgumentException('Invalid parameters provided for processing the demand.');
         }
+
+        //TODO check if the student does not pay the fees throw an exception
+
+
+
         $data['cles_remis_at'] = now();
         (new UpdateDemandById)->handle($id, $data);
 

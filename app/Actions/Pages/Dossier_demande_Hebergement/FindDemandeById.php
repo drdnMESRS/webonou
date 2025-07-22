@@ -149,6 +149,7 @@ class FindDemandeById
 
         return (new DemandeHebergementDTO)->FromArray([
             'id' => $demande->id_demande,
+            'frais_hebregement_pay' => $demande->hebergement_paye,
             'actual_page' => $this->getPageFromUrl(),
             'individu' => $this->getIndividu($demande),
             'dossierInscriptionAdministrative' => $this->getInscription($demande),
@@ -165,7 +166,6 @@ class FindDemandeById
             'adressIndividue' => $this->getadressIndividue($demande),
             'cles_remis' => ($demande->cles_remis),
             'cles_remis_at' => ($demande->cles_remis_at) ? Carbon::make($demande->cles_remis_at)->format('d/m/Y H:i') : ' - ',
-
         ]);
     }
 
