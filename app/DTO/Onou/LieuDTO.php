@@ -17,6 +17,7 @@ class LieuDTO extends BaseDTO
         public ?int $etat = null,
         public ?int $capacite_theorique = null,
         public ?int $capacite_reelle = null,
+        public ?float  $surface = null,
         public ?array $information_details = null,
     ) {}
 

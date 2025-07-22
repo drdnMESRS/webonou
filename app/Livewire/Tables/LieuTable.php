@@ -7,6 +7,8 @@ use App\Models\Onou\Onou_cm_lieu;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\GenericExport;
 
 /**
  * Class ResidancesTable
@@ -101,6 +103,13 @@ class LieuTable extends DataTableComponent
                         return $row->typeLieu->id == $this->specialTypes['chambre'] ? '' : $row->children_count;
                     })
                 ->sortable(),
+
+            Column::make('Superficie (m2)', 'surface_globale')
+                ->format(
+                    function ($value, $row, Column $column) {
+                        return $row->surface_globale;
+                    }
+                )->sortable(),
             Column::make('Capcite theorique', 'capacite_theorique')
                 ->format(
                     function ($value, $row, Column $column) {
@@ -123,4 +132,5 @@ class LieuTable extends DataTableComponent
 
         ];
     }
+
 }

@@ -61,6 +61,7 @@
 
         </x-common.grid>
         <br>
+
           <livewire:tables.onou-cm-stat-table />
     </x-common.container>
 

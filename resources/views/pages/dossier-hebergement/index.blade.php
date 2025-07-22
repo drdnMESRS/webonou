@@ -30,7 +30,7 @@
                         class="mt-8 shadow-lg"
                         id="my-custom-alert" />
     @endif
-
+<livewire:actions.export-data table="etudiants"/>
     <livewire:tables.onou-cm-demande-table />
     <livewire:onou.demande-details />
 </x-layouts.app>

@@ -12,11 +12,13 @@
         "php": "^8.2",
         "laravel/framework": "^12.20",
         "laravel/tinker": "^2.10.1",
+
         "livewire/flux": "^2.2.3",
         "livewire/volt": "^1.7.1",
         "rappasoft/laravel-livewire-tables": "^3.7.3",
         "deployer/deployer": "^7.5.12",
         "ymigval/laravel-model-cache": "^1.1.2"
+
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.16",

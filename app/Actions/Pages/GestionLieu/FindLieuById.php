@@ -36,6 +36,7 @@ class FindLieuById
             etat: $lieu->etat,
             capacite_theorique: $lieu->capacite_theorique,
             capacite_reelle: $lieu->capacite_reelle,
+            surface: $lieu->surface_globale,
             information_details: $this->information_details($lieu)
         );
     }
@@ -58,6 +59,7 @@ class FindLieuById
         $lieuDetails['Etat'] = $lieu->etatLieu->full_name ?? '';
         $lieuDetails['Capcite theorique'] = $lieu->capacite_theorique ?? '';
         $lieuDetails['Capcite reelle'] = $lieu->capacite_reelle ?? '';
+        $lieuDetails['Superficie'] = $lieu->surface_globale ?? '';
 
         return (empty($lieu)) ? [] : $lieuDetails;
     }
