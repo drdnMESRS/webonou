@@ -82,6 +82,7 @@ class OnouCmDemandeTable extends DataTableComponent
             );
 
         $this->setConfigurableArea('after-tools', 'partials.filters.domain-filter');
+        $this->setConfigurableArea('toolbar-right-end', 'partials.table-components.export');
     }
 
     private function getTrAttributesConfig($row): array

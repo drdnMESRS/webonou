@@ -24,6 +24,8 @@ tasks:
   build:
     - run: uptime
     - run: echo "Building assets..."
+    - cd: "{{release_path}}"
+    - run: "npm run build"
     - run: npm run build --if-present
   deploy:
     - deploy:prepare
@@ -31,7 +33,7 @@ tasks:
     - artisan:storage:link
     - artisan:view:cache
     - artisan:config:cache
-    - artisan:optimize
+    - artisan:optimize:clear
     - artisan:down
     - artisan:up
     - deploy:publish

@@ -16,7 +16,7 @@ class DemandeDetails extends Component
 
     #[Locked]
     public $demandeId;
-
+    #[Locked]
     public $showDemandeDetails = false;
 
     #[Locked]
@@ -24,8 +24,9 @@ class DemandeDetails extends Component
 
     #[Locked]
     public ?string $accept_view = null;
-
+     #[Locked]
     public ?string $reject_view = null;
+     #[Locked]
     public ?string $cles_remis_view = null;
 
     public function mount()
@@ -47,14 +48,17 @@ class DemandeDetails extends Component
     }
     public function toggleClesRemis()
     {
-
         $this->processCmDemande = new ProcessCmDemandeContext;
        // dd ($this->demande);
-        $values = ['cles_remis' => $this->demande['cles_remis'] ? !$this->demande['cles_remis']: true  ];
+        $values = ['cles_remis' => !$this->demande['cles_remis'] || !$this->demande['cles_remis']];
+
         $this->processCmDemande->process_clesremis($this->demandeId, $values);
 
         session()->flash('success', 'État des clés mis à jour.');
-        $this->redirectRoute($this->demande['rederctpage'], ['page' =>  $this->demande['actual_page']], navigate: true);
+
+        $this->dispatch('refreshDatatable');
+
+        $this->showDemandeDetails($this->demandeId);
     }
     public function render()
     {
