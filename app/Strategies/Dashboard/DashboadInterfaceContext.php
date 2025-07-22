@@ -4,6 +4,7 @@ namespace App\Strategies\Dashboard;
 
 use App\Actions\Sessions\RoleManagement;
 use App\Strategies\Dashboard\Interface\DashboadInterface;
+use App\Strategies\Dashboard\Strategies\Dashboard;
 use App\Strategies\Dashboard\Strategies\DouDashboard;
 use App\Strategies\Dashboard\Strategies\RuDashboard;
 
@@ -18,7 +19,8 @@ class DashboadInterfaceContext implements DashboadInterface
 
         $this->dashboard = match ($type) {
             'DO' => new DouDashboard,
-            'RU' => new RuDashboard
+            'RU' => new RuDashboard,
+            default => new Dashboard
         };
     }
 
