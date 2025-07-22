@@ -16,6 +16,7 @@ class DemandeDetails extends Component
 
     #[Locked]
     public $demandeId;
+
     #[Locked]
     public $showDemandeDetails = false;
 
@@ -24,9 +25,11 @@ class DemandeDetails extends Component
 
     #[Locked]
     public ?string $accept_view = null;
-     #[Locked]
+
+    #[Locked]
     public ?string $reject_view = null;
-     #[Locked]
+
+    #[Locked]
     public ?string $cles_remis_view = null;
 
     public function mount()
@@ -46,11 +49,12 @@ class DemandeDetails extends Component
         $this->demande['rederctpage'] = 'diaHeb.show';
         $this->showDemandeDetails = true;
     }
+
     public function toggleClesRemis()
     {
         $this->processCmDemande = new ProcessCmDemandeContext;
-       // dd ($this->demande);
-        $values = ['cles_remis' => !$this->demande['cles_remis'] || !$this->demande['cles_remis']];
+        // dd ($this->demande);
+        $values = ['cles_remis' => ! $this->demande['cles_remis'] || ! $this->demande['cles_remis']];
 
         $this->processCmDemande->process_clesremis($this->demandeId, $values);
 
@@ -60,6 +64,7 @@ class DemandeDetails extends Component
 
         $this->showDemandeDetails($this->demandeId);
     }
+
     public function render()
     {
         return view('livewire.onou.demande-details');

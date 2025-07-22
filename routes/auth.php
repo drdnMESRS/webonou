@@ -1,13 +1,7 @@
 <?php
 
-use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Sso\SsoController;
-use App\Livewire\Auth\ConfirmPassword;
-use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
-use App\Livewire\Auth\Register;
-use App\Livewire\Auth\ResetPassword;
-use App\Livewire\Auth\VerifyEmail;
 use App\Services\Sso_service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;

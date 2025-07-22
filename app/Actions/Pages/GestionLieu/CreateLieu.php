@@ -22,7 +22,7 @@ class CreateLieu
             'etat' => $validated['etat'],
             'libelle_fr' => $validated['libelle_fr'],
             'libelle_ar' => $validated['libelle_ar'],
-            'surface_globale'=>$validated['surface'],
+            'surface_globale' => $validated['surface'],
             'capacite_theorique' => $validated['capacite_theorique'],
             'capacite_reelle' => $validated['capacite_reelle'],
             'observation' => $validated['observation'],
@@ -40,7 +40,7 @@ class CreateLieu
                 $from = (int) $chambre['from'];
                 $to = (int) $chambre['to'];
                 $type = (int) $chambre['type'];
-                 $surface_chambre = (double) $chambre['surface'];
+                $surface_chambre = (float) $chambre['surface'];
 
                 if ($from > $to) {
                     continue;

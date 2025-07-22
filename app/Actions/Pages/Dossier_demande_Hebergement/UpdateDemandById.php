@@ -33,8 +33,9 @@ class UpdateDemandById
         if ($demand) {
             // Assuming $data is an associative array with the fields to update
             $demand->update($data);
-            cache()->delete('History_demande_' . $demand->individu); // Clear cache for this demand
-            cache()->delete('demande_' . $demand->id);
+            cache()->delete('History_demande_'.$demand->individu); // Clear cache for this demand
+            cache()->delete('demande_'.$demand->id);
+
             return $demand;
         }
 

@@ -19,7 +19,7 @@ class FindStudentByYearMatricule
         $student = Dossier_inscription_administrative::fetchDemandeByYearMatricule($annee_bac, $matricule, $this->getSelectFields());
 
         if (is_null($student)) {
-            throw new NotFoundHttpException('Student not found with Year and Matricule: ' . $annee_bac . ' ' . $matricule);
+            throw new NotFoundHttpException('Student not found with Year and Matricule: '.$annee_bac.' '.$matricule);
         }
         // Fetching the historical data for the individual
 
@@ -170,7 +170,6 @@ class FindStudentByYearMatricule
             'cles_remis' => ($demande->cles_remis) ?? null,
             'cles_remis_at' => ($demande->cles_remis_at) ? Carbon::make($demande->cles_remis_at)->format('d/m/Y H:i') : ' - ',
 
-
         ]);
     }
 
@@ -200,8 +199,8 @@ class FindStudentByYearMatricule
             'numero_inscription' => $demande->numero_inscription,
             'frais_inscription_paye' => $demande->frais_inscription_paye,
             // 'code_etablissement' => $demande->etab_identifiant,
-            'etablissement_arabe' => $demande->etab_identifiant . ' - ' . $demande->ll_etablissement_arabe,
-            'etablissement' => $demande->etab_identifiant . ' - ' . $demande->ll_etablissement_latin,
+            'etablissement_arabe' => $demande->etab_identifiant.' - '.$demande->ll_etablissement_arabe,
+            'etablissement' => $demande->etab_identifiant.' - '.$demande->ll_etablissement_latin,
             // 'offre_code' => $demande->code,
             'offre_de_formation' => $demande->libelle_long_fr,
             'offre_de_formation_arabe' => $demande->of_libelle_long_ar,
@@ -231,7 +230,7 @@ class FindStudentByYearMatricule
     {
         $name = '';
         foreach ($columns as $column) {
-            $name .= ' ' . $demande->$column;
+            $name .= ' '.$demande->$column;
         }
 
         return $name;
@@ -261,8 +260,8 @@ class FindStudentByYearMatricule
     private function getSelectFieldsHis(): array
     {
         return [
-            //'demande.renouvellement',
-              'demande.hebergement_paye',
+            // 'demande.renouvellement',
+            'demande.hebergement_paye',
             'dou.denomination_ar as dou_arabe',
             'dou.denomination_fr as dou',
             'residence.denomination_ar as residance_arabe',
@@ -274,9 +273,8 @@ class FindStudentByYearMatricule
             'demande.hebergement_paye',
             'lieu.libelle_fr as chambre',
             'demande.hebergement_paye_date as date_de_paiment',
-            'demande.cles_remis' ,
+            'demande.cles_remis',
             'demande.cles_remis_at',
-
 
         ];
     }

@@ -3,14 +3,16 @@
 namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
-class GenericExport implements FromQuery, WithMapping, WithHeadings, WithChunkReading
+class GenericExport implements FromQuery, WithChunkReading, WithHeadings, WithMapping
 {
     protected $query;
+
     protected $headings;
+
     protected $mapMethod;
 
     public function __construct($query, array $headings, callable $mapMethod)

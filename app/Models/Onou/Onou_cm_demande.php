@@ -52,7 +52,7 @@ class Onou_cm_demande extends Model
         'date_approuve_heb_resid',
         'observ_heb_resid',
         'annee_academique',
-        'cles_remis' ,
+        'cles_remis',
         'cles_remis_at',
     ];
 

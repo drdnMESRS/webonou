@@ -2,17 +2,18 @@
 
 namespace App\Livewire\Actions;
 
-use Livewire\Component;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\GenericExport;
-use App\Models\Onou\Onou_cm_lieu;
 use App\Models\Onou\Onou_cm_demande;
 use App\Models\Onou\Onou_cm_etablissement;
+use App\Models\Onou\Onou_cm_lieu;
 use App\Models\Onou\vm_heb_processing_by_ru;
+use Livewire\Component;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ExportData extends Component
 {
     public string $table;
+
     public array $specialTypes = [
         'pavilion' => 699076,
         'chambre' => 699077,
@@ -29,7 +30,7 @@ class ExportData extends Component
                 $info['filename']
             );
         } catch (\Exception $e) {
-            session()->flash('error', 'Erreur : ' . $e->getMessage());
+            session()->flash('error', 'Erreur : '.$e->getMessage());
         }
     }
 
@@ -151,7 +152,8 @@ class ExportData extends Component
         $query = vm_heb_processing_by_ru::query()
             ->with(['etablissement'])
             ->whereNotNull('residence');
-          dd($query);
+        dd($query);
+
         return [
             'query' => $query,
             'columns' => ['nom de residence', 'Capacite', 'Total', 'Pending', 'Accepted', 'Rejected', 'percentage'],
@@ -162,7 +164,8 @@ class ExportData extends Component
 
     public function mapStatistiques($item): array
     {
-            dd($item);
+        dd($item);
+
         return [
             'nom de residence' => $item->etablissement->denomination_fr ?? '',
             'Capacite' => $item->capacite ?? 0,

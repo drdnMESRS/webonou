@@ -7,8 +7,6 @@ use App\Models\Onou\Onou_cm_lieu;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\GenericExport;
 
 /**
  * Class ResidancesTable
@@ -132,5 +130,4 @@ class LieuTable extends DataTableComponent
 
         ];
     }
-
 }

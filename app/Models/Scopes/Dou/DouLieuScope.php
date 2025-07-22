@@ -35,7 +35,7 @@ class DouLieuScope implements Scope
                 $query->where('etablissement', $id)
                     ->orWhereIn('etablissement', $children);
             });
-        }else{
+        } else {
             $builder->where('etablissement', $id);
         }
     }

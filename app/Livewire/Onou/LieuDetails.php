@@ -56,8 +56,8 @@ class LieuDetails extends Component
                 // session()->flash('error', $e->getMessage());
             }
         }
-            $this->redirectRoute('onouLieu.show', navigate: true);
-             return;
+        $this->redirectRoute('onouLieu.show', navigate: true);
+
     }
 
     public function render()

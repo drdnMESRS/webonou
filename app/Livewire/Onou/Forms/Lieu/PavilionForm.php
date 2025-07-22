@@ -126,7 +126,6 @@ class PavilionForm extends Component
         $this->validatesurface();
     }
 
-
     public function validatestricture()
     {
         $typeStructure = (int) $this->type_structure;
@@ -139,6 +138,7 @@ class PavilionForm extends Component
             $this->resetErrorBag('structure_appartenance');
         }
     }
+
     public function validatesurface()
     {
         $typeStructure = (int) $this->type_structure;
@@ -203,9 +203,9 @@ class PavilionForm extends Component
             $to = (int) $chambre['to'];
             $type = $chambre['type'];
             $surface_chambre = $chambre['surface'];
-               if ($from && $to && $type && !$surface_chambre) {
-                    $this->addError("chambres.$index.surface", 'the superficie filed is required');
-                }
+            if ($from && $to && $type && ! $surface_chambre) {
+                $this->addError("chambres.$index.surface", 'the superficie filed is required');
+            }
             // Basic field presence
             if ($from && $to && $type && $surface_chambre) {
                 // Rule: from must be < to
@@ -233,10 +233,10 @@ class PavilionForm extends Component
     public function resetForm()
     {
         $this->reset([
-            'residence', 'etat','surface', 'type_structure', 'sous_type', 'structure_appartenance',
+            'residence', 'etat', 'surface', 'type_structure', 'sous_type', 'structure_appartenance',
             'libelle_fr', 'libelle_ar', 'capacite_theorique', 'capacite_reelle', 'observation', 'chambres',
         ]);
-        $this->chambres = [['from' => null, 'to' => null, 'type' => null,'surface' => null]];
+        $this->chambres = [['from' => null, 'to' => null, 'type' => null, 'surface' => null]];
     }
 
     public function getCanAddChambreProperty()
@@ -248,7 +248,7 @@ class PavilionForm extends Component
 
     public function addChambre()
     {
-        $this->chambres[] = ['from' => null, 'to' => null, 'type' => null,'surface' => null];
+        $this->chambres[] = ['from' => null, 'to' => null, 'type' => null, 'surface' => null];
     }
 
     public function removeChambre($index)
@@ -267,7 +267,7 @@ class PavilionForm extends Component
                 return;
             }
         }
-            if ((int) $validated['type_structure'] === $this->type_chambre && $validated['surface']==null ) {
+        if ((int) $validated['type_structure'] === $this->type_chambre && $validated['surface'] == null) {
             $this->validatesurface();
             if ($this->getErrorBag()->isNotEmpty()) {
                 return;

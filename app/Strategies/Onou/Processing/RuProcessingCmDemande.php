@@ -44,21 +44,22 @@ class RuProcessingCmDemande implements ProcessCmDemande
         if (is_null($id) || is_null($data) || ! is_array($data)) {
             throw new \InvalidArgumentException('Invalid parameters provided for processing the demand.');
         }
-        $data['cles_remis_at']=now();
+        $data['cles_remis_at'] = now();
         (new UpdateDemandById)->handle($id, $data);
 
         return true;
     }
+
     public function getView(): string
     {
         return 'pages.processing-cm-demande.ru-process-cm-demande';
     }
 
-
-     public function getViewClesRemis(): string
+    public function getViewClesRemis(): string
     {
         return 'pages.processing-cm-demande.ru-cles-remis-cm-demade';
     }
+
     /**
      * Get the columns to update when processing the form.
      */
@@ -84,7 +85,7 @@ class RuProcessingCmDemande implements ProcessCmDemande
         return [
             'field_update' => [
                 'type' => 'hidden',
-                 'label' => 'Test Field',
+                'label' => 'Test Field',
                 'placeholder' => 'Enter test value',
                 'required' => true,
                 'name' => 'field_update',

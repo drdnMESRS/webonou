@@ -163,7 +163,7 @@ class Dossier_inscription_administrative extends Authenticatable
                 ['etudiant.id_individu', '=', $id],
                 // ['individu.active', '=', 1],
             ])
-           ->orderby('anneeacd.id')->get();
+            ->orderby('anneeacd.id')->get();
 
         //  });
     }

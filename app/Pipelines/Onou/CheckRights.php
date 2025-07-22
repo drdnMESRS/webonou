@@ -86,7 +86,7 @@ class CheckRights extends Alerts
             $this->flush_alert();
         }
 
-          if ( $demande['cles_remis']) {
+        if ($demande['cles_remis']) {
             $this->type = 'checkcles_remis';
             $this->status = 'danger';
             $this->message = 'L’étudiant a une ancienne demande avec clés non remises, il n’a pas le droit de renouveler.';
