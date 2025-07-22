@@ -59,6 +59,6 @@ class SearchByYearMatricule extends Component
 
     public function render()
     {
-        return view('livewire.onou.forms.demandehebergement.search-by-year-matricule');
+        return view('livewire.onou.forms.demande-hebergement.search-by-year-matricule');
     }
 }
