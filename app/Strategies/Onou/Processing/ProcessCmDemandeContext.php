@@ -26,12 +26,18 @@ class ProcessCmDemandeContext implements ProcessCmDemande
     {
         return $this->cm_demande->process_demande($id, $data, $action);
     }
-
+    public function process_clesremis(?int $id, ?array $data): bool
+    {
+        return  $this->cm_demande->process_clesremis($id, $data);
+    }
     public function getView(): string
     {
         return $this->cm_demande->getView();
     }
-
+ public function getViewClesRemis(): string
+     {
+   return $this->cm_demande->getViewClesRemis();
+     }
     /**
      * Get the columns to update when processing the form.
      */

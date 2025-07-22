@@ -1,3 +1,4 @@
+<div>
 <div class="flex flex-col space-y-2 items-end">
     <div class="flex space-x-2">
         <div class="flex flex-col">
@@ -15,10 +16,10 @@
                 <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
             @enderror
         </div>
-        <button wire:click="searchByYearMatricule"
+        <button wire:click="searchByYearMatricule" wire:target="searchByYearMatricule"
             class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm">
 
-            <div wire:loading>
+            <div wire:loading wire:target="searchByYearMatricule">
                 <svg aria-hidden="true" role="status" class="inline w-4 h-4 me-3 text-white animate-spin"
                     viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -33,8 +34,8 @@
         </button>
 
     </div>
-
-    <div class="text-center">
+</div>
+<div class="flex justify-center">
         <livewire:common.loader />
     </div>
     <div x-data="{ showDtudentDetails: @entangle('showDtudentDetails') }" class=" mx-auto py-4">
@@ -98,7 +99,7 @@
                     <x-common.modal id="accept-modal" title="Accepter la demande " size="auto">
                         @include($accept_view, [
                             'data' => $demande,
-                            'action' => $demande?($demande['id'] ? 'accept' : 'create'):''
+                            'action' => $demande ? ($demande['id'] ? 'accept' : 'create') : '',
                         ])
                     </x-common.modal>
 

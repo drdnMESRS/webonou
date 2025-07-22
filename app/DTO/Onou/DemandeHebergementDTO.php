@@ -3,6 +3,7 @@
 namespace App\DTO\Onou;
 
 use App\DTO\BaseDTO;
+use Carbon\Carbon;
 
 class DemandeHebergementDTO extends BaseDTO
 {
@@ -17,6 +18,8 @@ class DemandeHebergementDTO extends BaseDTO
         public ?array $adressIndividue = [],
         public ?int $id_dia = 0,
         public ?int $id_individu = 0,
+        public ?bool $cles_remis = null,
+        public ?string $cles_remis_at = null,
 
     ) {}
 }

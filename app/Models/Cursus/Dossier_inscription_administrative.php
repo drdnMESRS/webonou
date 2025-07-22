@@ -128,10 +128,15 @@ class Dossier_inscription_administrative extends Authenticatable
             ->leftJoin('lmd.domaine_lmd as domaine', 'domaine.id', '=', 'inscription.id_domaine')
             ->leftJoin('lmd.filiere_lmd as filiere', 'filiere.id', '=', 'inscription.id_filiere')
             ->leftJoin('ppm.ref_etablissement as etablissement', 'etablissement.id', '=', 'inscription.id_etablissement')
-
-            ->leftJoin('onou.onou_cm_demande as demande', 'demande.id_dia', '=', 'inscription.id')
-
-            ->leftJoin('nc.nomenclature as commune', 'commune.id', '=', 'demande.commune_residence')
+           // ->leftJoin('onou.onou_cm_demande as demande', 'demande.id_dia', '=', 'inscription.id')
+           // ->leftJoin('nc.nomenclature as commune', 'commune.id', '=', 'demande.commune_residence')
+            ->leftJoin('fve_examen.bilan_session as bilan', function (JoinClause $join) {
+                $join->on('bilan.id_dossier_inscription', '=', 'inscription.id')
+                    ->where([
+                        ['bilan.annuel', '=', true],
+                    ]);
+            })
+            ->leftJoin('nc.nomenclature as decision', 'decision.id', '=', 'bilan.nc_decision')
             ->leftJoin('lmd.offre_formation as offre', 'offre.id', '=', 'ouverture.id_offre_formation')
             ->leftJoin('lmd.cycle as cycle', 'cycle.id', '=', 'niveau.id_cycle')
             ->leftJoin('ppm.ref_structure as structure', 'structure.id', '=', 'ouverture.id_structure')
@@ -158,7 +163,7 @@ class Dossier_inscription_administrative extends Authenticatable
                 ['etudiant.id_individu', '=', $id],
                 // ['individu.active', '=', 1],
             ])
-            ->get();
+           ->orderby('anneeacd.id')->get();
 
         //  });
     }

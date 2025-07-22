@@ -19,7 +19,7 @@ class FindStudentByYearMatricule
         $student = Dossier_inscription_administrative::fetchDemandeByYearMatricule($annee_bac, $matricule, $this->getSelectFields());
 
         if (is_null($student)) {
-            throw new NotFoundHttpException('Student not found with Year and Matricule: '.$annee_bac.' '.$matricule);
+            throw new NotFoundHttpException('Student not found with Year and Matricule: ' . $annee_bac . ' ' . $matricule);
         }
         // Fetching the historical data for the individual
 
@@ -167,6 +167,10 @@ class FindStudentByYearMatricule
             'adressIndividue' => $this->getadressIndividue($demande),
             'id_dia' => $demande->id_dia,
             'id_individu' => $demande->id_individu,
+            'cles_remis' => ($demande->cles_remis) ?? null,
+            'cles_remis_at' => ($demande->cles_remis_at) ? Carbon::make($demande->cles_remis_at)->format('d/m/Y H:i') : ' - ',
+
+
         ]);
     }
 
@@ -196,8 +200,8 @@ class FindStudentByYearMatricule
             'numero_inscription' => $demande->numero_inscription,
             'frais_inscription_paye' => $demande->frais_inscription_paye,
             // 'code_etablissement' => $demande->etab_identifiant,
-            'etablissement_arabe' => $demande->etab_identifiant.' - '.$demande->ll_etablissement_arabe,
-            'etablissement' => $demande->etab_identifiant.' - '.$demande->ll_etablissement_latin,
+            'etablissement_arabe' => $demande->etab_identifiant . ' - ' . $demande->ll_etablissement_arabe,
+            'etablissement' => $demande->etab_identifiant . ' - ' . $demande->ll_etablissement_latin,
             // 'offre_code' => $demande->code,
             'offre_de_formation' => $demande->libelle_long_fr,
             'offre_de_formation_arabe' => $demande->of_libelle_long_ar,
@@ -227,7 +231,7 @@ class FindStudentByYearMatricule
     {
         $name = '';
         foreach ($columns as $column) {
-            $name .= ' '.$demande->$column;
+            $name .= ' ' . $demande->$column;
         }
 
         return $name;
@@ -257,18 +261,22 @@ class FindStudentByYearMatricule
     private function getSelectFieldsHis(): array
     {
         return [
-            'demande.renouvellement',
-            'residence.denomination_ar as residance_arabe',
-            'residence.denomination_fr as residance',
+            //'demande.renouvellement',
+              'demande.hebergement_paye',
             'dou.denomination_ar as dou_arabe',
             'dou.denomination_fr as dou',
+            'residence.denomination_ar as residance_arabe',
+            'residence.denomination_fr as residance',
             'demande.approuvee_heb_dou  as decision_du_DCC_:',
             'demande.date_approuve_heb_dou as traiter_par_DCC_le_:',
             'demande.approuvee_heb_resid as decision_du_Residence_:',
             'demande.date_approuve_heb_resid as traiter_par_Resi_le_:',
             'demande.hebergement_paye',
-            'demande.hebergement_paye_date as date_de_paiment',
             'lieu.libelle_fr as chambre',
+            'demande.hebergement_paye_date as date_de_paiment',
+            'demande.cles_remis' ,
+            'demande.cles_remis_at',
+
 
         ];
     }
@@ -299,6 +307,8 @@ class FindStudentByYearMatricule
             // // 'commune.libelle_long_f as commune',
             // 'cycle.libelle_long_ar as cycle_arabe',
             // 'cycle.libelle_long_lt as cycle',
+            DB::raw('concat(decision.libelle_long_ar,\'(\',bilan.moyenne,\')\') as résultat_arabe '),
+            DB::raw('concat(decision.libelle_long_f,\'(\',bilan.moyenne,\')\') as résultat '),
 
             'inscription.est_transfert as est_transfert ',
             'inscription.frais_inscription_paye as frais_inscription_paye',
