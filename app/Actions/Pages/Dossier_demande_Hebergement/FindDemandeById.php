@@ -16,7 +16,7 @@ class FindDemandeById
         $demande = Onou_cm_demande::fetchDemandeById($id, $this->getSelectFields());
 
         if (is_null($demande)) {
-            throw new NotFoundHttpException('Demande not found with ID: '.$id);
+            throw new NotFoundHttpException('Demande not found with ID: ' . $id);
         }
         // Fetching the historical data for the individual
 
@@ -25,7 +25,7 @@ class FindDemandeById
         $result = (new CheckConformeHeb(collect($demande)->toArray()))->handle();
 
         if (! $demande) {
-            throw new NotFoundHttpException('Demande not found with ID: '.$id);
+            throw new NotFoundHttpException('Demande not found with ID: ' . $id);
         }
 
         return $this->mapToDTO($demande, $historique_heb)->toArray();
@@ -163,6 +163,9 @@ class FindDemandeById
             ],
             'historiqueHebergement' => $historique->toArray(),
             'adressIndividue' => $this->getadressIndividue($demande),
+            'cles_remis' => ($demande->cles_remis) ,
+            'cles_remis_at' => ($demande->cles_remis_at) ? Carbon::make($demande->cles_remis_at)->format('d/m/Y H:i') : ' - ',
+
         ]);
     }
 
@@ -192,8 +195,8 @@ class FindDemandeById
             'numero_inscription' => $demande->numero_inscription,
             'frais_inscription_paye' => $demande->frais_inscription_paye,
             // 'code_etablissement' => $demande->etab_identifiant,
-            'etablissement_arabe' => $demande->etab_identifiant.' - '.$demande->ll_etablissement_arabe,
-            'etablissement' => $demande->etab_identifiant.' - '.$demande->ll_etablissement_latin,
+            'etablissement_arabe' => $demande->etab_identifiant . ' - ' . $demande->ll_etablissement_arabe,
+            'etablissement' => $demande->etab_identifiant . ' - ' . $demande->ll_etablissement_latin,
             // 'offre_code' => $demande->code,
             'offre_de_formation' => $demande->libelle_long_fr,
             'offre_de_formation_arabe' => $demande->of_libelle_long_ar,
@@ -223,7 +226,7 @@ class FindDemandeById
     {
         $name = '';
         foreach ($columns as $column) {
-            $name .= ' '.$demande->$column;
+            $name .= ' ' . $demande->$column;
         }
 
         return $name;
@@ -265,6 +268,8 @@ class FindDemandeById
             'demande.hebergement_paye',
             'demande.hebergement_paye_date as date_de_paiment',
             'lieu.libelle_fr as chambre',
+            'demande.cles_remis',
+            'demande.cles_remis_at',
 
         ];
     }

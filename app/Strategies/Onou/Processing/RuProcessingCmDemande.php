@@ -21,16 +21,44 @@ class RuProcessingCmDemande implements ProcessCmDemande
 
         // Here you would implement the logic to process the request for RU
         // if action is 'accept', you might want to update the status of the request
-        return ($action === 'accept') ? $this->acceptedProcess($id, $data)
-                                      : $this->rejectProcess($id, $data);
 
+        $checkAgeResult = session('checks.checkAge');
+        if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
+            throw new \Exception($checkAgeResult['message']);
+        }
+        $checkAgeResult = session('checks.reinscription');
+        if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
+            throw new \Exception($checkAgeResult['message']);
+        }
+        $checkAgeResult = session('checks.checkcles_remis');
+        if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
+            throw new \Exception($checkAgeResult['message']);
+        }
+
+        return ($action === 'accept') ? $this->acceptedProcess($id, $data)
+            : $this->rejectProcess($id, $data);
     }
 
+    public function process_clesremis(?int $id, ?array $data): bool
+    {
+        if (is_null($id) || is_null($data) || ! is_array($data)) {
+            throw new \InvalidArgumentException('Invalid parameters provided for processing the demand.');
+        }
+        $data['cles_remis_at']=now();
+        (new UpdateDemandById)->handle($id, $data);
+
+        return true;
+    }
     public function getView(): string
     {
         return 'pages.processing-cm-demande.ru-process-cm-demande';
     }
 
+
+     public function getViewClesRemis(): string
+    {
+        return 'pages.processing-cm-demande.ru-cles-remis-cm-demade';
+    }
     /**
      * Get the columns to update when processing the form.
      */
@@ -56,7 +84,7 @@ class RuProcessingCmDemande implements ProcessCmDemande
         return [
             'field_update' => [
                 'type' => 'hidden',
-                'label' => 'Test Field',
+                 'label' => 'Test Field',
                 'placeholder' => 'Enter test value',
                 'required' => true,
                 'name' => 'field_update',
@@ -133,7 +161,8 @@ class RuProcessingCmDemande implements ProcessCmDemande
             throw new \Exception('Demande not found for the given  ');
         }
         // Here you would implement the logic to reject the request for RU
-        $data = array_merge($data,
+        $data = array_merge(
+            $data,
             [
                 'approuvee_heb_resid' => false,
                 'date_approuve_heb_resid' => now(),
@@ -163,7 +192,8 @@ class RuProcessingCmDemande implements ProcessCmDemande
             throw new \Exception('The selected location is already fully occupied. Please choose another location.');
         }
         // update the cm_demande with the new affectation ID
-        $data = array_merge($data,
+        $data = array_merge(
+            $data,
             [
                 'approuvee_heb_resid' => true,
                 'date_approuve_heb_resid' => now(),

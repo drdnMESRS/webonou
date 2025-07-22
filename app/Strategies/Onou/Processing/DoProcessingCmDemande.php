@@ -34,6 +34,24 @@ class DoProcessingCmDemande implements ProcessCmDemande
             throw new \Exception('Invalid parameters provided for processing the demand.');
         }
 
+        $checkAgeResult = session('checks.checkAge');
+        if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
+            throw new \Exception($checkAgeResult['message']);
+        }
+        $checkAgeResult = session('checks.reinscription');
+        if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
+            throw new \Exception($checkAgeResult['message']);
+        }
+        $checkAgeResult = session('checks.checkcles_remis');
+        if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
+            throw new \Exception($checkAgeResult['message']);
+        }
+        dd( $checkAgeResult);
+
+
+
+
+
         $data = array_merge($data, [
             'dou' => app(RoleManagement::class)->get_active_role_etablissement(),
             'approuvee_heb_dou' => ($action === 'accept') || ($action === 'create'),
@@ -47,14 +65,6 @@ class DoProcessingCmDemande implements ProcessCmDemande
             $data['observ_heb_dou'] = ''; // Clear observation if accepting
         }
         // Update the demand with the provided data
-        $checkAgeResult = session('checks.checkAge');
-        if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
-            throw new \Exception($checkAgeResult['message']);
-        }
-        $checkAgeResult = session('checks.reinscription');
-        if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
-            throw new \Exception($checkAgeResult['message']);
-        }
 
         $demand = [];
         if ($action === 'create') {
@@ -70,13 +80,16 @@ class DoProcessingCmDemande implements ProcessCmDemande
 
             $demand = (new UpdateDemandById)->handle($id, $data);
             if (isset($demand['affectation'])) {
-
             }
         }
 
         return $demand->wasChanged(); // Successfully processed
     }
+    public function process_clesremis(?int $id, ?array $data): bool
+    {
 
+        throw new \InvalidArgumentException('Vous n\'avez pas le droit.');
+    }
     /**
      * Get the view for processing the demand.
      *
@@ -86,7 +99,10 @@ class DoProcessingCmDemande implements ProcessCmDemande
     {
         return 'pages.processing-cm-demande.do-process-cm-demande';
     }
-
+ public function getViewClesRemis(): string
+     {
+        return 'pages.processing-cm-demande.dou-cles-remis-cm-demade';
+     }
     /**
      * Get the form fields for processing the demand.
      *
@@ -96,7 +112,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
      */
     public function formFields(?int $civility = null, ?string $action = 'accept'): array
     {
-        $options = cache()->remember('residences_'.auth()->id().'_'.$civility, 60 * 60 * 24, function () use ($civility) {
+        $options = cache()->remember('residences_' . auth()->id() . '_' . $civility, 60 * 60 * 24, function () use ($civility) {
             // if civility is not null, we can return only R1
             return $this->getResidences($civility)
                 ->pluck('denomination_ar', 'id')
@@ -228,17 +244,17 @@ class DoProcessingCmDemande implements ProcessCmDemande
             // if civility is not null and civility is mal (1), we can return only R1
             $options = ($civility === 1) ?
                 Onou_cm_etablissement::query()
-                    ->select('onou_cm_etablissement.*')
-                    ->with(['etablissement', 'type_nc'])
-                    ->garcon()
-                    ->open() // R1
-                    ->remember(60 * 60 * 24) : // if civility is not null and civility is femal (2), we can return only R1
+                ->select('onou_cm_etablissement.*')
+                ->with(['etablissement', 'type_nc'])
+                ->garcon()
+                ->open() // R1
+                ->remember(60 * 60 * 24) : // if civility is not null and civility is femal (2), we can return only R1
                 Onou_cm_etablissement::query()
-                    ->select('onou_cm_etablissement.*')
-                    ->with(['etablissement', 'type_nc'])
-                    ->fille()
-                    ->open() // R1
-                    ->remember(60 * 60 * 24);
+                ->select('onou_cm_etablissement.*')
+                ->with(['etablissement', 'type_nc'])
+                ->fille()
+                ->open() // R1
+                ->remember(60 * 60 * 24);
         }
 
         return $options;
