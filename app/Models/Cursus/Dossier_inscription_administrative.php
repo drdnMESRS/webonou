@@ -102,7 +102,7 @@ class Dossier_inscription_administrative extends Authenticatable
                 ['bachelier.annee_bac', '=', $anne_bac],
                 ['bachelier.matricule', '=', $matricule],
             ])
-            ->firstOrFail();
+            ->first();
 
         //  });
     }

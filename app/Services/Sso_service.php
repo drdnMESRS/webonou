@@ -27,7 +27,7 @@ class Sso_service
             'state' => $state,
         ]);
 
-        return redirect(env('SSO_SERVER') . '/oauth/authorize?' . $query);
+        return redirect(env('SSO_SERVER').'/oauth/authorize?'.$query);
     }
 
     /**
@@ -39,11 +39,11 @@ class Sso_service
     public function callback(Request $request)
     {
 
-        $state = $request->session()->get('state');
+        $state = $request->session()->pull('state');
 
         throw_unless(strlen($state) > 0 && $state === $request->input('state'), InvalidArgumentException::class);
 
-        $response = Http::asForm()->withOptions(['verify' => false])->post(env('SSO_SERVER') . '/oauth/token', [
+        $response = Http::asForm()->withOptions(['verify' => false])->post(env('SSO_SERVER').'/oauth/token', [
 
             'client_id' => env('CLIENT_ID'),
             'client_secret' => env('CLIENT_SECRET'),
@@ -51,12 +51,9 @@ class Sso_service
             'grant_type' => 'authorization_code',
             'redirect_uri' => env('REDIRECT_URI'),
         ]);
-        dd($response->json());
         $request->session()->put('access_token', $response->json()['access_token']);
 
-        if ($request->session()->has('access_token')) {
-            return redirect('/user');
-        }
+        return redirect('/user');
     }
 
     // fetch user information and redirect to the home page
@@ -72,6 +69,6 @@ class Sso_service
                 'Accept' => 'application/json',
                 'Authorization' => "Bearer $access_token",
             ]
-        )->get(env('SSO_SERVER') . '/api/user');
+        )->get(env('SSO_SERVER').'/api/user');
     }
 }

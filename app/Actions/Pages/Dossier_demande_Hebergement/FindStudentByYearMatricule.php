@@ -7,7 +7,6 @@ use App\Models\Cursus\Dossier_inscription_administrative;
 use App\Models\Onou\Onou_cm_demande;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FindStudentByYearMatricule
 {
@@ -19,7 +18,8 @@ class FindStudentByYearMatricule
         $student = Dossier_inscription_administrative::fetchDemandeByYearMatricule($annee_bac, $matricule, $this->getSelectFields());
 
         if (is_null($student)) {
-            throw new NotFoundHttpException('Student not found with Year and Matricule: '.$annee_bac.' '.$matricule);
+            throw new \Exception('Student not found with Year and Matricule: '.$annee_bac.' '.$matricule);
+            
         }
         // Fetching the historical data for the individual
 
