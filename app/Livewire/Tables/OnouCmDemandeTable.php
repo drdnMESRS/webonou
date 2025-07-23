@@ -45,6 +45,29 @@ class OnouCmDemandeTable extends DataTableComponent
                 ->filter(function (Builder $builder, $value) {
                     return $builder->where('civilite', $value);
                 }),
+               'Inscription' => SelectFilter::make('inscription')
+               ->options([
+               '1' => 'Tous',
+               '2' => 'Transfert',
+               '3' => 'Congé académique',
+                ])
+               ->filter(function (Builder $builder, $value) {
+                 switch ($value) {
+                 case '1':
+                return $builder;
+
+                 case '2':
+                return  $builder->where('est_transfert', true);
+
+                 case '3':
+                return $builder->where('cong.resultat', true);
+
+                 default:
+
+                return $builder;
+        }
+    }),
+
             'traiter' => BooleanFilter::make('Traitée')
                 ->setFilterPillValues([
 
