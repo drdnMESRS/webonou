@@ -40,7 +40,6 @@ class FindStudentByYearMatricule
     private function getSelectFields(): array
     {
         return [
-            'demandeact.id as id_demandeact',
             'demande.id as id_demande',
             'demande.*',
             'individu.id as id_individu',
@@ -149,7 +148,7 @@ class FindStudentByYearMatricule
     {
 
         return (new DemandeHebergementDTO)->FromArray([
-            'id' => $demande->id_demandeact,
+            'id' => $demande->id_demande,
             'actual_page' => $this->getPageFromUrl(),
             'individu' => $this->getIndividu($demande),
             'dossierInscriptionAdministrative' => $this->getInscription($demande),
