@@ -98,7 +98,7 @@ class ExportData extends Component
             'columns' => [
                 'NIN', 'Nom', 'Sexe', 'Résidence', 'Pavillon', 'Chambre',
                 'Commune', 'Etablissement', 'Domaine', 'Filière', 'Niveau',
-                'Frais Inscription Payé', 'Paiement Hébergement',
+                'Frais Inscription Payé', 'Paiement Hébergement','Clé Remise',
             ],
             'filename' => 'Etudiants.xlsx',
             'map' => [$this, 'mapEtudiants'],
@@ -121,6 +121,7 @@ public function mapEtudiants($item): array
         'Niveau' => $item->dossier_inscription_administrative?->niveau?->full_name ?? '',
         'Frais Inscription Payé' => $item->dossier_inscription_administrative?->frais_inscription_paye ? 'Oui' : 'Non',
         'Paiement Hébergement' => $item->hebergement_paye ? 'Oui' : 'Non',
+        'Clé Remise' => $item->cles_remis ? 'Oui' : 'Non',
     ];
 }
     private function getResidencesExportInfo(): array
@@ -142,15 +143,16 @@ public function mapEtudiants($item): array
             'nom de residence' => $item->denomination_fr ?? '',
             'Type' => $item->type_nc?->libelle_court_fr ?? '',
             'capacite theorique' => $item->capacite_theorique ?? 0,
-            'capacite reelle' => $item->capacite_reelle ?? 0,
+            'capacite reelle' => $item->capacite_relle ?? 0,
         ];
     }
 
     private function getStatistiquesExportInfo(): array
     {
-        $query = vm_heb_processing_by_ru::query()
-            ->with(['etablissement'])
-            ->whereNotNull('residence');
+     $query = vm_heb_processing_by_ru::query()
+    ->with(['etablissement'])
+    ->whereNotNull('residence')
+    ->orderBy('residence');
 
         return [
             'query' => $query,
