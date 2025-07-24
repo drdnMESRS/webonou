@@ -84,6 +84,7 @@ class FindDemandeById
             'inscription.numero_inscription',
             'inscription.frais_inscription_paye',
             'inscription.est_transfert',
+            'cong.resultat as conge_acad',
             'niveau.libelle_long_lt as niveau_libelle_long_lt',
             'niveau.libelle_long_ar as niveau_libelle_long_ar',
             'domaine.ll_domaine_arabe',
@@ -219,6 +220,7 @@ class FindDemandeById
             'structure_arabe' => $demande->ll_structure_arabe,
             'structure' => $demande->ll_structure_latin,
             'est_transfert' => $demande->est_transfert,
+            'conge_academique' => $demande->conge_acad,
         ];
     }
 

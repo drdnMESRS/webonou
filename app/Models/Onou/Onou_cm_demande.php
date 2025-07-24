@@ -138,6 +138,10 @@ class Onou_cm_demande extends Model
                 ->where([
                     ['demande.id', '=', $id],
                 ])
+                ->leftJoin('cursus.conge_academique as cong', function ($q) {
+                 $q->on('cong.id_dossier_inscription', '=', 'inscription.id')
+                 ->where('cong.resultat', true);
+                 })
                 ->firstOrFail();
         });
     }
