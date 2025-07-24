@@ -220,6 +220,7 @@ class OnouCmDemandeTable extends DataTableComponent
                 ),
             BooleanColumn::make('frais_inscription_paye', 'dossier_inscription_administrative.frais_inscription_paye'),
             BooleanColumn::make('paiment', 'hebergement_paye'),
+            BooleanColumn::make('clés remis', 'cles_remis'),
 
         ];
     }

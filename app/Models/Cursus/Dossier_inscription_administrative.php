@@ -61,10 +61,7 @@ class Dossier_inscription_administrative extends Authenticatable
                 $join->on('individu.id', '=', 'etudiant.id_individu')
                     ->where('individu.active', '=', 1);
             })
-            ->leftJoin('onou.onou_cm_demande as demandeact', function ($join) {
-                $join->on('demandeact.individu', '=', 'individu.id')
-                    ->where('demandeact.annee_academique', '=', (new \App\Actions\Sessions\AcademicYearSession)->get_academic_year());
-            })
+
             ->leftJoin('cursus.dossier_inscription_administrative as inscription', function ($join) {
                 $join->on('inscription.id_dossier_etudiant', '=', 'etudiant.id')
                     ->where('inscription.id_annee_academique', '=', (new \App\Actions\Sessions\AcademicYearSession)->get_academic_year());
@@ -76,7 +73,7 @@ class Dossier_inscription_administrative extends Authenticatable
             ->leftJoin('lmd.domaine_lmd as domaine', 'domaine.id', '=', 'inscription.id_domaine')
             ->leftJoin('lmd.filiere_lmd as filiere', 'filiere.id', '=', 'inscription.id_filiere')
 
-            ->leftJoin('onou.onou_cm_demande as demande', 'demande.individu', '=', 'etudiant.id_individu')
+            ->leftJoin('onou.onou_cm_demande as demande', 'demande.id_dia', '=', 'inscription.id')
 
             ->leftJoin('nc.nomenclature as commune', 'commune.id', '=', 'demande.commune_residence')
             ->leftJoin('lmd.offre_formation as offre', 'offre.id', '=', 'ouverture.id_offre_formation')
