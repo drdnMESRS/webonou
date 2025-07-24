@@ -209,6 +209,10 @@ class DoProcessingCmDemande implements ProcessCmDemande
             ->leftJoin('onou.onou_heb_affectation_etablissement as aff', function ($q) {
                 $q->on('aff.etablissement_affectee', '=', 'dossier_inscription_administrative.id_etablissement');
             })
+             ->leftJoin('cursus.conge_academique as cong', function ($q) {
+                $q->on('cong.id_dossier_inscription', '=', 'dossier_inscription_administrative.id')
+                ->where('cong.resultat',true);
+            })
 
             ->select(
                 'onou.onou_cm_demande.*',
@@ -217,6 +221,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 'individu_detais.civilite as individu_civilite',
                 'dossier_inscription_administrative.numero_inscription as dossier_inscription_numero',
                 'dossier_inscription_administrative.*',
+                'cong.resultat',
             )
             ->where(function ($q) {
                 $q->where('onou_cm_demande.dou', '=', app(RoleManagement::class)->get_active_role_etablissement())

@@ -40,7 +40,6 @@ class FindStudentByYearMatricule
     private function getSelectFields(): array
     {
         return [
-            'demandeact.id as id_demandeact',
             'demande.id as id_demande',
             'demande.*',
             'individu.id as id_individu',
@@ -85,6 +84,7 @@ class FindStudentByYearMatricule
             'inscription.numero_inscription',
             'inscription.frais_inscription_paye',
             'inscription.est_transfert',
+            'cong.resultat as conge_acad',
             'niveau.libelle_long_lt as niveau_libelle_long_lt',
             'niveau.libelle_long_ar as niveau_libelle_long_ar',
             'domaine.ll_domaine_arabe',
@@ -149,7 +149,7 @@ class FindStudentByYearMatricule
     {
 
         return (new DemandeHebergementDTO)->FromArray([
-            'id' => $demande->id_demandeact,
+            'id' => $demande->id_demande,
             'actual_page' => $this->getPageFromUrl(),
             'individu' => $this->getIndividu($demande),
             'dossierInscriptionAdministrative' => $this->getInscription($demande),
@@ -223,6 +223,8 @@ class FindStudentByYearMatricule
             'structure_arabe' => $demande->ll_structure_arabe,
             'structure' => $demande->ll_structure_latin,
             'est_transfert' => $demande->est_transfert,
+            'conge_academique' => $demande->conge_acad,
+
         ];
     }
 

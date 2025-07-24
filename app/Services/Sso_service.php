@@ -10,7 +10,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Throwable;
@@ -44,20 +43,8 @@ class Sso_service
 
         throw_unless(strlen($state) > 0 && $state === $request->input('state'), InvalidArgumentException::class);
 
+        $response = Http::asForm()->withOptions(['verify' => false])->post(env('SSO_SERVER').'/oauth/token', [
 
-
-        if($request->input('code') === session()->get('code_sso_request'))
-        {
-            Log::info('Duplicate code usage');
-            dd('Duplicate code usage');
-        }
-
-        session()->put('code_sso_request', $request->input('code'));
-
-        Log::info('Attempting token exchange for code: ' . $request->input('code'));
-        $startTime = microtime(true); // Start timing
-
-          $response = Http::asForm()->withOptions(['verify' => false])->post(env('SSO_SERVER').'/oauth/token', [
             'client_id' => env('CLIENT_ID'),
             'client_secret' => env('CLIENT_SECRET'),
             'code' => $request->input('code'),
@@ -65,20 +52,9 @@ class Sso_service
             'redirect_uri' => env('REDIRECT_URI'),
         ]);
 
-        $endTime = microtime(true);
-
-        Log::info('Token exchange for code ' . $request->input('code') . ' completed in ' . ($endTime - $startTime) . ' seconds. Response: ');
-
-        if ($response->failed()) {
-            Log::error('Token exchange failed for code: ' . $request->input('code') . ' - Error: ' . json_encode($response->json()));
-        }
-
-
-
         $request->session()->put('access_token', $response->json()['access_token']);
 
         return redirect('/user');
-
     }
 
     // fetch user information and redirect to the home page
