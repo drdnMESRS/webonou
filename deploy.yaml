@@ -27,7 +27,7 @@ tasks:
     - cd: "{{release_path}}"
     - run: "npm install"
     - run: "npm run build"
-    - run: "systemctl restart php-fpm"
+    - run: "systemctl restart  php-fpm"
 
   deploy:
     - deploy:prepare
