@@ -41,7 +41,7 @@
         <div class="relative flex flex-1 flex-col justify-between rounded-t-lg bg-zinc-50 px-8 pb-12 pt-10 dark:bg-zinc-800 lg:rounded-e-lg lg:rounded-t-none lg:p-20 lg:pb-8">
             <div class="mb-36">
                 <div class="flex flex-col items-center justify-center">
-                    <img src="{{url('assets/logo.png')}}" alt="Progres Logo" class="w-auto h-20 mb-4">
+                    <img src="https://progres.mesrs.dz/webfve/images/logo.png" alt="Progres Logo" class="w-auto h-20 mb-4">
                 </div>
             </div>
             <div class="text-center mt-6">
