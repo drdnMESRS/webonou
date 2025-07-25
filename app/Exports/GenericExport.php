@@ -2,8 +2,6 @@
 
 namespace App\Exports;
 
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -13,11 +11,9 @@ class GenericExport implements FromQuery, WithChunkReading, WithHeadings, WithMa
 {
     protected $query;
 
-
     protected array $headings;
 
     protected $mapMethod;
-
 
     public function __construct($query, array $headings, callable $mapMethod)
     {

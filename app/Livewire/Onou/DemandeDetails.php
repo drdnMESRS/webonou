@@ -56,12 +56,12 @@ class DemandeDetails extends Component
 
         $values = ['cles_remis' => ! $this->demande['cles_remis'] || ! $this->demande['cles_remis']];
 
-        if(!$this->demande['frais_hebregement_pay']){
+        if (! $this->demande['frais_hebregement_pay']) {
             session()->flash('error', ' frais dhebergement non paye');
-            $this->redirectRoute($this->demande['rederctpage'], ['page' =>  $this->demande['actual_page']], navigate: true);
+            $this->redirectRoute($this->demande['rederctpage'], ['page' => $this->demande['actual_page']], navigate: true);
+
             return;
         }
-
 
         $this->processCmDemande->process_clesremis($this->demandeId, $values);
 

@@ -98,12 +98,12 @@ class Dossier_inscription_administrative extends Authenticatable
             ->leftJoin('onou.onou_cm_etablissement as choix3', 'choix3.id', '=', 'demande.choix3')
             ->leftJoin('onou.onou_droit_renouvellement_heb as droit_renouvellement', 'droit_renouvellement.id_individu', '=', 'etudiant.id_individu')
             ->leftJoin('cursus.conge_academique as cong', function ($q) {
-                 $q->on('cong.id_dossier_inscription', '=', 'inscription.id')
-                ->where('cong.resultat', true);
-              })
+                $q->on('cong.id_dossier_inscription', '=', 'inscription.id')
+                    ->where('cong.resultat', true);
+            })
             ->where([
-                ['bachelier.annee_bac', '=', $anne_bac],
-                ['bachelier.matricule', '=', $matricule],
+              ['bachelier.annee_bac', '=', $anne_bac],
+              ['bachelier.matricule', '=', $matricule],
             ])
             ->firstOrFail();
 
