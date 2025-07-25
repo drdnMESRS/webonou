@@ -21,8 +21,13 @@ hosts:
       - 'bootstrap/cache'
 
 tasks:
-  build:
-    - run: uptime
+  build-assets:
+    - run: echo "building assets...."
+    - run: ls
+    - cd: "{{release_path}}"
+    - run: "npm install"
+    - run: "npm run build"
+    - run: "systemctl restart php-fpm"
 
   deploy:
     - deploy:prepare
@@ -33,11 +38,9 @@ tasks:
     - artisan:optimize:clear
     - artisan:down
     - deploy:publish
-    - run: echo "Building assets..."
-    - cd: "{{release_path}}"
-    - run: "npm install"
-    - run: "npm run build"
     - artisan:up
+    - deploy:success
 
 after:
+  deploy:success: build-assets
   deploy:failed: deploy:unlock
