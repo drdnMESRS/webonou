@@ -27,7 +27,6 @@ tasks:
     - cd: "{{release_path}}"
     - run: "npm install"
     - run: "npm run build"
-    - run: "systemctl restart  php-fpm"
 
   deploy:
     - deploy:prepare
@@ -40,6 +39,8 @@ tasks:
     - deploy:publish
     - artisan:up
     - deploy:success
+    - deploy:restart_php_fpm:
+        - run: "systemctl restart php-fpm"
 
 after:
   deploy:success: build-assets
