@@ -219,7 +219,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 'individu_detais.civilite as individu_civilite',
                 'dossier_inscription_administrative.numero_inscription as dossier_inscription_numero',
                 'dossier_inscription_administrative.*',
-                'cong.resultat',
+                'cong.demande_validee',
             )
             ->where(function ($q) {
                 $q->where('onou_cm_demande.dou', '=', app(RoleManagement::class)->get_active_role_etablissement())
