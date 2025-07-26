@@ -98,32 +98,33 @@ class ExportData extends Component
             'columns' => [
                 'NIN', 'Nom', 'Sexe', 'Résidence', 'Pavillon', 'Chambre',
                 'Commune', 'Etablissement', 'Domaine', 'Filière', 'Niveau',
-                'Frais Inscription Payé', 'Paiement Hébergement','Clé Remise',
+                'Frais Inscription Payé', 'Paiement Hébergement', 'Clé Remise',
             ],
             'filename' => 'Etudiants.xlsx',
             'map' => [$this, 'mapEtudiants'],
         ];
     }
 
-public function mapEtudiants($item): array
-{
-    return [
-        'NIN' => $item->individu_detais?->identifiant ?? '',
-        'Nom' => $item->individu_detais?->full_name ?? '',
-        'Sexe' => $item->individu_detais?->civilite === 1 ? 'Garçon' : 'Fille',
-        'Résidence' => $item->residenceaffectation?->denomination_fr ?? '',
-        'Pavillon' => $item->affectationlieu?->lieuaffectation?->parent?->libelle_fr ?? '',
-        'Chambre' => $item->affectationlieu?->lieuaffectation?->libelle_fr ?? '',
-        'Commune' => $item->nc_commune_residence?->full_name ?? '',
-        'Etablissement' => $item->dossier_inscription_administrative?->etablissement?->full_name ?? '',
-        'Domaine' => $item->dossier_inscription_administrative?->domaine?->full_name ?? '',
-        'Filière' => $item->dossier_inscription_administrative?->filiere?->full_name ?? '',
-        'Niveau' => $item->dossier_inscription_administrative?->niveau?->full_name ?? '',
-        'Frais Inscription Payé' => $item->dossier_inscription_administrative?->frais_inscription_paye ? 'Oui' : 'Non',
-        'Paiement Hébergement' => $item->hebergement_paye ? 'Oui' : 'Non',
-        'Clé Remise' => $item->cles_remis ? 'Oui' : 'Non',
-    ];
-}
+    public function mapEtudiants($item): array
+    {
+        return [
+            'NIN' => $item->individu_detais?->identifiant ?? '',
+            'Nom' => $item->individu_detais?->full_name ?? '',
+            'Sexe' => $item->individu_detais?->civilite === 1 ? 'Garçon' : 'Fille',
+            'Résidence' => $item->residenceaffectation?->denomination_fr ?? '',
+            'Pavillon' => $item->affectationlieu?->lieuaffectation?->parent?->libelle_fr ?? '',
+            'Chambre' => $item->affectationlieu?->lieuaffectation?->libelle_fr ?? '',
+            'Commune' => $item->nc_commune_residence?->full_name ?? '',
+            'Etablissement' => $item->dossier_inscription_administrative?->etablissement?->full_name ?? '',
+            'Domaine' => $item->dossier_inscription_administrative?->domaine?->full_name ?? '',
+            'Filière' => $item->dossier_inscription_administrative?->filiere?->full_name ?? '',
+            'Niveau' => $item->dossier_inscription_administrative?->niveau?->full_name ?? '',
+            'Frais Inscription Payé' => $item->dossier_inscription_administrative?->frais_inscription_paye ? 'Oui' : 'Non',
+            'Paiement Hébergement' => $item->hebergement_paye ? 'Oui' : 'Non',
+            'Clé Remise' => $item->cles_remis ? 'Oui' : 'Non',
+        ];
+    }
+
     private function getResidencesExportInfo(): array
     {
         $query = Onou_cm_etablissement::query()->with(['etablissement', 'type_nc']);
@@ -149,10 +150,10 @@ public function mapEtudiants($item): array
 
     private function getStatistiquesExportInfo(): array
     {
-     $query = vm_heb_processing_by_ru::query()
-    ->with(['etablissement'])
-    ->whereNotNull('residence')
-    ->orderBy('residence');
+        $query = vm_heb_processing_by_ru::query()
+            ->with(['etablissement'])
+            ->whereNotNull('residence')
+            ->orderBy('residence');
 
         return [
             'query' => $query,

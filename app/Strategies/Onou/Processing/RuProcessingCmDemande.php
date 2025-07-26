@@ -45,9 +45,7 @@ class RuProcessingCmDemande implements ProcessCmDemande
             throw new \InvalidArgumentException('Invalid parameters provided for processing the demand.');
         }
 
-        //TODO check if the student does not pay the fees throw an exception
-
-
+        // TODO check if the student does not pay the fees throw an exception
 
         $data['cles_remis_at'] = now();
         (new UpdateDemandById)->handle($id, $data);
@@ -138,7 +136,10 @@ class RuProcessingCmDemande implements ProcessCmDemande
                 'onou.onou_cm_demande.id_dia',
                 '=',
                 'dossier_inscription_administrative.id'
-            )
+            )->leftJoin('cursus.conge_academique as cong', function ($q) {
+                $q->on('cong.id_dossier_inscription', '=', 'dossier_inscription_administrative.id')
+                    ->where('cong.demande_validee', true);
+            })
             ->select(
                 'onou.onou_cm_demande.*',
                 'individu_detais.identifiant as individu_identifiant',
