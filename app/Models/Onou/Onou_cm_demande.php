@@ -167,6 +167,10 @@ class Onou_cm_demande extends Model
                 ->leftJoin('onou.onou_cm_affectation_individu as affectation', function (JoinClause $join) {
                     $join->on('affectation.id', '=', 'demande.affectation');
                 })
+                ->leftJoin('ppm.ref_compte as ref_comptedou', 'demande.userdou', '=', 'ref_comptedou.id')
+                ->leftJoin('ppm.ref_compte as ref_compteru', 'demande.userru', '=', 'ref_compteru.id')
+                ->leftJoin('ppm.ref_individu as comptedou', 'ref_comptedou.individu', '=', 'comptedou.id')
+                ->leftJoin('ppm.ref_individu as compteru', 'ref_compteru.individu', '=', 'compteru.id')
                 ->leftJoin('onou.onou_cm_lieu as lieu', 'lieu.id', '=', 'affectation.lieu')
                 ->where([
                     ['individu.id', '=', $id],

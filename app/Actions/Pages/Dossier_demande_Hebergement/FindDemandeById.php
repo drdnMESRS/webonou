@@ -167,6 +167,8 @@ class FindDemandeById
             'adressIndividue' => $this->getadressIndividue($demande),
             'cles_remis' => ($demande->cles_remis),
             'cles_remis_at' => ($demande->cles_remis_at) ? Carbon::make($demande->cles_remis_at)->format('d/m/Y H:i') : ' - ',
+
+
         ]);
     }
 
@@ -272,6 +274,8 @@ class FindDemandeById
             'lieu.libelle_fr as chambre',
             'demande.cles_remis',
             'demande.cles_remis_at',
+            \DB::raw("CONCAT(comptedou.nom_latin, ' ', comptedou.prenom_latin) as au_niveau_de_la_dou_traiter_par"),
+            \DB::raw("CONCAT(compteru.nom_latin, ' ', compteru.prenom_latin) as au_niveau_de_la_ru_traiter_par"),
 
         ];
     }
