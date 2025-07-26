@@ -1,6 +1,10 @@
-<div class="flex aspect-square size-8 items-center justify-center rounded-md bg-accent-content text-accent-foreground">
-    <x-app-logo-icon class="size-5 fill-current text-white dark:text-black" />
+<a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
+
+<div class="flex text-center justify-center rounded-md">
+    <img src="https://progres.mesrs.dz/webfve/images/logo.png"
+         alt="Progres Logo"
+         class="h-16 w-48 m-2">
+
 </div>
-<div class="ms-1 grid flex-1 text-start text-sm">
-    <span class="mb-0.5 truncate leading-tight font-semibold">Webonou</span>
-</div>
+</a>
+<hr class=" bg-gray-400 border-1 dark:bg-gray-700">
