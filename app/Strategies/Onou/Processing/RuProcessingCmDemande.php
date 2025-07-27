@@ -201,7 +201,7 @@ class RuProcessingCmDemande implements ProcessCmDemande
         // update the cm_demande with the new affectation ID
         $data = array_merge(
             $data,
-            [
+            [   'traiter_par_ru' => app(RoleManagement::class)->get_active_id(),
                 'approuvee_heb_resid' => true,
                 'date_approuve_heb_resid' => now(),
                 'affectation' => $affectation,

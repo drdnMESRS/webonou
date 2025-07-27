@@ -54,6 +54,8 @@ class Onou_cm_demande extends Model
         'annee_academique',
         'cles_remis',
         'cles_remis_at',
+        'traiter_par_dou',
+        'traiter_par_ru',
     ];
 
     /**
@@ -140,7 +142,7 @@ class Onou_cm_demande extends Model
                 ])
                 ->leftJoin('cursus.conge_academique as cong', function ($q) {
                     $q->on('cong.id_dossier_inscription', '=', 'inscription.id')
-                        ->where('cong.resultat', true);
+                        ->where('cong.resultat_valide', true);
                 })
                 ->firstOrFail();
         });
@@ -167,6 +169,10 @@ class Onou_cm_demande extends Model
                 ->leftJoin('onou.onou_cm_affectation_individu as affectation', function (JoinClause $join) {
                     $join->on('affectation.id', '=', 'demande.affectation');
                 })
+                ->leftJoin('ppm.ref_compte as ref_comptedou', 'demande.traiter_par_dou', '=', 'ref_comptedou.id')
+                ->leftJoin('ppm.ref_compte as ref_compteru', 'demande.traiter_par_ru', '=', 'ref_compteru.id')
+                ->leftJoin('ppm.ref_individu as comptedou', 'ref_comptedou.individu', '=', 'comptedou.id')
+                ->leftJoin('ppm.ref_individu as compteru', 'ref_compteru.individu', '=', 'compteru.id')
                 ->leftJoin('onou.onou_cm_lieu as lieu', 'lieu.id', '=', 'affectation.lieu')
                 ->where([
                     ['individu.id', '=', $id],
