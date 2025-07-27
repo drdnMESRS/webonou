@@ -54,6 +54,8 @@ class Onou_cm_demande extends Model
         'annee_academique',
         'cles_remis',
         'cles_remis_at',
+        'traiter_par_dou',
+        'traiter_par_ru',
     ];
 
     /**

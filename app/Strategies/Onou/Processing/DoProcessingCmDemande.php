@@ -49,6 +49,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
 
         $data = array_merge($data, [
             'dou' => app(RoleManagement::class)->get_active_role_etablissement(),
+            'traiter_par_dou' => app(RoleManagement::class)->get_active_id(),
             'approuvee_heb_dou' => ($action === 'accept') || ($action === 'create'),
             'date_approuve_heb_dou' => now(),
             'affectation' => null,
@@ -68,11 +69,11 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 'id_dia' => $data['id_dia'],
                 'individu' => $data['id_individu'],
             ]);
+
             $demand = (new CreateDemand)->handle($data);
 
             return true;
         } else {
-
             $demand = (new UpdateDemandById)->handle($id, $data);
             if (isset($demand['affectation'])) {
             }
