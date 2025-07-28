@@ -19,6 +19,8 @@ class OnouCmDemandeTable extends DataTableComponent
 {
     private ProcessCmDemande $processCmDemande;
 
+    public int $typestudent = 1;
+
     public function __construct()
     {
         $this->processCmDemande = new ProcessCmDemandeContext;
@@ -26,17 +28,31 @@ class OnouCmDemandeTable extends DataTableComponent
 
     public function builder(): Builder
     {
+        if ($this->getAppliedFilterWithValue('typestudent') == 2)
+            return $this->processCmDemande->PostGraduation();
+
         return $this->processCmDemande->builder();
     }
 
     public function filters(): array
     {
         return [
+
             'filiere' => SelectFilter::make('filiere')
                 ->options($this->processCmDemande->getFiliereFilterOptions())
                 ->filter(function (Builder $builder, $value) {
                     return $builder->where('dossier_inscription_administrative.id_filiere', $value);
                 })->hiddenFromAll(),
+
+            'typestudent' => SelectFilter::make('typestudent')
+                ->options([
+                    1 => 'Graduation',
+                    2 => 'Post Graduation',
+
+                ])
+                ->filter(function (Builder $builder, $value) {
+                    return $builder;
+                }),
             'civilite' => SelectFilter::make('Civilité')
                 ->options([
                     1 => 'Garçon',
@@ -94,10 +110,11 @@ class OnouCmDemandeTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setTrAttributes(fn ($row) => $this->getTrAttributesConfig($row))
-            ->setTdAttributes(fn ($column, $row) => $this->getTdAttributesConfig($row))
+            ->setTrAttributes(fn($row) => $this->getTrAttributesConfig($row))
+            ->setTdAttributes(fn($column, $row) => $this->getTdAttributesConfig($row))
             ->setLoadingPlaceholderEnabled()
-            ->setLoadingPlaceholderContent('<div class="flex items-center justify-center h-64">
+            ->setLoadingPlaceholderContent(
+                '<div class="flex items-center justify-center h-64">
                     <div class="animate-spin rounded-full h-12 w-12 border-b-3 border-gray-900"></div>
                 </div>'
             );
@@ -150,8 +167,21 @@ class OnouCmDemandeTable extends DataTableComponent
         return [
             Column::make('NIN', 'individu_detais.identifiant')
                 ->searchable(),
-            Column::make('Numero inscription', 'dossier_inscription_administrative.numero_inscription')
-                ->searchable(),
+
+            // Column::make('Numero inscription', 'dossier_inscription_administrative.numero_inscription')
+            //     ->searchable(),
+            Column::make('Numéro inscription', 'dossier_inscription_administrative.numero_inscription')
+                ->format(
+                    fn($value, $row) =>
+                    $row->suiv_fichier_national_doctorant->numero_inscription ?? $row->dossier_inscription_administrative->numero_inscription ??  '-'
+                )->searchable(),
+            // Column::make('Numero inscriptiondc', 'suiv_fichier_national_doctorant.numero_inscription')
+            // ->format(fn($value, $row) => $value ?? '-'),
+            //->searchable(),
+            //        Column::make('Numéro inscription')
+            // ->format(fn($value, $row) =>
+            //     $row->suiv_fichier_national_doctorant?->numero_inscription ?? '-'
+            // ),
             Column::make('Individu', 'individu_detais.nom_latin')
                 ->format(
                     function ($value, $row, Column $column) {

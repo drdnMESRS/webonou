@@ -39,7 +39,7 @@ class Sso_service
     public function callback(Request $request)
     {
 
-        $state = $request->session()->get('state');
+        $state = $request->session()->pull('state');
 
         throw_unless(strlen($state) > 0 && $state === $request->input('state'), InvalidArgumentException::class);
 

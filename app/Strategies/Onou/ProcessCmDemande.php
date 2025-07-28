@@ -25,6 +25,8 @@ interface ProcessCmDemande
     public function getFormView(): array;
 
     public function builder(): Builder;
+    public function Graduation(): Builder;
+    public function PostGraduation(): Builder;
 
     public function rules(?string $action = 'accept'): array;
 }
