@@ -3,15 +3,11 @@
 namespace App\Actions\Pages\Dossier_demande_Hebergement\Common;
 
 use App\DTO\Onou\DemandeHebergementDTO;
-use App\Models\Onou\Onou_cm_demande;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FindDemande
 {
-
-
     public function getSelectFields(): array
     {
         return [
@@ -119,7 +115,7 @@ class FindDemande
         ];
     }
 
-    public function mapToDTO($demande, $historique, $historique_dia=null): DemandeHebergementDTO
+    public function mapToDTO($demande, $historique, $historique_dia = null): DemandeHebergementDTO
     {
 
         return (new DemandeHebergementDTO)->FromArray([
@@ -129,20 +125,19 @@ class FindDemande
             'individu' => $this->getIndividu($demande),
             'dossierInscriptionAdministrative' => $this->getInscription($demande),
             'demandeHebergement' => [
-                 __('views/livewire/onou/forms/demande_details.1er_choix_arabe') => $demande->choix1_arabe ?? ' - ',
-                 __('views/livewire/onou/forms/demande_details.1er_choix') => $demande->choix1 ?? ' - ',
-                 __('views/livewire/onou/forms/demande_details.2er_choix_arabe') => $demande->choix2_arabe ?? ' - ',
-                 __('views/livewire/onou/forms/demande_details.2er_choix') => $demande->choix2 ?? ' - ',
-                 __('views/livewire/onou/forms/demande_details.3er_choix_arabe') => $demande->choix3_arabe ?? ' - ',
-                 __('views/livewire/onou/forms/demande_details.3er_choix') => $demande->choix3 ?? ' - ',
-                 __('views/livewire/onou/forms/demande_details.date_demande') => ($demande->date_demande_heb) ? Carbon::make($demande->date_demande_heb)->format('d/m/Y') : ' - ',
+                __('views/livewire/onou/forms/demande_details.1er_choix_arabe') => $demande->choix1_arabe ?? ' - ',
+                __('views/livewire/onou/forms/demande_details.1er_choix') => $demande->choix1 ?? ' - ',
+                __('views/livewire/onou/forms/demande_details.2er_choix_arabe') => $demande->choix2_arabe ?? ' - ',
+                __('views/livewire/onou/forms/demande_details.2er_choix') => $demande->choix2 ?? ' - ',
+                __('views/livewire/onou/forms/demande_details.3er_choix_arabe') => $demande->choix3_arabe ?? ' - ',
+                __('views/livewire/onou/forms/demande_details.3er_choix') => $demande->choix3 ?? ' - ',
+                __('views/livewire/onou/forms/demande_details.date_demande') => ($demande->date_demande_heb) ? Carbon::make($demande->date_demande_heb)->format('d/m/Y') : ' - ',
             ],
             'historiqueHebergement' => $historique->toArray(),
             'historiqueInscription' => $historique_dia?->toArray() ?? [],
             'adressIndividue' => $this->getadressIndividue($demande),
             'cles_remis' => ($demande->cles_remis),
             'cles_remis_at' => ($demande->cles_remis_at) ? Carbon::make($demande->cles_remis_at)->format('d/m/Y H:i') : ' - ',
-
 
         ]);
     }
@@ -162,7 +157,7 @@ class FindDemande
             __('views/livewire/onou/forms/demande_details.lieu_naissance') => $demande->lieu_naissance,
             __('views/livewire/onou/forms/demande_details.nationalite_arabe') => $demande->nationalite_arabe ?? ' ',
             __('views/livewire/onou/forms/demande_details.nationalite') => $demande->nationalite ?? ' ',
-            __('views/livewire/onou/forms/demande_details.civilite') => $demande->civilite==1 ?__('views/livewire/onou/forms/demande_details.garcon'):__('views/livewire/onou/forms/demande_details.fille'),
+            __('views/livewire/onou/forms/demande_details.civilite') => $demande->civilite == 1 ? __('views/livewire/onou/forms/demande_details.garcon') : __('views/livewire/onou/forms/demande_details.fille'),
             __('views/livewire/onou/forms/demande_details.rfid') => $demande->id_carde,
 
         ];
@@ -255,27 +250,29 @@ class FindDemande
 
         ];
     }
-public function getHistoriqueHebergementLabels(): array
-{
-    return [
-        'renouvellement' => __('views/livewire/onou/forms/demande_details.renouvellement'),
-        'residance_arabe' => __('views/livewire/onou/forms/demande_details.residance_arabe'),
-        'residance' => __('views/livewire/onou/forms/demande_details.residance'),
-        'dou_arabe' => __('views/livewire/onou/forms/demande_details.dou_arabe'),
-        'dou' => __('views/livewire/onou/forms/demande_details.dou'),
-        'decision_du_DCC' => __('views/livewire/onou/forms/demande_details.decision_du_DCC'),
-        'traiter_par_DCC_le' => __('views/livewire/onou/forms/demande_details.traiter_par_DCC_le'),
-        'decision_du_Residence' => __('views/livewire/onou/forms/demande_details.decision_du_Residence'),
-        'traiter_par_Resi_le' => __('views/livewire/onou/forms/demande_details.traiter_par_Resi_le'),
-        'hebergement_paye' => __('views/livewire/onou/forms/demande_details.payment_hebergement'),
-        'date_de_paiment' => __('views/livewire/onou/forms/demande_details.date_de_paiment'),
-        'chambre' => __('views/livewire/onou/forms/demande_details.chambre'),
-        'cles_remis' => __('views/livewire/onou/forms/demande_details.cle_remise'),
-        'cles_remis_at' => __('views/livewire/onou/forms/demande_details.cles_remis_at'),
-        'au_niveau_de_la_dou_traiter_par' => __('views/livewire/onou/forms/demande_details.traiter_par_dou'),
-        'au_niveau_de_la_ru_traiter_par' => __('views/livewire/onou/forms/demande_details.traiter_par_resid'),
-    ];
-}
+
+    public function getHistoriqueHebergementLabels(): array
+    {
+        return [
+            'renouvellement' => __('views/livewire/onou/forms/demande_details.renouvellement'),
+            'residance_arabe' => __('views/livewire/onou/forms/demande_details.residance_arabe'),
+            'residance' => __('views/livewire/onou/forms/demande_details.residance'),
+            'dou_arabe' => __('views/livewire/onou/forms/demande_details.dou_arabe'),
+            'dou' => __('views/livewire/onou/forms/demande_details.dou'),
+            'decision_du_DCC' => __('views/livewire/onou/forms/demande_details.decision_du_DCC'),
+            'traiter_par_DCC_le' => __('views/livewire/onou/forms/demande_details.traiter_par_DCC_le'),
+            'decision_du_Residence' => __('views/livewire/onou/forms/demande_details.decision_du_Residence'),
+            'traiter_par_Resi_le' => __('views/livewire/onou/forms/demande_details.traiter_par_Resi_le'),
+            'hebergement_paye' => __('views/livewire/onou/forms/demande_details.payment_hebergement'),
+            'date_de_paiment' => __('views/livewire/onou/forms/demande_details.date_de_paiment'),
+            'chambre' => __('views/livewire/onou/forms/demande_details.chambre'),
+            'cles_remis' => __('views/livewire/onou/forms/demande_details.cle_remise'),
+            'cles_remis_at' => __('views/livewire/onou/forms/demande_details.cles_remis_at'),
+            'au_niveau_de_la_dou_traiter_par' => __('views/livewire/onou/forms/demande_details.traiter_par_dou'),
+            'au_niveau_de_la_ru_traiter_par' => __('views/livewire/onou/forms/demande_details.traiter_par_resid'),
+        ];
+    }
+
     public function getSelectFieldsHisInc(): array
     {
         return [
@@ -309,9 +306,6 @@ public function getHistoriqueHebergementLabels(): array
             'inscription.frais_inscription_paye as frais_inscription_paye',
         ];
     }
-
-
-
 
     /**
      * @param  $queryParams

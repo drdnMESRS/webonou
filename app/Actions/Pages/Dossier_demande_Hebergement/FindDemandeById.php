@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Actions\Pages\Dossier_demande_Hebergement;
+
 use App\Actions\Pages\Dossier_demande_Hebergement\Common\FindDemande;
-use App\DTO\Onou\DemandeHebergementDTO;
 use App\Models\Onou\Onou_cm_demande;
-use Carbon\Carbon;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FindDemandeById extends FindDemande
@@ -22,11 +21,11 @@ class FindDemandeById extends FindDemande
 
         $historique_heb = Onou_cm_demande::fetchAllDemandeByIdividu($demande->id_individu, $this->getSelectFieldsHis());
         $historique_translated = $historique_heb->map(function ($row) {
-             $labels = $this->getHistoriqueHebergementLabels();
+            $labels = $this->getHistoriqueHebergementLabels();
             $entry = [];
 
             foreach ($labels as $key => $label) {
-            $entry[$label] = $row->$key ?? null;
+                $entry[$label] = $row->$key ?? null;
             }
 
             return $entry;
@@ -47,6 +46,4 @@ class FindDemandeById extends FindDemande
             throw new \InvalidArgumentException('Invalid demande ID provided');
         }
     }
-
-
 }

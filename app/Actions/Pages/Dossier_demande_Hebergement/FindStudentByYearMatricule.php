@@ -2,14 +2,9 @@
 
 namespace App\Actions\Pages\Dossier_demande_Hebergement;
 
-use App\DTO\Onou\DemandeHebergementDTO;
+use App\Actions\Pages\Dossier_demande_Hebergement\Common\FindDemande;
 use App\Models\Cursus\Dossier_inscription_administrative;
 use App\Models\Onou\Onou_cm_demande;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
-use App\Actions\Pages\Dossier_demande_Hebergement\Common\FindDemande;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 
 class FindStudentByYearMatricule extends FindDemande
 {
@@ -34,11 +29,11 @@ class FindStudentByYearMatricule extends FindDemande
         $historique_heb = Onou_cm_demande::fetchAllDemandeByIdividu($student->id_individu, $this->getSelectFieldsHis());
 
         $historique_translated = $historique_heb->map(function ($row) {
-             $labels = $this->getHistoriqueHebergementLabels();
+            $labels = $this->getHistoriqueHebergementLabels();
             $entry = [];
 
             foreach ($labels as $key => $label) {
-            $entry[$label] = $row->$key ?? null;
+                $entry[$label] = $row->$key ?? null;
             }
 
             return $entry;
@@ -50,8 +45,4 @@ class FindStudentByYearMatricule extends FindDemande
 
         return $this->mapToDTO($student, $historique_heb, $historique_dia, $type)->toArray();
     }
-
-
-
-
 }

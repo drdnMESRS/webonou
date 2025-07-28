@@ -45,7 +45,6 @@ class OnouCmDemandeTable extends DataTableComponent
                     return $builder->where('dossier_inscription_administrative.id_filiere', $value);
                 })->hiddenFromAll(),
 
-
             'typestudent' => SelectFilter::make('typestudent')
                 ->options([
                     1 => 'Graduation',
@@ -174,7 +173,6 @@ class OnouCmDemandeTable extends DataTableComponent
                 ->format(
                     fn ($value, $row) => $row->suiv_fichier_national_doctorant->numero_inscription ?? $row->dossier_inscription_administrative->numero_inscription ?? '-'
                 )->searchable(),
-      
 
             Column::make(__('livewire/tables/onou_cm_demande_table.individu'), 'individu_detais.nom_latin')
                 ->format(

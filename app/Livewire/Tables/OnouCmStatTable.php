@@ -51,7 +51,7 @@ class OnouCmStatTable extends DataTableComponent
     public function columns(): array
     {
         return [
-                  Column::make(__('livewire/tables/onou_cm_stat_table.stricture'), 'residence')
+            Column::make(__('livewire/tables/onou_cm_stat_table.stricture'), 'residence')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->etablissement->full_name ?? '';
