@@ -3,6 +3,7 @@
 namespace App\Actions\Pages\Dossier_demande_Hebergement\Common;
 
 use App\DTO\Onou\DemandeHebergementDTO;
+use App\Models\Onou\Onou_cm_demande;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -320,5 +321,25 @@ class FindDemande
         }
 
         return 1;
+    }
+
+
+    /**
+     * @param $historique_heb
+     * @return mixed
+     */
+    public function getTranslated($historique_heb)
+    {
+        $historique_translated = $historique_heb->map(function ($row) {
+            $labels = $this->getHistoriqueHebergementLabels();
+            $entry = [];
+
+            foreach ($labels as $key => $label) {
+                $entry[$label] = $row->$key ?? null;
+            }
+
+            return $entry;
+        });
+        return $historique_translated;
     }
 }

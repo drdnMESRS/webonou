@@ -17,20 +17,10 @@ class FindDemandeById extends FindDemande
         if (is_null($demande)) {
             throw new NotFoundHttpException('Demande not found with ID: '.$id);
         }
-        // Fetching the historical data for the individual
 
-        $historique_heb = Onou_cm_demande::fetchAllDemandeByIdividu($demande->id_individu, $this->getSelectFieldsHis());
-        $historique_translated = $historique_heb->map(function ($row) {
-            $labels = $this->getHistoriqueHebergementLabels();
-            $entry = [];
-
-            foreach ($labels as $key => $label) {
-                $entry[$label] = $row->$key ?? null;
-            }
-
-            return $entry;
-        });
-        $result = (new CheckConformeHeb(collect($demande)->toArray()))->handle();
+        $historique_translated = $this->fetchingTheHistoricalDataForTheIndividual($demande);
+        // Check if the demand is compliant
+        (new CheckConformeHeb(collect($demande)->toArray()))->handle();
 
         if (! $demande) {
             throw new NotFoundHttpException('Demande not found with ID: '.$id);
@@ -46,4 +36,17 @@ class FindDemandeById extends FindDemande
             throw new \InvalidArgumentException('Invalid demande ID provided');
         }
     }
+
+    /**
+     * @param $demande
+     * @return mixed
+     */
+    public function fetchingTheHistoricalDataForTheIndividual($demande)
+    {
+        $historique_heb = Onou_cm_demande::fetchAllDemandeByIdividu($demande->id_individu, $this->getSelectFieldsHis());
+
+        return $this->getTranslated($historique_heb);
+    }
+
+
 }

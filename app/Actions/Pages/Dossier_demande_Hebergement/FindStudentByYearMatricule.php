@@ -26,23 +26,23 @@ class FindStudentByYearMatricule extends FindDemande
 
         // Fetching the historical data for the individual
 
-        $historique_heb = Onou_cm_demande::fetchAllDemandeByIdividu($student->id_individu, $this->getSelectFieldsHis());
-
-        $historique_translated = $historique_heb->map(function ($row) {
-            $labels = $this->getHistoriqueHebergementLabels();
-            $entry = [];
-
-            foreach ($labels as $key => $label) {
-                $entry[$label] = $row->$key ?? null;
-            }
-
-            return $entry;
-        });
+        $historique_translated = $this->fetchingTheHistoricalDataForTheIndividual($student);
 
         $historique_dia = Dossier_inscription_administrative::fetchAllInscrptionByIdividu($student->id_individu, $this->getSelectFieldsHisInc());
 
-        $result = (new CheckConformeHeb(collect($student)->toArray()))->handle();
+        (new CheckConformeHeb(collect($student)->toArray()))->handle();
 
-        return $this->mapToDTO($student, $historique_heb, $historique_dia, $type)->toArray();
+        return $this->mapToDTO($student, $historique_translated, $historique_dia, $type)->toArray();
+    }
+
+    /**
+     * @param object $student
+     * @return mixed
+     */
+    public function fetchingTheHistoricalDataForTheIndividual(object $student)
+    {
+        $historique_heb = Onou_cm_demande::fetchAllDemandeByIdividu($student->id_individu, $this->getSelectFieldsHis());
+
+        return $this->getTranslated($historique_heb);
     }
 }
