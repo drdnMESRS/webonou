@@ -87,7 +87,8 @@ class ProcessCmDemande extends Component
             $this->processCmDemande->field($this->action) => $this->field_update,
         ];
         if ($this->action === 'create') {
-            $values['id_dia'] = $this->data['id_dia'];
+            $values['id_dia'] = $this->data['id_dia']??null;
+            $values['id_fnd'] = $this->data['id_fnd']??null;
             $values['id_individu'] = $this->data['id_individu'];
 
         }

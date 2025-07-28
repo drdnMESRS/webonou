@@ -78,7 +78,6 @@ class CheckRights extends Alerts
             $this->status = 'danger';
             $this->message = 'Etudiant a un retard scholaire dan un niveau + de 2 redeblement, il n a pas le droit a renouvler';
             $this->flush_alert();
-
         } else {
             $this->status = 'success';
             $this->type = 'checkretard_niveau';
@@ -91,13 +90,25 @@ class CheckRights extends Alerts
             $this->status = 'danger';
             $this->message = 'L’étudiant a une ancienne demande avec clés non remises, il n’a pas le droit de renouveler.';
             $this->flush_alert();
-
         } else {
             $this->status = 'success';
             $this->type = 'checkcles_remis';
             $this->message = 'Situation hebergement réguliere';
             $this->flush_alert();
         }
+
+        if (isset($demande['id_suivi_fnd'])) {
+            $this->status = 'success';
+            $this->type = 'checkreinscription_doctort';
+            $this->message = 'Etudiant inscrie pour l\année universitaire';
+            $this->flush_alert();
+        } else {
+            $this->status = 'danger';
+            $this->type = 'checkreinscription_doctort';
+            $this->message = 'Aucune reinscription doctorat est effectué pour cette année universitaire';
+            $this->flush_alert();
+        }
+
         $existing = session('checks', []);
         $existing[$this->type] = [
             'status' => $this->status,

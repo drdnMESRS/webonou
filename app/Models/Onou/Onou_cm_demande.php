@@ -3,6 +3,8 @@
 namespace App\Models\Onou;
 
 use App\Models\Cursus\Dossier_inscription_administrative;
+use App\Models\doctorat\Fichier_national_doctorant;
+use App\Models\doctorat\Suiv_fichier_national_doctorant;
 use App\Models\Nc\Nomenclature;
 use App\Models\Ppm\Ref_Individu;
 use App\Models\Scopes\Dou\AcademicyearScope;
@@ -47,6 +49,7 @@ class Onou_cm_demande extends Model
         'affectation',
         'individu',
         'id_dia',
+        'id_fnd',
         'observ_heb_dou',
         'approuvee_heb_resid',
         'date_approuve_heb_resid',
@@ -79,6 +82,21 @@ class Onou_cm_demande extends Model
     {
         return $this->belongsTo(Dossier_inscription_administrative::class, 'id_dia', 'id');
     }
+    public function fichier_national_doctorant(): BelongsTo
+    {
+        return $this->belongsTo(Fichier_national_doctorant::class, 'id_fnd', 'id');
+    }
+    public function suiv_fichier_national_doctorant()
+{
+    return $this->hasOneThrough(
+Suiv_fichier_national_doctorant::class,
+       Fichier_national_doctorant::class,
+        'id',           //   FichierNationalDoctorant
+        'id_fnd',       //   SuiviFichierNationalDoctorant
+        'id_fnd',       //   OnouCmDemande
+        'id'            //   FichierNationalDoctorant
+    );
+}
 
     /**
      * Relationship belongs to Nomenclature on commune_residence.

@@ -29,7 +29,7 @@ class SearchByYearMatricule extends Component
 
     public $rules;
 
-       public $type_etudiant = 'graduation';
+       public int $type_etudiant = 1;
     protected $messages = [
         'annee_bac.required' => 'L\'année du bac est obligatoire.',
         'annee_bac.digits' => 'L\'année du bac doit être composée de 4 chiffres.',
@@ -51,12 +51,20 @@ class SearchByYearMatricule extends Component
     {
         $this->dispatch('loader-show');
         $this->validate();
+
         try {
-            $this->demande = (new FindStudentByYearMatricule)->handle($this->annee_bac, $this->matricule_bac);
+              $this->showDtudentDetails = false;
+                $this->demande = [];
+                
+         //   dd($this->type_etudiant);
+            $this->demande = (new FindStudentByYearMatricule)->handle($this->annee_bac, $this->matricule_bac,$this->type_etudiant);
+
             $this->demande['rederctpage'] = 'diaHeb.create';
             $this->showDtudentDetails = true;
         } catch (\Exception $e) {
+
             session()->flash('error', 'Validation failed: ' . $e->getMessage());
+              $this->redirectRoute('diaHeb.create');
         }
     }
 

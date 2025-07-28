@@ -9,15 +9,15 @@
         <div class="flex items-center space-x-6">
             {{-- زر راديو عادي --}}
             <label class="cursor-pointer flex items-center space-x-2">
-                <input type="radio" wire:model.defer="type_etudiant" value="graduation"
+                <input type="radio" wire:model.defer="type_etudiant" value=1
                     class="h-5 w-5 border-gray-300 text-blue-500 focus:ring-blue-500"
-                    checked="{{ $type_etudiant === 'graduation' ? 'checked' : '' }}">
+                    checked="{{ $type_etudiant === 1 ? 'checked' : '' }}">
                 <span class="text-sm font-medium text-gray-700">Graduation</span>
             </label>
 
             {{-- زر راديو دكتوراه --}}
             <label class="cursor-pointer flex items-center space-x-2">
-                <input type="radio" wire:model.defer="type_etudiant" value="post-graduation"
+                <input type="radio" wire:model.defer="type_etudiant" value=2
                     class="h-5 w-5 border-gray-300 text-green-500 focus:ring-green-500">
                 <span class="text-sm font-medium text-gray-700">Post Graduation</span>
             </label>
@@ -106,7 +106,13 @@
                         ],
                     ],
                 ],
-
+      [
+                    'id' => 'doctorant',
+                    'title' => __('Détails sur doctorat'),
+                    'content' => [
+                        ['view' => 'pages.dossier-hebergement.partials.doctorat', 'data' => ['demande' => $demande]],
+                    ],
+                ],
                 [
                     'id' => 'adress',
                     'title' => __('Détails sur l\'adresse de l\'individu'),
