@@ -84,21 +84,23 @@ class Onou_cm_demande extends Model
     {
         return $this->belongsTo(Dossier_inscription_administrative::class, 'id_dia', 'id');
     }
+
     public function fichier_national_doctorant(): BelongsTo
     {
         return $this->belongsTo(Fichier_national_doctorant::class, 'id_fnd', 'id');
     }
+
     public function suiv_fichier_national_doctorant()
-{
-    return $this->hasOneThrough(
-Suiv_fichier_national_doctorant::class,
-       Fichier_national_doctorant::class,
-        'id',           //   FichierNationalDoctorant
-        'id_fnd',       //   SuiviFichierNationalDoctorant
-        'id_fnd',       //   OnouCmDemande
-        'id'            //   FichierNationalDoctorant
-    );
-}
+    {
+        return $this->hasOneThrough(
+            Suiv_fichier_national_doctorant::class,
+            Fichier_national_doctorant::class,
+            'id',           //   FichierNationalDoctorant
+            'id_fnd',       //   SuiviFichierNationalDoctorant
+            'id_fnd',       //   OnouCmDemande
+            'id'            //   FichierNationalDoctorant
+        );
+    }
 
     /**
      * Relationship belongs to Nomenclature on commune_residence.
@@ -160,7 +162,7 @@ Suiv_fichier_national_doctorant::class,
                 ])
                 ->leftJoin('cursus.conge_academique as cong', function ($q) {
                     $q->on('cong.id_dossier_inscription', '=', 'inscription.id')
-                        ->where('cong.resultat_valide', true);
+                        ->where('cong.demande_validee', true);
                 })
                 ->firstOrFail();
         });

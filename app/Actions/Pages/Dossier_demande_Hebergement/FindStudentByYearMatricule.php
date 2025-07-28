@@ -16,14 +16,14 @@ class FindStudentByYearMatricule
         //  $this->validateYearMAtricule($annee_bac,$matricule);
         $student = null;
 
-        if ($type === 1)
+        if ($type === 1) {
             $student = Dossier_inscription_administrative::fetchDemandeByYearMatricule($annee_bac, $matricule, $this->getSelectFields());
-        else {
+        } else {
             $student = Dossier_inscription_administrative::FindByYearMatriculePostGraduation($annee_bac, $matricule, $this->getSelectFieldsDoctora());
         }
 
         if (is_null($student)) {
-            throw new \Exception('Student not found with Year and Matricule: ' . $annee_bac . ' ' . $matricule);
+            throw new \Exception('Student not found with Year and Matricule: '.$annee_bac.' '.$matricule);
         }
 
         // Fetching the historical data for the individual
@@ -32,9 +32,9 @@ class FindStudentByYearMatricule
 
         $historique_dia = Dossier_inscription_administrative::fetchAllInscrptionByIdividu($student->id_individu, $this->getSelectFieldsHisInc());
 
+        $result = (new CheckConformeHeb(collect($student)->toArray()))->handle();
 
-        $result   = (new CheckConformeHeb(collect($student)->toArray()))->handle();
-        return $this->mapToDTO($student, $historique_heb, $historique_dia,$type)->toArray();
+        return $this->mapToDTO($student, $historique_heb, $historique_dia, $type)->toArray();
     }
 
     // private function validateYearMAtricule(string $anne_bac,string $matricule): void
@@ -248,15 +248,15 @@ class FindStudentByYearMatricule
         ];
     }
 
-    private function mapToDTO($demande, $historique, $historique_dia,$typesearch): DemandeHebergementDTO
+    private function mapToDTO($demande, $historique, $historique_dia, $typesearch): DemandeHebergementDTO
     {
 
         return (new DemandeHebergementDTO)->FromArray([
             'id' => $demande->id_demande,
             'actual_page' => $this->getPageFromUrl(),
             'individu' => $this->getIndividu($demande),
-            'dossierInscriptionAdministrative' => $typesearch==1?$this->getInscription($demande):[],
-            'dossierInscriptionDoctorant' =>$typesearch==2? $this->getDoctorant($demande):[],
+            'dossierInscriptionAdministrative' => $typesearch == 1 ? $this->getInscription($demande) : [],
+            'dossierInscriptionDoctorant' => $typesearch == 2 ? $this->getDoctorant($demande) : [],
             'demandeHebergement' => [
                 '1er_choix_arabe' => $demande->choix1_arabe ?? ' - ',
                 '1er_choix' => $demande->choix1 ?? ' - ',
@@ -269,8 +269,8 @@ class FindStudentByYearMatricule
             'historiqueHebergement' => $historique->toArray(),
             'historiqueInscription' => $historique_dia->toArray(),
             'adressIndividue' => $this->getadressIndividue($demande),
-            'id_dia' => $demande->id_dia?? null,
-            'id_fnd' => $demande->id_fnd?? null,
+            'id_dia' => $demande->id_dia ?? null,
+            'id_fnd' => $demande->id_fnd ?? null,
             'id_individu' => $demande->id_individu,
             'cles_remis' => ($demande->cles_remis) ?? null,
             'cles_remis_at' => ($demande->cles_remis_at) ? Carbon::make($demande->cles_remis_at)->format('d/m/Y H:i') : ' - ',
@@ -304,8 +304,8 @@ class FindStudentByYearMatricule
             'frais_inscription_paye' => $demande->frais_inscription_paye ?? '',
 
             // 'code_etablissement' => $demande->etab_identifiant,
-            'etablissement_arabe' => ($demande->etab_identifiant ?? '') . ' - ' . ($demande->ll_etablissement_arabe ?? ''),
-            'etablissement' => ($demande->etab_identifiant ?? '') . ' - ' . ($demande->ll_etablissement_latin ?? ''),
+            'etablissement_arabe' => ($demande->etab_identifiant ?? '').' - '.($demande->ll_etablissement_arabe ?? ''),
+            'etablissement' => ($demande->etab_identifiant ?? '').' - '.($demande->ll_etablissement_latin ?? ''),
 
             // 'offre_code' => $demande->code,
             'offre_de_formation' => $demande->libelle_long_fr ?? '',
@@ -344,8 +344,8 @@ class FindStudentByYearMatricule
             'frais_inscription_paye' => $demande->frais_inscription_paye ?? '',
 
             // 'code_etablissement' => $demande->etab_identifiant,
-            'etablissement_arabe' => ($demande->etab_identifiant ?? '') . ' - ' . ($demande->ll_etablissement_arabe ?? ''),
-            'etablissement' => ($demande->etab_identifiant ?? '') . ' - ' . ($demande->ll_etablissement_latin ?? ''),
+            'etablissement_arabe' => ($demande->etab_identifiant ?? '').' - '.($demande->ll_etablissement_arabe ?? ''),
+            'etablissement' => ($demande->etab_identifiant ?? '').' - '.($demande->ll_etablissement_latin ?? ''),
 
             // 'offre_code' => $demande->code,
             'domaine_arabe' => $demande->ll_domaine_arabe ?? '',
@@ -359,8 +359,8 @@ class FindStudentByYearMatricule
 
             'specialite_arabe' => $demande->ll_specialite_arabe ?? '',
             'specialite' => $demande->ll_specialite ?? '',
-            'situation_arabe'=>$demande->situation_libelle_long_arabe,
-            'situation_latin'=>$demande->situation_libelle_long_latin,
+            'situation_arabe' => $demande->situation_libelle_long_arabe,
+            'situation_latin' => $demande->situation_libelle_long_latin,
             'commune_arabe' => $demande->commune_libelle_long_ar ?? '',
             'commune' => $demande->commune_libelle_long_f ?? '',
 
@@ -371,11 +371,12 @@ class FindStudentByYearMatricule
             // 'est_transfert' => $demande->est_transfert,
         ];
     }
+
     private function full_name($demande, ?array $columns): string
     {
         $name = '';
         foreach ($columns as $column) {
-            $name .= ' ' . $demande->$column;
+            $name .= ' '.$demande->$column;
         }
 
         return $name;
@@ -458,7 +459,6 @@ class FindStudentByYearMatricule
             'inscription.est_transfert as est_transfert ',
             'cong.resultat_valide as conge_acad',
             'inscription.frais_inscription_paye as frais_inscription_paye',
-
 
         ];
     }

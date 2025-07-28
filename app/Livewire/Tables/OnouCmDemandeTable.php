@@ -28,8 +28,9 @@ class OnouCmDemandeTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        if ($this->getAppliedFilterWithValue('typestudent') == 2)
+        if ($this->getAppliedFilterWithValue('typestudent') == 2) {
             return $this->processCmDemande->PostGraduation();
+        }
 
         return $this->processCmDemande->builder();
     }
@@ -85,11 +86,11 @@ class OnouCmDemandeTable extends DataTableComponent
             'traiter' => BooleanFilter::make('Traitée')
                 ->setFilterPillValues([
 
-                                true => 'Active',
+                    true => 'Active',
 
-                                false => 'Inactive',
+                    false => 'Inactive',
 
-                            ])
+                ])
                 ->filter(function (Builder $builder, bool $processed) {
                     if ($processed) {
                         if (app(RoleManagement::class)->get_active_type_etablissement() === 'DO') {
@@ -110,8 +111,8 @@ class OnouCmDemandeTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setTrAttributes(fn($row) => $this->getTrAttributesConfig($row))
-            ->setTdAttributes(fn($column, $row) => $this->getTdAttributesConfig($row))
+            ->setTrAttributes(fn ($row) => $this->getTrAttributesConfig($row))
+            ->setTdAttributes(fn ($column, $row) => $this->getTdAttributesConfig($row))
             ->setLoadingPlaceholderEnabled()
             ->setLoadingPlaceholderContent(
                 '<div class="flex items-center justify-center h-64">
@@ -172,12 +173,11 @@ class OnouCmDemandeTable extends DataTableComponent
             //     ->searchable(),
             Column::make('Numéro inscription', 'dossier_inscription_administrative.numero_inscription')
                 ->format(
-                    fn($value, $row) =>
-                    $row->suiv_fichier_national_doctorant->numero_inscription ?? $row->dossier_inscription_administrative->numero_inscription ??  '-'
+                    fn ($value, $row) => $row->suiv_fichier_national_doctorant->numero_inscription ?? $row->dossier_inscription_administrative->numero_inscription ?? '-'
                 )->searchable(),
             // Column::make('Numero inscriptiondc', 'suiv_fichier_national_doctorant.numero_inscription')
             // ->format(fn($value, $row) => $value ?? '-'),
-            //->searchable(),
+            // ->searchable(),
             //        Column::make('Numéro inscription')
             // ->format(fn($value, $row) =>
             //     $row->suiv_fichier_national_doctorant?->numero_inscription ?? '-'

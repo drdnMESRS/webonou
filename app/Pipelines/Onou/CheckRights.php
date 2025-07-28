@@ -98,15 +98,17 @@ class CheckRights extends Alerts
         }
 
         if (isset($demande['id_suivi_fnd'])) {
-            $this->status = 'success';
-            $this->type = 'checkreinscription_doctort';
-            $this->message = 'Etudiant inscrie pour l\année universitaire';
-            $this->flush_alert();
-        } else {
-            $this->status = 'danger';
-            $this->type = 'checkreinscription_doctort';
-            $this->message = 'Aucune reinscription doctorat est effectué pour cette année universitaire';
-            $this->flush_alert();
+            if ($demande['id_suivi_fnd']) {
+                $this->status = 'success';
+                $this->type = 'checkreinscription_doctort';
+                $this->message = 'Etudiant inscrie pour l\année universitaire';
+                $this->flush_alert();
+            } else {
+                $this->status = 'danger';
+                $this->type = 'checkreinscription_doctort';
+                $this->message = 'Aucune reinscription doctorat est effectué pour cette année universitaire';
+                $this->flush_alert();
+            }
         }
 
         $existing = session('checks', []);

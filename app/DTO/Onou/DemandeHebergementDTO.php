@@ -23,6 +23,5 @@ class DemandeHebergementDTO extends BaseDTO
         public ?bool $cles_remis = null,
         public ?string $cles_remis_at = null,
 
-
     ) {}
 }

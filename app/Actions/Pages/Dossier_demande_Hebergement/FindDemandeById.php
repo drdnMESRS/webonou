@@ -84,7 +84,7 @@ class FindDemandeById
             'inscription.numero_inscription',
             'inscription.frais_inscription_paye',
             'inscription.est_transfert',
-            'cong.resultat_valide as conge_acad',
+            'cong.demande_validee as conge_acad',
             'niveau.libelle_long_lt as niveau_libelle_long_lt',
             'niveau.libelle_long_ar as niveau_libelle_long_ar',
             'domaine.ll_domaine_arabe',
@@ -167,7 +167,6 @@ class FindDemandeById
             'adressIndividue' => $this->getadressIndividue($demande),
             'cles_remis' => ($demande->cles_remis),
             'cles_remis_at' => ($demande->cles_remis_at) ? Carbon::make($demande->cles_remis_at)->format('d/m/Y H:i') : ' - ',
-
 
         ]);
     }

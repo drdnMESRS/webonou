@@ -11,9 +11,7 @@ use App\Models\Onou\Onou_cm_etablissement;
 use App\Models\Scopes\Dou\DouScope;
 use App\Strategies\Onou\ProcessCmDemande;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Row;
 
 class DoProcessingCmDemande implements ProcessCmDemande
 {
@@ -54,7 +52,6 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 throw new \Exception($checkAgeResult['message']);
             }
         }
-
 
         $data = array_merge($data, [
             'dou' => app(RoleManagement::class)->get_active_role_etablissement(),
@@ -121,7 +118,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
      */
     public function formFields(?int $civility = null, ?string $action = 'accept'): array
     {
-        $options = cache()->remember('residences_' . auth()->id() . '_' . $civility, 60 * 60 * 24, function () use ($civility) {
+        $options = cache()->remember('residences_'.auth()->id().'_'.$civility, 60 * 60 * 24, function () use ($civility) {
             // if civility is not null, we can return only R1
             return $this->getResidences($civility)
                 ->pluck('denomination_ar', 'id')
@@ -222,7 +219,6 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 'dossier_inscription_administrative.id'
             )
 
-
             ->leftJoin('onou.onou_heb_affectation_etablissement as aff', function ($q) {
                 $q->on('aff.etablissement_affectee', '=', 'dossier_inscription_administrative.id_etablissement');
             })
@@ -250,6 +246,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
 
             ->remember(60);
     }
+
     public function PostGraduation(): Builder
     {
         return Onou_cm_demande::query()
@@ -318,17 +315,17 @@ class DoProcessingCmDemande implements ProcessCmDemande
             // if civility is not null and civility is mal (1), we can return only R1
             $options = ($civility === 1) ?
                 Onou_cm_etablissement::query()
-                ->select('onou_cm_etablissement.*')
-                ->with(['etablissement', 'type_nc'])
-                ->garcon()
-                ->open() // R1
-                ->remember(60 * 60 * 24) : // if civility is not null and civility is femal (2), we can return only R1
+                    ->select('onou_cm_etablissement.*')
+                    ->with(['etablissement', 'type_nc'])
+                    ->garcon()
+                    ->open() // R1
+                    ->remember(60 * 60 * 24) : // if civility is not null and civility is femal (2), we can return only R1
                 Onou_cm_etablissement::query()
-                ->select('onou_cm_etablissement.*')
-                ->with(['etablissement', 'type_nc'])
-                ->fille()
-                ->open() // R1
-                ->remember(60 * 60 * 24);
+                    ->select('onou_cm_etablissement.*')
+                    ->with(['etablissement', 'type_nc'])
+                    ->fille()
+                    ->open() // R1
+                    ->remember(60 * 60 * 24);
         }
 
         return $options;

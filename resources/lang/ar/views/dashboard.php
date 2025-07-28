@@ -2,5 +2,5 @@
 
 return [
     'dashboard' => 'الرئيسية',
-    'request' => 'طلب'
+    'request' => 'طلب',
 ];

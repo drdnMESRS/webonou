@@ -102,15 +102,13 @@ class Dossier_inscription_administrative extends Authenticatable
                     ->where('cong.resultat', true);
             })
             ->where([
-              ['bachelier.annee_bac', '=', $anne_bac],
-              ['bachelier.matricule', '=', $matricule],
+                ['bachelier.annee_bac', '=', $anne_bac],
+                ['bachelier.matricule', '=', $matricule],
             ])
             ->first();
 
         //  });
     }
-
-
 
     public static function fetchAllInscrptionByIdividu(int $id, ?array $getSelectFields = ['*'])
     {
@@ -161,18 +159,17 @@ class Dossier_inscription_administrative extends Authenticatable
             // ->leftJoin('onou.onou_cm_etablissement as choix3', 'choix3.id', '=', 'demande.choix3')
             // ->leftJoin('onou.onou_droit_renouvellement_heb as droit_renouvellement', 'droit_renouvellement.id_individu', '=', 'etudiant.id_individu')
             ->leftJoin('cursus.conge_academique as cong', function ($q) {
-                 $q->on('cong.id_dossier_inscription', '=', 'inscription.id')
-                ->where('cong.resultat', true);
-              })
+                $q->on('cong.id_dossier_inscription', '=', 'inscription.id')
+                    ->where('cong.resultat', true);
+            })
             ->where([
-                ['etudiant.id_individu', '=', $id],
-                // ['individu.active', '=', 1],
+              ['etudiant.id_individu', '=', $id],
+              // ['individu.active', '=', 1],
             ])
             ->orderby('anneeacd.id')->get();
 
         //  });
     }
-
 
     public static function FindByYearMatriculePostGraduation(string $anne_bac, string $matricule, ?array $getSelectFields = ['*'])
     {
@@ -187,26 +184,26 @@ class Dossier_inscription_administrative extends Authenticatable
             ->leftJoin('ppm.ref_structure as structure', 'structure.id', '=', 'doctora.id_structure')
             ->leftJoin('lmd.specialite_lmd as specialite', 'specialite.id', '=', 'doctora.id_specialite')
 
-            ->leftJoin('doctorat.suivi_fichier_national_doctorant as suivdoctora',  function ($join) {
+            ->leftJoin('doctorat.suivi_fichier_national_doctorant as suivdoctora', function ($join) {
                 $join->on('suivdoctora.id_fnd', '=', 'doctora.id')
                     ->where('suivdoctora.id_annee_academique', '=', (new \App\Actions\Sessions\AcademicYearSession)->get_academic_year());
             })
 
             ->leftJoin('nc.nomenclature as situation', 'situation.id', '=', 'suivdoctora.id_situation')
-            ->leftJoin('cursus.paiement_frais_inscription as paiement',  function ($join) {
+            ->leftJoin('cursus.paiement_frais_inscription as paiement', function ($join) {
                 $join->on('paiement.id_suivi_doctorat', '=', 'suivdoctora.id')
                     ->where([
                         ['paiement.id_annee_academique', '=', (new \App\Actions\Sessions\AcademicYearSession)->get_academic_year()],
-                        ['paiement.est_paye', '=', true]
+                        ['paiement.est_paye', '=', true],
                     ]);
             })
-            ->leftJoin('onou.onou_cm_demande as demande',  function ($join) {
+            ->leftJoin('onou.onou_cm_demande as demande', function ($join) {
                 $join->on('demande.id_fnd', '=', 'doctora.id')
                     ->where('demande.annee_academique', '=', (new \App\Actions\Sessions\AcademicYearSession)->get_academic_year());
             })
             ->leftJoin('nc.nomenclature as commune', 'commune.id', '=', 'demande.commune_residence')
-            //->leftJoin('lmd.cycle as cycle', 'cycle.id', '=', 'niveau.id_cycle')
-            
+            // ->leftJoin('lmd.cycle as cycle', 'cycle.id', '=', 'niveau.id_cycle')
+
             ->leftJoin('nc.nomenclature AS nationalite', 'nationalite.id', '=', 'individu.nationalite')
             ->leftJoin('ppm.ref_coordonnee as coordonnee', function (JoinClause $join) {
                 $join->on('coordonnee.individu', '=', 'individu.id')
