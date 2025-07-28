@@ -51,14 +51,18 @@ class OnouCmStatTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make('ll_structure_latin', 'etablissement.denomination_fr')
-                ->sortable()->searchable(),
-            Column::make('Capacite', 'capacite'),
-            Column::make('Total', 'total'),
-            Column::make('Pending', 'pending'),
-            Column::make('Accepted', 'accepted'),
-            Column::make('Rejected', 'rejected'),
-            Column::make('%', 'capacite')
+                  Column::make(__('livewire/tables/onou_cm_stat_table.stricture'), 'residence')
+                ->format(
+                    function ($value, $row, Column $column) {
+                        return $row->etablissement->full_name ?? '';
+                    }
+                )->sortable()->searchable(),
+            Column::make(__('livewire/tables/onou_cm_stat_table.capacite'), 'capacite'),
+            Column::make(__('livewire/tables/onou_cm_stat_table.total'), 'total'),
+            Column::make(__('livewire/tables/onou_cm_stat_table.pending'), 'pending'),
+            Column::make(__('livewire/tables/onou_cm_stat_table.accepted'), 'accepted'),
+            Column::make(__('livewire/tables/onou_cm_stat_table.rejected'), 'rejected'),
+            Column::make(__('livewire/tables/onou_cm_stat_table.percentage'), 'capacite')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $value > 0 ? round(($row->accepted / $value) * 100, 2) : 0;

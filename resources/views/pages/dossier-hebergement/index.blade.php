@@ -1,11 +1,11 @@
-<x-layouts.app :title="__('Gestion_dossier_hebergement')" >
+<x-layouts.app :title="__('livewire/tables/onou_cm_demande_table.gestion_des_dossiers_hebergement')" >
 
     <div class="mb-6">
         <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
-            {{ __('Gestion des dossiers d\'hébergement') }}
+            {{ __('livewire/tables/onou_cm_demande_table.gestion_des_dossiers_hebergement') }}
         </h1>
         <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Gérer les demandes d\'hébergement des individus') }}
+            {{ __('livewire/tables/onou_cm_demande_table.gerer_les_demandes_hebergement_des_individus') }}
         </p>
     </div>
 

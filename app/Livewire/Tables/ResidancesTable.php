@@ -35,24 +35,24 @@ class ResidancesTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make('Code', 'etablissement.identifiant')
+            Column::make(__('livewire/tables/residences_table.code'), 'etablissement.identifiant')
                 ->sortable()
                 ->searchable(),
-            Column::make('nom de residence', 'id')
+            Column::make(__('livewire/tables/residences_table.nom'), 'id')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->full_name;
                     }
                 )->sortable()->searchable(),
-            Column::make('Type', 'id')
+            Column::make(__('livewire/tables/residences_table.type'), 'id')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->type_nc->full_name;
                     })
                 ->sortable()
                 ->searchable(),
-            Column::make('capacite theorique', 'capacite_theorique'),
-            Column::make('capacite reelle', 'capacite_relle'),
+            Column::make(__('livewire/tables/residences_table.capacite_theorique'), 'capacite_theorique'),
+            Column::make(__('livewire/tables/residences_table.capacite_reelle'), 'capacite_relle'),
         ];
     }
 }

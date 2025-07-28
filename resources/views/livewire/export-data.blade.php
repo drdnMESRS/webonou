@@ -19,7 +19,7 @@
                  76.1H256V52zM272 368h-40l-32-48-32 48H128l48-72-48-72h40l32 48 32-48h40l-48 72L272 368z"/>
     </svg>
 
-    Exporter
+    {{__('views/livewire/export_data.export')}}
 
     <!-- Loading Spinner -->
     <svg
