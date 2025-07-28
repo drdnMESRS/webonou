@@ -246,7 +246,7 @@ class FindDemande
             'lieu.libelle_fr as chambre',
             'demande.cles_remis',
             'demande.cles_remis_at',
-            \DB::raw("CONCAT(comptedou.nom_latin, ' ', comptedou.prenom_latin) as au_niveau_de_la_dou_traiter_par"),
+                \DB::raw("CONCAT(comptedou.nom_latin, ' ', comptedou.prenom_latin) as au_niveau_de_la_dou_traiter_par"),
             \DB::raw("CONCAT(compteru.nom_latin, ' ', compteru.prenom_latin) as au_niveau_de_la_ru_traiter_par"),
 
         ];
@@ -260,10 +260,10 @@ class FindDemande
             'residance' => __('views/livewire/onou/forms/demande_details.residance'),
             'dou_arabe' => __('views/livewire/onou/forms/demande_details.dou_arabe'),
             'dou' => __('views/livewire/onou/forms/demande_details.dou'),
-            'decision_du_DCC' => __('views/livewire/onou/forms/demande_details.decision_du_DCC'),
-            'traiter_par_DCC_le' => __('views/livewire/onou/forms/demande_details.traiter_par_DCC_le'),
-            'decision_du_Residence' => __('views/livewire/onou/forms/demande_details.decision_du_Residence'),
-            'traiter_par_Resi_le' => __('views/livewire/onou/forms/demande_details.traiter_par_Resi_le'),
+            'decision_du_DCC_:' => __('views/livewire/onou/forms/demande_details.decision_du_DCC'),
+            'traiter_par_DCC_le_:' => __('views/livewire/onou/forms/demande_details.traiter_par_DCC_le'),
+            'decision_du_Residence_:' => __('views/livewire/onou/forms/demande_details.decision_du_Residence'),
+            'traiter_par_Resi_le_:' => __('views/livewire/onou/forms/demande_details.traiter_par_Resi_le'),
             'hebergement_paye' => __('views/livewire/onou/forms/demande_details.payment_hebergement'),
             'date_de_paiment' => __('views/livewire/onou/forms/demande_details.date_de_paiment'),
             'chambre' => __('views/livewire/onou/forms/demande_details.chambre'),
@@ -331,7 +331,7 @@ class FindDemande
     public function getTranslated($historique_heb)
     {
         //TODO verify the translation method
-        return $historique_heb;
+        //return $historique_heb;
 
         $historique_translated = $historique_heb->map(function ($row) {
             $labels = $this->getHistoriqueHebergementLabels();
