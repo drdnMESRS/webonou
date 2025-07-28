@@ -33,18 +33,24 @@ class DoProcessingCmDemande implements ProcessCmDemande
         if (is_null($id) && in_array($action, ['accept', 'reject'])) {
             throw new \Exception('Invalid parameters provided for processing the demand.');
         }
-
-        $checkAgeResult = session('checks.checkAge');
-        if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
-            throw new \Exception($checkAgeResult['message']);
-        }
-        $checkAgeResult = session('checks.reinscription');
-        if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
-            throw new \Exception($checkAgeResult['message']);
-        }
-        $checkAgeResult = session('checks.checkcles_remis');
-        if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
-            throw new \Exception($checkAgeResult['message']);
+        if (isset($data['id_dia'])) {
+            $checkAgeResult = session('checks.checkAge');
+            if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
+                throw new \Exception($checkAgeResult['message']);
+            }
+            $checkAgeResult = session('checks.reinscription');
+            if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
+                throw new \Exception($checkAgeResult['message']);
+            }
+            $checkAgeResult = session('checks.checkcles_remis');
+            if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
+                throw new \Exception($checkAgeResult['message']);
+            }
+        } else {
+            $checkAgeResult = session('checks.checkreinscription_doctort');
+            if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
+                throw new \Exception($checkAgeResult['message']);
+            }
         }
 
         $data = array_merge($data, [
@@ -183,6 +189,11 @@ class DoProcessingCmDemande implements ProcessCmDemande
      */
     public function builder(): Builder
     {
+        return $this->Graduation();
+    }
+
+    public function Graduation(): Builder
+    {
         return Onou_cm_demande::query()
             ->with([
                 'individu_detais',
@@ -192,6 +203,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 'dossier_inscription_administrative.etablissement:id,ll_etablissement_arabe,ll_etablissement_latin',
                 'dossier_inscription_administrative.domaine',
                 'dossier_inscription_administrative.filiere',
+
                 'nc_commune_residence',
             ])
             ->leftJoin(
@@ -206,19 +218,22 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 '=',
                 'dossier_inscription_administrative.id'
             )
+
             ->leftJoin('onou.onou_heb_affectation_etablissement as aff', function ($q) {
                 $q->on('aff.etablissement_affectee', '=', 'dossier_inscription_administrative.id_etablissement');
             })
+
             ->leftJoin('cursus.conge_academique as cong', function ($q) {
                 $q->on('cong.id_dossier_inscription', '=', 'dossier_inscription_administrative.id')
                     ->where('cong.demande_validee', true);
             })
+
             ->select(
                 'onou.onou_cm_demande.*',
                 'individu_detais.identifiant as individu_identifiant',
                 'individu_detais.nom_latin as individu_nom_latin',
                 'individu_detais.civilite as individu_civilite',
-                'dossier_inscription_administrative.numero_inscription as dossier_inscription_numero',
+                'dossier_inscription_administrative.numero_inscription as dia_numero_inscription',
                 'dossier_inscription_administrative.*',
                 'cong.demande_validee',
             )
@@ -229,6 +244,58 @@ class DoProcessingCmDemande implements ProcessCmDemande
             ->where('aff.dou', '=', app(RoleManagement::class)->get_active_role_etablissement())
             ->withoutGlobalScope(DouScope::class)
 
+            ->remember(60);
+    }
+
+    public function PostGraduation(): Builder
+    {
+        return Onou_cm_demande::query()
+            ->with([
+                'individu_detais',
+                'fichier_national_doctorant',
+                'fichier_national_doctorant.domaine',
+                'fichier_national_doctorant.filiere',
+                'fichier_national_doctorant.etablissement:id,ll_etablissement_arabe,ll_etablissement_latin',
+                'suiv_fichier_national_doctorant',
+                'nc_commune_residence',
+            ])
+            ->leftJoin(
+                'ppm.ref_individu AS individu_detais',
+                'onou.onou_cm_demande.individu',
+                '=',
+                'individu_detais.id'
+            )
+            ->leftJoin(
+                'doctorat.fichier_national_doctorant AS fichier_national_doctorant',
+                'onou.onou_cm_demande.id_fnd',
+                '=',
+                'fichier_national_doctorant.id'
+            )
+            ->leftjoin(
+                'doctorat.suivi_fichier_national_doctorant AS suiv_fichier_national_doctorant',
+                function ($join) {
+                    $join->on('fichier_national_doctorant.id', '=', 'suiv_fichier_national_doctorant.id_fnd')
+                        ->where('suiv_fichier_national_doctorant.id_annee_academique', '=', (new \App\Actions\Sessions\AcademicYearSession)->get_academic_year());
+                }
+            )
+            ->leftJoin('onou.onou_heb_affectation_etablissement as aff', function ($q) {
+                $q->on('aff.etablissement_affectee', '=', 'fichier_national_doctorant.id_etablissement');
+            })
+            ->select(
+                'onou.onou_cm_demande.*',
+                'individu_detais.identifiant as individu_identifiant',
+                'individu_detais.nom_latin as individu_nom_latin',
+                'individu_detais.civilite as individu_civilite',
+                'suiv_fichier_national_doctorant.numero_inscription as fnd_numero_inscription',
+                'fichier_national_doctorant.*',
+                'suiv_fichier_national_doctorant.*',
+            )
+            ->where(function ($q) {
+                $q->where('onou_cm_demande.dou', '=', app(RoleManagement::class)->get_active_role_etablissement())
+                    ->orWhereNull('onou_cm_demande.dou');
+            })
+            ->where('aff.dou', '=', app(RoleManagement::class)->get_active_role_etablissement())
+            ->withoutGlobalScope(DouScope::class)
             ->remember(60);
     }
 
@@ -295,10 +362,14 @@ class DoProcessingCmDemande implements ProcessCmDemande
                     'integer',
                 ],
                 'data.id_dia' => [
-                    'required',
                     'integer',
+                    'nullable',
                 ],
                 'data.affectation' => [
+                    'integer',
+                    'nullable',
+                ],
+                'data.id_fnd' => [
                     'integer',
                     'nullable',
                 ],

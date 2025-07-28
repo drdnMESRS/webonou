@@ -1,6 +1,34 @@
 <div>
 <div class="flex flex-col space-y-2 items-end">
+
+
     <div class="flex space-x-2">
+<div class="flex space-x-6 items-center">
+    {{-- نوع الطالب --}}
+    <div class="flex flex-col">
+        <div class="flex items-center space-x-6">
+            {{-- زر راديو عادي --}}
+            <label class="cursor-pointer flex items-center space-x-2">
+                <input type="radio" wire:model.defer="type_etudiant" value=1
+                    class="h-5 w-5 border-gray-300 text-blue-500 focus:ring-blue-500"
+                    checked="{{ $type_etudiant === 1 ? 'checked' : '' }}">
+                <span class="text-sm font-medium text-gray-700">Graduation</span>
+            </label>
+
+            {{-- زر راديو دكتوراه --}}
+            <label class="cursor-pointer flex items-center space-x-2">
+                <input type="radio" wire:model.defer="type_etudiant" value=2
+                    class="h-5 w-5 border-gray-300 text-green-500 focus:ring-green-500">
+                <span class="text-sm font-medium text-gray-700">Post Graduation</span>
+            </label>
+        </div>
+        @error('type_etudiant')
+            <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+        @enderror
+    </div>
+</div>
+
+
         <div class="flex flex-col">
             <input type="text" wire:model.defer="annee_bac" placeholder="Année du bac"
                 class="border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
@@ -16,6 +44,8 @@
                 <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
             @enderror
         </div>
+
+
         <button wire:click="searchByYearMatricule" wire:target="searchByYearMatricule"
             class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm">
 
@@ -76,7 +106,13 @@
                         ],
                     ],
                 ],
-
+      [
+                    'id' => 'doctorant',
+                    'title' => __('Détails sur doctorat'),
+                    'content' => [
+                        ['view' => 'pages.dossier-hebergement.partials.doctorat', 'data' => ['demande' => $demande]],
+                    ],
+                ],
                 [
                     'id' => 'adress',
                     'title' => __('views/livewire/onou/forms/demande_details.details_adresse'),

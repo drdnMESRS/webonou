@@ -71,6 +71,16 @@ class ProcessCmDemandeContext implements ProcessCmDemande
         return $this->cm_demande->builder();
     }
 
+    public function PostGraduation(): Builder
+    {
+        return $this->cm_demande->PostGraduation();
+    }
+
+    public function Graduation(): Builder
+    {
+        return $this->cm_demande->Graduation();
+    }
+
     public function rules(?string $action = 'accept'): array
     {
         return $this->cm_demande->rules($action);

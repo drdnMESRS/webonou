@@ -10,21 +10,29 @@ use Illuminate\Support\Facades\DB;
 use App\Actions\Pages\Dossier_demande_Hebergement\Common\FindDemande;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+
 class FindStudentByYearMatricule extends FindDemande
 {
-    public function handle(string $annee_bac, string $matricule): array
+    public function handle(string $annee_bac, string $matricule, int $type = 1): array
     {
 
         //  $this->validateYearMAtricule($annee_bac,$matricule);
+        $student = null;
 
-        $student = Dossier_inscription_administrative::fetchDemandeByYearMatricule($annee_bac, $matricule, $this->getSelectFields());
+        if ($type === 1) {
+            $student = Dossier_inscription_administrative::fetchDemandeByYearMatricule($annee_bac, $matricule, $this->getSelectFields());
+        } else {
+            $student = Dossier_inscription_administrative::FindByYearMatriculePostGraduation($annee_bac, $matricule, $this->getSelectFieldsDoctora());
+        }
 
         if (is_null($student)) {
-            throw new NotFoundHttpException('Student not found with Year and Matricule: '.$annee_bac.' '.$matricule);
+            throw new \Exception('Student not found with Year and Matricule: '.$annee_bac.' '.$matricule);
         }
+
         // Fetching the historical data for the individual
 
         $historique_heb = Onou_cm_demande::fetchAllDemandeByIdividu($student->id_individu, $this->getSelectFieldsHis());
+
         $historique_translated = $historique_heb->map(function ($row) {
              $labels = $this->getHistoriqueHebergementLabels();
             $entry = [];
@@ -35,12 +43,14 @@ class FindStudentByYearMatricule extends FindDemande
 
             return $entry;
         });
+
         $historique_dia = Dossier_inscription_administrative::fetchAllInscrptionByIdividu($student->id_individu, $this->getSelectFieldsHisInc());
 
         $result = (new CheckConformeHeb(collect($student)->toArray()))->handle();
 
-        return $this->mapToDTO($student, $historique_translated, $historique_dia)->toArray();
+        return $this->mapToDTO($student, $historique_heb, $historique_dia, $type)->toArray();
     }
+
 
 
 

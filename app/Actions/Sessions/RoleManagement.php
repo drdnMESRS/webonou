@@ -15,10 +15,12 @@ class RoleManagement
     {
         return Auth()->user()->activeRoleId;
     }
+
     public function get_active_id()
     {
         return Auth()->user()->id;
     }
+
     public function get_active_role_etablissement(): ?int
     {
         $roles = Auth::user()->affectationAll;

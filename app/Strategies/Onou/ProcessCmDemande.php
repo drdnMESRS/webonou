@@ -26,5 +26,9 @@ interface ProcessCmDemande
 
     public function builder(): Builder;
 
+    public function Graduation(): Builder;
+
+    public function PostGraduation(): Builder;
+
     public function rules(?string $action = 'accept'): array;
 }

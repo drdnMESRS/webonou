@@ -7,4 +7,5 @@ return [
     'pending'=>'قيد الانتظار',
     'accepted'=>'المقبولين',
     'rejected'=>'المرفوضين'
+
 ];
