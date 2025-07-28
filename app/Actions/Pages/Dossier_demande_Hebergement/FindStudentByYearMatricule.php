@@ -84,7 +84,7 @@ class FindStudentByYearMatricule
             'inscription.numero_inscription',
             'inscription.frais_inscription_paye',
             'inscription.est_transfert',
-            'cong.resultat_valide as conge_acad',
+            'cong.demande_validee as conge_acad',
             'niveau.libelle_long_lt as niveau_libelle_long_lt',
             'niveau.libelle_long_ar as niveau_libelle_long_ar',
             'domaine.ll_domaine_arabe',
@@ -312,7 +312,7 @@ class FindStudentByYearMatricule
             DB::raw('concat(decision.libelle_long_f,\'(\',bilan.moyenne,\')\') as résultat '),
 
             'inscription.est_transfert as est_transfert ',
-            'cong.resultat_valide as conge_acad',
+            'cong.demande_validee as conge_acad',
             'inscription.frais_inscription_paye as frais_inscription_paye',
 
 
