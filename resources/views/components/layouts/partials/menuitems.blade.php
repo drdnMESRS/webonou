@@ -1,5 +1,5 @@
 <flux:navlist variant="outline" >
-    <flux:navlist.group :heading="__('Platform')" class="grid">
+    <flux:navlist.group  class="grid">
         <flux:navlist.item
             icon="home"
             :href="route('dashboard')"

@@ -15,7 +15,7 @@ class SearchByYearMatricule extends Component
 
     public ?bool $showDtudentDetails = false;
 
-    public $annee_bac = 2024;
+    public $annee_bac;
 
     public $matricule_bac;
 

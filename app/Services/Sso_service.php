@@ -51,6 +51,7 @@ class Sso_service
             'grant_type' => 'authorization_code',
             'redirect_uri' => env('REDIRECT_URI'),
         ]);
+
         $request->session()->put('access_token', $response->json()['access_token']);
 
         return redirect('/user');

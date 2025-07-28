@@ -91,6 +91,7 @@ class FindStudentByYearMatricule
             'inscription.numero_inscription',
             'inscription.frais_inscription_paye',
             'inscription.est_transfert',
+            'cong.resultat_valide as conge_acad',
             'niveau.libelle_long_lt as niveau_libelle_long_lt',
             'niveau.libelle_long_ar as niveau_libelle_long_ar',
             'domaine.ll_domaine_arabe',
@@ -273,7 +274,6 @@ class FindStudentByYearMatricule
             'id_individu' => $demande->id_individu,
             'cles_remis' => ($demande->cles_remis) ?? null,
             'cles_remis_at' => ($demande->cles_remis_at) ? Carbon::make($demande->cles_remis_at)->format('d/m/Y H:i') : ' - ',
-
         ]);
     }
 
@@ -328,10 +328,12 @@ class FindStudentByYearMatricule
             'cycle_arabe' => $demande->libelle_long_ar ?? '',
 
             // 'structure_code' => $demande->strecture_code,
-            'structure_arabe' => $demande->ll_structure_arabe ?? '',
-            'structure' => $demande->ll_structure_latin ?? '',
 
-            'est_transfert' => $demande->est_transfert ?? false,
+            'structure_arabe' => $demande->ll_structure_arabe,
+            'structure' => $demande->ll_structure_latin,
+            'est_transfert' => $demande->est_transfert,
+            'conge_academique' => $demande->conge_acad,
+
         ];
     }
 
@@ -418,6 +420,8 @@ class FindStudentByYearMatricule
             'demande.hebergement_paye_date as date_de_paiment',
             'demande.cles_remis',
             'demande.cles_remis_at',
+            \DB::raw("CONCAT(comptedou.nom_latin, ' ', comptedou.prenom_latin) as au_niveau_de_la_dou_traiter_par"),
+            \DB::raw("CONCAT(compteru.nom_latin, ' ', compteru.prenom_latin) as au_niveau_de_la_ru_traiter_par"),
 
         ];
     }
@@ -452,7 +456,9 @@ class FindStudentByYearMatricule
             DB::raw('concat(decision.libelle_long_f,\'(\',bilan.moyenne,\')\') as résultat '),
 
             'inscription.est_transfert as est_transfert ',
+            'cong.resultat_valide as conge_acad',
             'inscription.frais_inscription_paye as frais_inscription_paye',
+
 
         ];
     }

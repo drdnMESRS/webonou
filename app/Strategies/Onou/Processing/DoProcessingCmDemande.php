@@ -58,6 +58,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
 
         $data = array_merge($data, [
             'dou' => app(RoleManagement::class)->get_active_role_etablissement(),
+            'traiter_par_dou' => app(RoleManagement::class)->get_active_id(),
             'approuvee_heb_dou' => ($action === 'accept') || ($action === 'create'),
             'date_approuve_heb_dou' => now(),
             'affectation' => null,
@@ -77,11 +78,11 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 'id_dia' => $data['id_dia'],
                 'individu' => $data['id_individu'],
             ]);
+
             $demand = (new CreateDemand)->handle($data);
 
             return true;
         } else {
-
             $demand = (new UpdateDemandById)->handle($id, $data);
             if (isset($demand['affectation'])) {
             }
@@ -225,6 +226,12 @@ class DoProcessingCmDemande implements ProcessCmDemande
             ->leftJoin('onou.onou_heb_affectation_etablissement as aff', function ($q) {
                 $q->on('aff.etablissement_affectee', '=', 'dossier_inscription_administrative.id_etablissement');
             })
+
+            ->leftJoin('cursus.conge_academique as cong', function ($q) {
+                $q->on('cong.id_dossier_inscription', '=', 'dossier_inscription_administrative.id')
+                    ->where('cong.demande_validee', true);
+            })
+
             ->select(
                 'onou.onou_cm_demande.*',
                 'individu_detais.identifiant as individu_identifiant',
@@ -232,6 +239,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 'individu_detais.civilite as individu_civilite',
                 'dossier_inscription_administrative.numero_inscription as dia_numero_inscription',
                 'dossier_inscription_administrative.*',
+                'cong.demande_validee',
             )
             ->where(function ($q) {
                 $q->where('onou_cm_demande.dou', '=', app(RoleManagement::class)->get_active_role_etablissement())

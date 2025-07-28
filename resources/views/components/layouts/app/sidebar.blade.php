@@ -65,9 +65,8 @@
 bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 w-auto border-r">
     <flux:sidebar.toggle class="lg:hidden" icon="x-mark"/>
 
-    <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
         <x-app-logo/>
-    </a>
+
 
    <x-layouts.partials.menuitems :menuItems="$menuItems" />
 

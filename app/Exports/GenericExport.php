@@ -11,7 +11,7 @@ class GenericExport implements FromQuery, WithChunkReading, WithHeadings, WithMa
 {
     protected $query;
 
-    protected $headings;
+    protected array $headings;
 
     protected $mapMethod;
 
