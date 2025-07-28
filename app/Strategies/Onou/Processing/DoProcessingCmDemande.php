@@ -33,35 +33,40 @@ class DoProcessingCmDemande implements ProcessCmDemande
         if (is_null($id) && in_array($action, ['accept', 'reject'])) {
             throw new \Exception('Invalid parameters provided for processing the demand.');
         }
-        if (isset($data['id_dia'])) {
-            $checkAgeResult = session('checks.checkAge');
-            if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
-                throw new \Exception($checkAgeResult['message']);
+
+        if(in_array($action, ['accept', 'create']) && !isset($data['id_individu'])) {
+            if (isset($data['id_dia'])) {
+                $checkAgeResult = session('checks.checkAge');
+                if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
+                    throw new \Exception($checkAgeResult['message']);
+                }
+                $checkAgeResult = session('checks.reinscription');
+                if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
+                    throw new \Exception($checkAgeResult['message']);
+                }
+                $checkAgeResult = session('checks.checkcles_remis');
+                if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
+                    throw new \Exception($checkAgeResult['message']);
+                }
             }
-            $checkAgeResult = session('checks.reinscription');
-            if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
-                throw new \Exception($checkAgeResult['message']);
-            }
-            $checkAgeResult = session('checks.checkcles_remis');
-            if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
-                throw new \Exception($checkAgeResult['message']);
-            }
-        } else {
-            $checkAgeResult = session('checks.checkreinscription_doctort');
-            if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
-                throw new \Exception($checkAgeResult['message']);
+            if (isset($data['id_fnd'])) {
+                $checkAgeResult = session('checks.checkreinscription_doctort');
+                if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
+                    throw new \Exception($checkAgeResult['message']);
+                }
             }
         }
 
         $data = array_merge($data, [
             'dou' => app(RoleManagement::class)->get_active_role_etablissement(),
             'traiter_par_dou' => app(RoleManagement::class)->get_active_id(),
-            'approuvee_heb_dou' => ($action === 'accept') || ($action === 'create'),
+            'approuvee_heb_dou' => in_array($action, ['accept', 'create'] ),
             'date_approuve_heb_dou' => now(),
             'affectation' => null,
         ]);
 
         if ($action === 'reject') {
+            $data['approuvee_heb_dou'] = false;
             $data['residence'] = null; // Clear residence if rejecting
         } else {
             $data['observ_heb_dou'] = ''; // Clear observation if accepting
@@ -346,7 +351,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
             return [
                 'field_update' => [
                     'required',
-                    Rule::in($nc),
+                     Rule::in($nc),
                 ],
             ];
         }

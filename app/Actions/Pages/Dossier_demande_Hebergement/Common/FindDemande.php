@@ -330,6 +330,9 @@ class FindDemande
      */
     public function getTranslated($historique_heb)
     {
+        //TODO verify the translation method
+        return $historique_heb;
+
         $historique_translated = $historique_heb->map(function ($row) {
             $labels = $this->getHistoriqueHebergementLabels();
             $entry = [];

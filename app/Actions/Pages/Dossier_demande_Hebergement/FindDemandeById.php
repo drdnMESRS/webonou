@@ -19,6 +19,8 @@ class FindDemandeById extends FindDemande
         }
 
         $historique_translated = $this->fetchingTheHistoricalDataForTheIndividual($demande);
+
+
         // Check if the demand is compliant
         (new CheckConformeHeb(collect($demande)->toArray()))->handle();
 

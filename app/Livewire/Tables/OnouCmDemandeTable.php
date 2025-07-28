@@ -143,7 +143,7 @@ class OnouCmDemandeTable extends DataTableComponent
 
     private function getTdAttributesForDO($row): array
     {
-        if (is_null($row->approuvee_heb_dou) || is_null($row->residence)) {
+        if (is_null($row->approuvee_heb_dou)) {
             return ['class' => 'bg-yellow-50'];
         }
 
