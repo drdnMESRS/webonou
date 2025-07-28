@@ -12,7 +12,7 @@
   <path d=\'M8 12h8\' stroke=\'currentColor\' stroke-width=\'3\' stroke-linecap=\'round\' class=\'opacity-75\'
         d=\'M12 6v6l4 2\'/>
 </svg>'"
-                    :badgeText="'Total'" :bgColor="'bg-blue-50 dark:bg-gray-700'"
+                    :badgeText="__('views/dashboard.total')" :bgColor="'bg-blue-50 dark:bg-gray-700'"
                       :class="'bg-blue-100 text-blue-800 text-xs font-medium inline-flex items-center px-2.5 py-1 rounded-md dark:bg-blue-900 dark:text-blue-300'">
                     <!-- Additional content here -->
                 </x-common.stat-card>
@@ -27,7 +27,7 @@
   <path stroke=\'currentColor\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'3\' class=\'opacity-75\'
         d=\'M12 6v6l4 2\'/>
 </svg>'"
-                    :badgeText="'Pending'" :bgColor="'bg-yellow-50 dark:bg-gray-700'"
+                    :badgeText="__('views/dashboard.pending')" :bgColor="'bg-yellow-50 dark:bg-gray-700'"
 
                     :class="'bg-yellow-100 text-yellow-800 text-xs font-medium inline-flex items-center px-2.5 py-1 rounded-md dark:bg-yellow-900 dark:text-yellow-300'">
 
@@ -44,7 +44,7 @@
   <path d=\'M9 12l2 2 4-4\' stroke=\'currentColor\' stroke-width=\'3\' stroke-linecap=\'round\' stroke-linejoin=\'round\' class=\'opacity-75\'
         d=\'M12 6v6l4 2\'/>
 </svg>'"
-                    :badgeText="'Acceptée'" :bgColor="'bg-green-50 dark:bg-gray-700'"
+                    :badgeText="__('views/dashboard.accepted')" :bgColor="'bg-green-50 dark:bg-gray-700'"
                       :class="'bg-green-100 text-green-800 text-xs font-medium inline-flex items-center px-2.5 py-1 rounded-md dark:bg-green-900 dark:text-green-300'">
 
                 </x-common.stat-card>
@@ -59,7 +59,7 @@
   <path d=\'M15 9l-6 6M9 9l6 6\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\' class=\'opacity-75\'
         d=\'M12 6v6l4 2\'/>
 </svg>'"
-                    :badgeText="'Rejected'" :bgColor="'bg-red-50 dark:bg-gray-700'"
+                    :badgeText="__('views/dashboard.rejected')" :bgColor="'bg-red-50 dark:bg-gray-700'"
                       :class="'bg-red-100 text-red-800 text-xs font-medium inline-flex items-center px-2.5 py-1 rounded-md dark:bg-red-900 dark:text-red-300'">
                     <!-- Additional content here -->
                 </x-common.stat-card>

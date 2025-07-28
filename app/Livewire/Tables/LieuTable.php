@@ -47,16 +47,16 @@ class LieuTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make('id', 'id')
+            Column::make(__('livewire/tables/lieu_table.id'), 'id')
                 ->sortable()
                 ->searchable(),
-            Column::make('Nom', 'libelle_fr')
+            Column::make(__('livewire/tables/lieu_table.nom'), 'libelle_fr')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->full_name;
                     }
                 )->sortable()->searchable(),
-            Column::make('Type', 'type_lieu')
+            Column::make(__('livewire/tables/lieu_table.type'), 'type_lieu')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->typeLieu->full_name;

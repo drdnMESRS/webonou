@@ -37,19 +37,19 @@ class OnouCmDemandeTable extends DataTableComponent
                 ->filter(function (Builder $builder, $value) {
                     return $builder->where('dossier_inscription_administrative.id_filiere', $value);
                 })->hiddenFromAll(),
-            'civilite' => SelectFilter::make('Civilité')
+            'civilite' => SelectFilter::make(__('livewire/tables/onou_cm_demande_table.sexe'))
                 ->options([
-                    1 => 'Garçon',
-                    2 => 'Fille',
+                    1 => __('livewire/tables/onou_cm_demande_table.garcons'),
+                    2 => __('livewire/tables/onou_cm_demande_table.filles'),
                 ])
                 ->filter(function (Builder $builder, $value) {
                     return $builder->where('civilite', $value);
                 }),
-            'Inscription' => SelectFilter::make('Situations')
+            'Inscription' => SelectFilter::make(__('livewire/tables/onou_cm_demande_table.situation'))
                 ->options([
-                    '1' => 'Tous',
-                    '2' => 'Transfert',
-                    '3' => 'Congé académique',
+                    '1' => __('livewire/tables/onou_cm_demande_table.tous'),
+                    '2' => __('livewire/tables/onou_cm_demande_table.transfert'),
+                    '3' => __('livewire/tables/onou_cm_demande_table.conge_academique'),
                 ])
                 ->filter(function (Builder $builder, $value) {
 
@@ -66,7 +66,7 @@ class OnouCmDemandeTable extends DataTableComponent
                     }
                 }),
 
-            'traiter' => BooleanFilter::make('Traitée')
+            'traiter' => BooleanFilter::make(__('livewire/tables/onou_cm_demande_table.traitee'))
                 ->setFilterPillValues([
 
                                 true => 'Active',
@@ -148,17 +148,17 @@ class OnouCmDemandeTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make('NIN', 'individu_detais.identifiant')
+            Column::make(__('livewire/tables/onou_cm_demande_table.nin'), 'individu_detais.identifiant')
                 ->searchable(),
-            Column::make('Numero inscription', 'dossier_inscription_administrative.numero_inscription')
+            Column::make(__('livewire/tables/onou_cm_demande_table.numero_inscription'), 'dossier_inscription_administrative.numero_inscription')
                 ->searchable(),
-            Column::make('Individu', 'individu_detais.nom_latin')
+            Column::make(__('livewire/tables/onou_cm_demande_table.individu'), 'individu_detais.nom_latin')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->individu_detais->full_name ?? '';
                     }
                 ),
-            Column::make('Sex', 'individu_detais.civilite')
+            Column::make(__('livewire/tables/onou_cm_demande_table.sexe'), 'individu_detais.civilite')
                 ->format(
                     function ($value, $row, Column $column) {
                         if (app()->getLocale() === 'ar') {
@@ -168,57 +168,57 @@ class OnouCmDemandeTable extends DataTableComponent
                         }
                     }
                 ),
-            Column::make('Residence', 'residenceaffectation.id')
+            Column::make(__('livewire/tables/onou_cm_demande_table.residence'), 'residenceaffectation.id')
                 ->format(
                     function ($value, $row, Column $column) {
-                        return $row->residenceaffectation->denomination_fr ?? '';
+                        return $row->residenceaffectation->full_name ?? '';
                     }
                 ),
-            Column::make('PAVILLON', 'affectationlieu.id')
+            Column::make(__('livewire/tables/onou_cm_demande_table.pavillon'), 'affectationlieu.id')
                 ->format(
                     function ($value, $row, Column $column) {
-                        return $row->affectationlieu->lieuaffectation->parent->libelle_fr ?? '';
+                        return $row->affectationlieu->lieuaffectation->parent->full_name ?? '';
                     }
                 ),
-            Column::make('Chambre', 'affectationlieu.id')
+            Column::make(__('livewire/tables/onou_cm_demande_table.chambre'), 'affectationlieu.id')
                 ->format(
                     function ($value, $row, Column $column) {
-                        return $row->affectationlieu->lieuaffectation->libelle_fr ?? '';
+                        return $row->affectationlieu->lieuaffectation->full_name ?? '';
                     }
                 ),
-            Column::make('Comune de résidance', 'id')
+            Column::make(__('livewire/tables/onou_cm_demande_table.comune_residence'), 'id')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->nc_commune_residence->full_name ?? '';
                     }
                 ),
-            Column::make('Etablissement', 'dossier_inscription_administrative.id_etablissement')
+            Column::make(__('livewire/tables/onou_cm_demande_table.etablissement'), 'dossier_inscription_administrative.id_etablissement')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->dossier_inscription_administrative->etablissement->full_name ?? '';
                     }
                 ),
-            Column::make('Domaine', 'dossier_inscription_administrative.id_domaine')
+            Column::make(__('livewire/tables/onou_cm_demande_table.domaine'), 'dossier_inscription_administrative.id_domaine')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->dossier_inscription_administrative->domaine->full_name ?? '';
                     }
                 ),
-            Column::make('Filière', 'dossier_inscription_administrative.id_filiere')
+            Column::make(__('livewire/tables/onou_cm_demande_table.filiere'), 'dossier_inscription_administrative.id_filiere')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->dossier_inscription_administrative->filiere->full_name ?? '';
                     }
                 ),
-            Column::make('Niveau', 'dossier_inscription_administrative.id_niveau')
+            Column::make(__('livewire/tables/onou_cm_demande_table.niveau'), 'dossier_inscription_administrative.id_niveau')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->dossier_inscription_administrative->niveau->full_name ?? '';
                     }
                 ),
-            BooleanColumn::make('frais_inscription_paye', 'dossier_inscription_administrative.frais_inscription_paye'),
-            BooleanColumn::make('paiment', 'hebergement_paye'),
-            BooleanColumn::make('clés remis', 'cles_remis'),
+            BooleanColumn::make(__('livewire/tables/onou_cm_demande_table.payment_inscription'), 'dossier_inscription_administrative.frais_inscription_paye'),
+            BooleanColumn::make(__('livewire/tables/onou_cm_demande_table.payment_hebergement'), 'hebergement_paye'),
+            BooleanColumn::make(__('livewire/tables/onou_cm_demande_table.cle_remise'), 'cles_remis'),
 
         ];
     }

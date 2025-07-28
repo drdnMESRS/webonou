@@ -2,7 +2,7 @@
 
     <x-common.grid>
         <x-common.card>
-            <label for="domain" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('Domaine') }}</label>
+            <label for="domain" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('livewire/tables/onou_cm_demande_table.domaine') }}</label>
             <div class="form-group">
                 <select id="domain" wire:model.live="selectedDomain"  class="mt-1 block w-full pl-3 pr-10 py-2
                 text-base border-gray-300 focus:outline-none
@@ -10,7 +10,7 @@
                  sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600
                  dark:text-white"
                         wire:loading.attr="disabled" wire:target="selectedDomain">
-                    <option value="">{{ __('Sélectionnez un domaine') }}</option>
+                    <option value="">{{__('livewire/tables/onou_cm_demande_table.select_domaine') }}</option>
                     @foreach($domains as $key => $pavillon)
                         <option value="{{ $key }}">{{ $pavillon }}</option>
                     @endforeach
@@ -26,7 +26,7 @@
                     @if (!empty($selectedDomain))
                         <div class="mb-4">
                             <label for="filiere" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                {{ __('Filiere') }}
+                                {{__('livewire/tables/onou_cm_demande_table.filiere') }}
                             </label>
                             <select wire:model.live="SelectedFiliere" id="filiere"
                                     class="mt-1 block w-full pl-3 pr-10 py-2
