@@ -3,7 +3,7 @@
         <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
         <tr>
             <th scope="col" colspan="2" class="px-6 py-3 rounded-s-lg">
-                Details
+                 {{__('views/livewire/onou/forms/residence_details.details')}}
             </th>
         </tr>
         </thead>
