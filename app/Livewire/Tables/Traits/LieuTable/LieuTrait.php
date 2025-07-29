@@ -19,7 +19,7 @@ trait LieuTrait
     public function filters(): array
     {
         return [
-            'etablissement' => SelectFilter::make('Residence')
+            'etablissement' => SelectFilter::make(__('livewire/tables/lieu_table.residence'))
                 ->options(
                     Onou_cm_etablissement::query()
                         ->get()
@@ -34,7 +34,7 @@ trait LieuTrait
                 ->filter(function (Builder $builder, $value) {
                     return $builder->where('etablissement', $value);
                 }),
-            'type' => SelectFilter::make('Type')
+            'type' => SelectFilter::make(__('livewire/tables/lieu_table.type'))
                 ->options(
                     Cache::remember(
                         'nomenclature_types_lieux',
@@ -57,7 +57,7 @@ trait LieuTrait
                 ->filter(function (Builder $builder, $value) {
                     return $builder->where('type_lieu', $value);
                 }),
-            'sous_type' => SelectFilter::make('Sous Type')
+            'sous_type' => SelectFilter::make(__('livewire/tables/lieu_table.sous_type'))
                 ->options(
                     Cache::remember(
                         'nomenclature_sous_types_lieux',
@@ -78,7 +78,7 @@ trait LieuTrait
                 ->filter(function (Builder $builder, $value) {
                     return $builder->where('sous_type_lieu', $value);
                 }),
-            'etat' => SelectFilter::make('Etat')
+            'etat' => SelectFilter::make(__('livewire/tables/lieu_table.etat'))
                 ->options(
                     Cache::remember(
                         'nomenclature_etat_lieux',
