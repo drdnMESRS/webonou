@@ -50,16 +50,16 @@ class FindLieuById
         //     })
         //     ->toArray();
         // Add additional details
-        $lieuDetails['Nom FR'] = $lieu->libelle_fr ?? '';
-        $lieuDetails['Nom AR'] = $lieu->libelle_ar ?? '';
-        $lieuDetails['Etablissement'] = $lieu->etablissementLieu->full_name ?? '';
-        $lieuDetails['Type'] = $lieu->typeLieu->full_name ?? '';
-        $lieuDetails['Sous Type'] = $lieu->sousTypeLieu->full_name ?? '';
-        $lieuDetails['Parent'] = $lieu->parent->full_name ?? '';
-        $lieuDetails['Etat'] = $lieu->etatLieu->full_name ?? '';
-        $lieuDetails['Capcite theorique'] = $lieu->capacite_theorique ?? '';
-        $lieuDetails['Capcite reelle'] = $lieu->capacite_reelle ?? '';
-        $lieuDetails['Superficie'] = $lieu->surface_globale ?? '';
+        $lieuDetails[__('livewire/tables/lieu_table.nom')] = $lieu->libelle_fr ?? '';
+        $lieuDetails[__('livewire/tables/lieu_table.nom_ar')] = $lieu->libelle_ar ?? '';
+        $lieuDetails[__('livewire/tables/lieu_table.etablissement')] = $lieu->etablissementLieu->full_name ?? '';
+        $lieuDetails[__('livewire/tables/lieu_table.type')] = $lieu->typeLieu->full_name ?? '';
+        $lieuDetails[__('livewire/tables/lieu_table.sous_type')] = $lieu->sousTypeLieu->full_name ?? '';
+        $lieuDetails[__('livewire/tables/lieu_table.parent')] = $lieu->parent->full_name ?? '';
+        $lieuDetails[__('livewire/tables/lieu_table.etat')] = $lieu->etatLieu->full_name ?? '';
+        $lieuDetails[__('livewire/tables/lieu_table.capacite_theorique')] = $lieu->capacite_theorique ?? '';
+        $lieuDetails[__('livewire/tables/lieu_table.capacite_reelle')] = $lieu->capacite_reelle ?? '';
+        $lieuDetails[__('livewire/tables/lieu_table.surface')] = $lieu->surface_globale ?? '';
 
         return (empty($lieu)) ? [] : $lieuDetails;
     }
