@@ -176,7 +176,7 @@ class Onou_cm_demande extends Model
                 ->distinct()
                 ->select(
                     array_merge([
-                        DB::raw('CONCAT(annee.premiere_annee, \'/\', annee.deuxieme_annee) as annee_academique'),
+                      DB::raw('CONCAT(annee.premiere_annee, \'/\', annee.deuxieme_annee) as annee_academique_libelle'),
                     ], $getSelectFields)
                 )
                 ->leftJoin('lmd.annee_academique as annee', 'annee.id', '=', 'demande.annee_academique')

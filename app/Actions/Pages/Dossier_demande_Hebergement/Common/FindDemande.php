@@ -232,6 +232,7 @@ class FindDemande
     public function getSelectFieldsHis(): array
     {
         return [
+
             'demande.renouvellement',
             'residence.denomination_ar as residance_arabe',
             'residence.denomination_fr as residance',
@@ -246,7 +247,7 @@ class FindDemande
             'lieu.libelle_fr as chambre',
             'demande.cles_remis',
             'demande.cles_remis_at',
-                \DB::raw("CONCAT(comptedou.nom_latin, ' ', comptedou.prenom_latin) as au_niveau_de_la_dou_traiter_par"),
+            \DB::raw("CONCAT(comptedou.nom_latin, ' ', comptedou.prenom_latin) as au_niveau_de_la_dou_traiter_par"),
             \DB::raw("CONCAT(compteru.nom_latin, ' ', compteru.prenom_latin) as au_niveau_de_la_ru_traiter_par"),
 
         ];
@@ -255,6 +256,7 @@ class FindDemande
     public function getHistoriqueHebergementLabels(): array
     {
         return [
+            'annee_academique'=>'annee_academique',
             'renouvellement' => __('views/livewire/onou/forms/demande_details.renouvellement'),
             'residance_arabe' => __('views/livewire/onou/forms/demande_details.residance_arabe'),
             'residance' => __('views/livewire/onou/forms/demande_details.residance'),
