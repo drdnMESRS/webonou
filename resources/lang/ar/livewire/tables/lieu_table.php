@@ -14,4 +14,11 @@ return [
     'affectes' => 'عدد الطلبة ',
     'capacite_theorique' => 'القدرة النظرية',
     'capacite_reelle' => 'القدرة الحقيقية',
+    'details'=>'تفاصيل الهيكل',
+    'residence'=>'الاقامة',
+    'ajouter'=>'إضافة',
+    'modifier'=>'تعديل',
+    'supprimer'=>'حذف',
+    'gestion_lieux'=>'إدارة الأماكن',
+    'gerer_lieux_structures'=>'إدارة الأماكن والهياكل'
 ];

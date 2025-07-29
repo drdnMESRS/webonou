@@ -14,4 +14,11 @@ return [
     'affectes' => 'Number of Students',
     'capacite_theorique' => 'Theoretical Capacity',
     'capacite_reelle' => 'Actual Capacity',
+    'details' => 'Structure Details',
+    'residence' => 'Residence',
+    'ajouter' => 'Add',
+    'modifier' => 'Edit',
+    'supprimer' => 'Delete',
+    'gestion_lieux' => 'Location Management',
+    'gerer_lieux_structures' => 'Manage Locations and Structures',
 ];

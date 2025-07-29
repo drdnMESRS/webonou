@@ -7,11 +7,11 @@
         {{-- Residence --}}
         <div>
             <label for="residence" class="block text-sm font-medium text-gray-700">
-                Résidence
+               {{ __('views/livewire/onou/forms/lieu_form/lieu_form.residence')}}
             </label>
             <select id="residence" wire:model.live="residence"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                <option value="">Sélectionner une résidence</option>
+                <option value="">{{ __('views/livewire/onou/forms/lieu_form/lieu_form.select')}}</option>
 
                  @foreach ($residences as $id => $label)
                     <option value="{{ $id }}">{{ $label }}</option>
@@ -22,11 +22,11 @@
         {{-- Type de structure --}}
 <div>
     <label class="block text-sm font-medium text-gray-700">
-        Type de la structure
+        {{ __('views/livewire/onou/forms/lieu_form/lieu_form.type')}}
     </label>
     <select id="type_structure" wire:model.live="type_structure"
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-        <option value="">Sélectionner</option>
+        <option value="">{{ __('views/livewire/onou/forms/lieu_form/lieu_form.select')}}</option>
         @foreach ($types as $id => $label)
             <option value="{{ $id }}">{{ $label }}</option>
         @endforeach
@@ -37,11 +37,11 @@
         {{-- Sous type --}}
         <div>
             <label for="sous_type" class="block text-sm font-medium text-gray-700">
-                Sous type
+                {{ __('views/livewire/onou/forms/lieu_form/lieu_form.sous_type')}}
             </label>
             <select id="sous_type" wire:model.live="sous_type"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                <option value="">Sélectionner</option>
+                <option value="">{{ __('views/livewire/onou/forms/lieu_form/lieu_form.select')}}</option>
 
                  @foreach ($sous_types as $id => $label)
                    <option value="{{ $id }}">{{ $label }}</option>
@@ -54,11 +54,11 @@
         @if((int)$type_structure !== $type_unite)
         <div>
             <label for="structure_appartenance" class="block text-sm font-medium text-gray-700">
-                Structure d'appartenance
+                {{ __('views/livewire/onou/forms/lieu_form/lieu_form.strecture_appartenance')}}
             </label>
             <select id="structure_appartenance" wire:model.live="structure_appartenance"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                <option value="">Sélectionner</option>
+                <option value="">{{ __('views/livewire/onou/forms/lieu_form/lieu_form.select')}}</option>
                 @foreach ($structures as $id => $label)
                    <option value="{{ $id }}" {{ $structure_appartenance == $id ? 'selected' : '' }}>{{ $label }}</option>
                 @endforeach
@@ -70,11 +70,11 @@
                 {{-- Etats --}}
         <div>
             <label for="structure_appartenance" class="block text-sm font-medium text-gray-700">
-                Etat de lieu
+                {{ __('views/livewire/onou/forms/lieu_form/lieu_form.etat')}}
             </label>
             <select id="etat" wire:model.live="etat"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                <option value="">Sélectionner</option>
+                <option value="">{{ __('views/livewire/onou/forms/lieu_form/lieu_form.select')}}</option>
                 @foreach ($etats as $id => $label)
                     <option value="{{ $id }}">{{ $label }}</option>
                 @endforeach
@@ -85,7 +85,7 @@
         {{--Surface--}}
         @if((int)$type_structure == $type_chambre)
          <div>
-                <label class="block text-sm font-medium text-gray-700">Superficie (m2)</label>
+                <label class="block text-sm font-medium text-gray-700">{{ __('views/livewire/onou/forms/lieu_form/lieu_form.surface')}}</label>
                 <input type="number" min=0 step="0.01" wire:model.live="surface"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
             @error('surface') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
@@ -94,13 +94,13 @@
         {{-- Libellé FR / AR --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-                <label class="block text-sm font-medium text-gray-700">Libellé Fr</label>
+                <label class="block text-sm font-medium text-gray-700">{{ __('views/livewire/onou/forms/lieu_form/lieu_form.nom_fr')}}</label>
                 <input type="text" wire:model.live="libelle_fr"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
             @error('libelle_fr') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                 </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700">Libellé Ar</label>
+                <label class="block text-sm font-medium text-gray-700">{{ __('views/livewire/onou/forms/lieu_form/lieu_form.nom_ar')}}</label>
                 <input type="text" wire:model.live="libelle_ar"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
             @error('libelle_ar') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
@@ -110,13 +110,13 @@
         {{-- Capacités --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-                <label class="block text-sm font-medium text-gray-700">Capacité Théorique</label>
+                <label class="block text-sm font-medium text-gray-700">{{ __('views/livewire/onou/forms/lieu_form/lieu_form.capacite_theorique')}}</label>
                 <input type="number" min=1 wire:model.live="capacite_theorique"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
             @error('capacite_theorique') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                 </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700">Capacité Réelle</label>
+                <label class="block text-sm font-medium text-gray-700">{{ __('views/livewire/onou/forms/lieu_form/lieu_form.capacite_reelle')}}</label>
                 <input type="number" min=0 wire:model.live="capacite_reelle"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
             @error('capacite_reelle') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
@@ -133,14 +133,14 @@
     </div>
     -->
     <div class="mt-4 space-y-2">
-        <label class="block font-bold mb-2">Chambres</label>
+        <label class="block font-bold mb-2">{{ __('views/livewire/onou/forms/lieu_form/lieu_form.add_chambres')}}</label>
 
         @foreach($chambres as $index => $chambre)
             <div class="flex gap-4 w-full">
 
                {{-- De --}}
 <div class="w-1/4">
-    <label class="block text-sm font-medium text-gray-700">De</label>
+    <label class="block text-sm font-medium text-gray-700">{{ __('views/livewire/onou/forms/lieu_form/lieu_form.from')}}</label>
     <input type="number" min="1" wire:model.live="chambres.{{ $index }}.from"
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
     @error("chambres.$index.from")
@@ -150,7 +150,7 @@
 
 {{-- À --}}
 <div class="w-1/4">
-    <label class="block text-sm font-medium text-gray-700">À</label>
+    <label class="block text-sm font-medium text-gray-700">{{ __('views/livewire/onou/forms/lieu_form/lieu_form.to')}}</label>
     <input type="number" min="1" wire:model.live="chambres.{{ $index }}.to"
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
     @error("chambres.$index.to")
@@ -160,7 +160,7 @@
 
 {{-- Type --}}
 <div class="w-1/4">
-    <label class="block text-sm font-medium text-gray-700">Position</label>
+    <label class="block text-sm font-medium text-gray-700">{{ __('views/livewire/onou/forms/lieu_form/lieu_form.position')}}</label>
     <input type="text" wire:model.live="chambres.{{ $index }}.type"
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
     @error("chambres.$index.type")
@@ -169,7 +169,7 @@
 </div>
 {{-- Type --}}
 <div class="w-1/4">
-    <label class="block text-sm font-medium text-gray-700">Superficie (m2)</label>
+    <label class="block text-sm font-medium text-gray-700">{{ __('views/livewire/onou/forms/lieu_form/lieu_form.surface')}}</label>
     <input type="text" wire:model.live="chambres.{{ $index }}.surface"
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
     @error("chambres.$index.surface")
@@ -204,7 +204,7 @@
 
         {{-- Observation --}}
         <div>
-            <label class="block text-sm font-medium text-gray-700">Observation</label>
+            <label class="block text-sm font-medium text-gray-700">{{ __('views/livewire/onou/forms/lieu_form/lieu_form.observation')}}</label>
             <textarea wire:model.live="observation" rows="3"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
         </div>
@@ -218,11 +218,11 @@
                     <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
                 </svg>
             </div>
-            Enregistrer
+            {{ __('views/livewire/onou/forms/lieu_form/lieu_form.enregistrer')}}
         </button>
             <button type="button" wire:click="resetForm"
                 class="text-sm text-gray-600 hover:text-gray-900">
-                Reset
+                {{ __('views/livewire/onou/forms/lieu_form/lieu_form.rest')}}
             </button>
         </div>
     </form>

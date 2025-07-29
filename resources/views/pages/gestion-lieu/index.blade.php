@@ -1,17 +1,17 @@
-<x-layouts.app :title="__('Gestion_dossier_hebergement')" xmlns:livewire="http://www.w3.org/1999/html">
+<x-layouts.app :title="__('livewire/tables/lieu_table.gestion_lieux')" xmlns:livewire="http://www.w3.org/1999/html">
 
     <div class="flex justify-between items-center mb-4">
         <div class="mb-6">
             <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
-                {{ __('Gestion des Lieux') }}
+                {{__('livewire/tables/lieu_table.gestion_lieux') }}
             </h1>
             <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                {{ __('Gérer les lieux et les structures') }}
+                {{ __('livewire/tables/lieu_table.gerer_lieux_structures') }}
             </p>
         </div>
 
         <div class="flex justify-between">
-            <x-common.modal id="lieu-modal" title="Lieu Details" size="auto" padding="5">
+            <x-common.modal id="lieu-modal" :title="__('livewire/tables/lieu_table.details')" size="auto" padding="5">
                 <livewire:onou.forms.lieu.pavilion-form />
             </x-common.modal>
 
@@ -24,7 +24,7 @@
            focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center
            dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
     type="button">
-    <i class="fa fa-plus"></i> Ajouter
+    <i class="fa fa-plus"></i> {{__('livewire/tables/lieu_table.ajouter')}}
     </button>
  <livewire:actions.export-data table="lieux"/>
         </div>

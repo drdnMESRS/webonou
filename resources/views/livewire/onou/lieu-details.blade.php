@@ -10,7 +10,7 @@
             <x-common.tab-navigation :tabs="[
                 [
                 'id' => 'lieu-details',
-                'title' => __('Détails sur le lieu'),
+                'title' =>__('livewire/tables/lieu_table.details'),
                 'content' => [
                     ['view' => 'pages.gestion-lieu.partials.lieu-details',
                     'data' => ['lieu' => $lieu]],
