@@ -141,8 +141,8 @@ class FindDemande
             'id_dia' => $demande->id_dia?? null,
             'id_fnd' => $demande->id_fnd?? null,
             'id_individu' => $demande->id_individu,
-             'photo' =>  "/mesrs_prod/documents/photos/".$demande->photo,
-             'civilite'=>$demande->civilite,
+            'photo' =>  "/mesrs_prod/documents/photos/".$demande->photo,
+            'civilite'=>$demande->civilite,
             'cles_remis' => ($demande->cles_remis),
             'cles_remis_at' => ($demande->cles_remis_at) ? Carbon::make($demande->cles_remis_at)->format('d/m/Y H:i') : ' - ',
 

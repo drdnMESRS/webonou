@@ -6,7 +6,7 @@
 <div class="flex flex-col md:flex-row items-start gap-5">
 
     <div class="md:w-1/5 w-full">
-        <img src="{{ $demande['photo'] ?? '/images/default.jpg' }}"
+        <img   src="{{ $demande['photo']??''}}"
              alt="Photo Étudiant"
              class="w-full rounded shadow">
     </div>

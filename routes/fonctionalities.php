@@ -3,9 +3,12 @@
 /*
  * Routes for dous fonctionalities
  */
+use Illuminate\Support\Str;
 
 use App\Http\Controllers\Common\CommonController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /* display all residances */
 
