@@ -63,7 +63,7 @@ class LieuTable extends DataTableComponent
                     })
                 ->sortable()
                 ->searchable(),
-            Column::make('Sous Type', 'sous_type_lieu')
+            Column::make(__('livewire/tables/lieu_table.sous_type'), 'sous_type_lieu')
                 ->format(
                     function ($value, $row, Column $column) {
                         if (is_null($row->sousTypeLieu)) {
@@ -73,20 +73,20 @@ class LieuTable extends DataTableComponent
                         return $row->sousTypeLieu->full_name;
                     }
                 )->sortable()->searchable(),
-            Column::make('Etablissement', 'etablissement')
+            Column::make(__('livewire/tables/lieu_table.etablissement'), 'etablissement')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->etablissementLieu ? $row->etablissementLieu->full_name : 'N/A';
                     }
                 )->sortable()->searchable(),
 
-            Column::make('Parent', 'libelle_fr')
+            Column::make(__('livewire/tables/lieu_table.parent'), 'libelle_fr')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->parent ? $row->parent->full_name : 'N/A';
                     }
                 )->sortable()->searchable(),
-            Column::make('Etat', 'id')
+            Column::make(__('livewire/tables/lieu_table.etat'), 'id')
                 ->format(
                     function ($value, $row, Column $column) {
 
@@ -94,7 +94,7 @@ class LieuTable extends DataTableComponent
                     })
                 ->sortable()
                 ->searchable(),
-            Column::make('Sous Lieu', 'id')
+            Column::make(__('livewire/tables/lieu_table.sous_lieu'), 'id')
                 ->format(
                     function ($value, $row, Column $column) {
 
@@ -102,25 +102,25 @@ class LieuTable extends DataTableComponent
                     })
                 ->sortable(),
 
-            Column::make('Superficie (m2)', 'surface_globale')
+            Column::make(__('livewire/tables/lieu_table.surface'), 'surface_globale')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->surface_globale;
                     }
                 )->sortable(),
-            Column::make('Capcite theorique', 'capacite_theorique')
+            Column::make(__('livewire/tables/lieu_table.capacite_theorique'), 'capacite_theorique')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->capacite_theorique;
                     }
                 )->sortable()->searchable(),
-            Column::make('Capcite reelle', 'capacite_reelle')
+            Column::make(__('livewire/tables/lieu_table.capacite_reelle'), 'capacite_reelle')
                 ->format(
                     function ($value, $row, Column $column) {
                         return $row->capacite_reelle;
                     }
                 )->sortable()->searchable(),
-            Column::make('etudiants affectés', 'id')
+            Column::make(__('livewire/tables/lieu_table.affectes'), 'id')
                 ->format(
                     function ($value, $row, Column $column) {
 

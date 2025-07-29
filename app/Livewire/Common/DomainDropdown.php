@@ -46,7 +46,7 @@ class DomainDropdown extends Component
             function () use ($DomainId) {
                 return Filiere_lmd::where('domainelmd', $DomainId)
                     ->pluck('ll_filiere', 'id')
-                    ->prepend('Sélectionner une filière', 0)
+                    ->prepend(__('livewire/tables/onou_cm_demande_table.select_filiere'), 0)
                     ->toArray();
             }
         );

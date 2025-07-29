@@ -12,14 +12,16 @@
                 <input type="radio" wire:model.defer="type_etudiant" value=1
                     class="h-5 w-5 border-gray-300 text-blue-500 focus:ring-blue-500"
                     checked="{{ $type_etudiant === 1 ? 'checked' : '' }}">
-                <span class="text-sm font-medium text-gray-700">Graduation</span>
+                <span class="text-sm font-medium text-gray-700">{{__('views/livewire/onou/forms/demande_hebergement/search_by_year_matricule.graduation')}}</span>
             </label>
 
             {{-- زر راديو دكتوراه --}}
             <label class="cursor-pointer flex items-center space-x-2">
                 <input type="radio" wire:model.defer="type_etudiant" value=2
                     class="h-5 w-5 border-gray-300 text-green-500 focus:ring-green-500">
-                <span class="text-sm font-medium text-gray-700">Post Graduation</span>
+                <span class="text-sm font-medium text-gray-700">
+                    {{__('views/livewire/onou/forms/demande_hebergement/search_by_year_matricule.post_graduation')}}
+                </span>
             </label>
         </div>
         @error('type_etudiant')
@@ -30,7 +32,7 @@
 
 
         <div class="flex flex-col">
-            <input type="text" wire:model.defer="annee_bac" placeholder="Année du bac"
+            <input type="text" wire:model.defer="annee_bac" placeholder="annee de bac"
                 class="border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
             @error('annee_bac')
                 <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
@@ -38,7 +40,7 @@
         </div>
 
         <div class="flex flex-col">
-            <input type="text" wire:model.defer="matricule_bac" placeholder="Matricule du bac"
+            <input type="text" wire:model.defer="matricule_bac" placeholder="matricule de bac"
                 class="border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
             @error('matricule_bac')
                 <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
@@ -60,7 +62,7 @@
                         fill="currentColor" />
                 </svg>
             </div>
-            Rechercher
+            {{__('views/livewire/onou/forms/demande_hebergement/search_by_year_matricule.search')}}
         </button>
 
     </div>
@@ -108,7 +110,7 @@
                 ],
       [
                     'id' => 'doctorant',
-                    'title' => __('Détails sur doctorat'),
+                    'title' =>__('views/livewire/onou/forms/demande_details.details_doctorat'),
                     'content' => [
                         ['view' => 'pages.dossier-hebergement.partials.doctorat', 'data' => ['demande' => $demande]],
                     ],
@@ -132,20 +134,27 @@
             <div class="flex justify-between items-center mt-4">
                 <div>
 
-                    <x-common.modal id="accept-modal" title="Accepter la demande " size="auto">
+                    <x-common.modal id="accept-modal" :title="__('views/livewire/onou/forms/demande_hebergement/traitement_form.accepter')" size="auto">
                         @include($accept_view, [
                             'data' => $demande,
                             'action' => $demande ? ($demande['id'] ? 'accept' : 'create') : '',
                         ])
                     </x-common.modal>
 
-                    <button id="open-my-modal-button" data-modal-target="accept-modal" data-modal-toggle="accept-modal"
-                        class="block
+
+                     <button id="open-my-modal-button" data-modal-target="accept-modal" data-modal-toggle="accept-modal"
+                        class="flex items-center gap-2 block
             text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none
             focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center
             dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                         type="button">
-                         {{__('views/livewire/onou/forms/demande_details.accepter_demande')}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 512 511.968"
+                            fill="currentColor" shape-rendering="geometricPrecision" text-rendering="geometricPrecision"
+                            image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd">
+                            <path fill-rule="nonzero"
+                                d="M138.851 214.679l61.342-.814 4.564 1.189c21.526 12.408 40.78 27.901 57.463 46.309 22.008-35.412 45.452-67.92 70.224-97.825 27.129-32.766 55.92-62.488 86.157-89.618l5.989-2.303h66.935l-13.49 14.99c-41.487 46.094-79.117 93.721-113.115 142.847-34.019 49.17-64.427 99.915-91.471 152.159l-8.411 16.233-7.736-16.532c-28.233-60.592-68.027-112.194-123.455-150.242l5.004-16.393zM255.984 0c38.444 0 76.181 8.561 110.833 25.201 2.239 1.071 3.193 3.782 2.121 6.022a4.578 4.578 0 01-1.275 1.596l-37.544 30.719a4.552 4.552 0 01-4.672.718c-22.254-8.057-45.751-12.108-69.42-12.108-54.27 0-105.775 21.29-144.134 59.692-38.39 38.412-59.702 89.832-59.702 144.144 0 54.281 21.29 105.743 59.691 144.123 38.423 38.402 89.832 59.713 144.145 59.713 54.227 0 105.796-21.311 144.123-59.702 38.412-38.391 59.702-89.843 59.702-144.134 0-13.2-1.211-26.197-3.75-39.162a4.57 4.57 0 011.029-3.836l33.108-41.959c1.564-1.939 4.425-2.228 6.364-.664a4.518 4.518 0 011.479 2.197C507.329 199.389 512 227.612 512 255.984c0 68.027-26.872 132.883-74.981 180.992-48.098 48.098-112.975 74.992-180.992 74.992-68.028 0-132.884-26.883-180.992-74.992l-.182-.192C26.808 388.675 0 323.969 0 255.984c0-68.027 26.872-132.883 74.981-180.992l.204-.182C123.294 26.808 188.021 0 255.984 0z" />
+                        </svg>
+                        {{__('views/livewire/onou/forms/demande_details.accepter_demande')}}
                     </button>
                 </div>
                 <div>

@@ -2,5 +2,9 @@
 
 return [
     'dashboard' => 'Dashboard',
-    'request' => 'Applications',
+    'request' => 'Request',
+    'total' => 'Total',
+    'pending' => 'Pending',
+    'accepted' => 'Accepted',
+    'rejected' => 'Rejected',
 ];

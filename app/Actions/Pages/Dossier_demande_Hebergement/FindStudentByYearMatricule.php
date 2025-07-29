@@ -29,10 +29,10 @@ class FindStudentByYearMatricule extends FindDemande
         $historique_translated = $this->fetchingTheHistoricalDataForTheIndividual($student);
 
         $historique_dia = Dossier_inscription_administrative::fetchAllInscrptionByIdividu($student->id_individu, $this->getSelectFieldsHisInc());
-
+        $historique_dia_trad=$this->getinscTranslated($historique_dia);
         (new CheckConformeHeb(collect($student)->toArray()))->handle();
 
-        return $this->mapToDTO($student, $historique_translated, $historique_dia, $type)->toArray();
+        return $this->mapToDTO($student, $historique_translated, $historique_dia_trad, $type)->toArray();
     }
 
     /**
@@ -45,4 +45,5 @@ class FindStudentByYearMatricule extends FindDemande
 
         return $this->getTranslated($historique_heb);
     }
+
 }

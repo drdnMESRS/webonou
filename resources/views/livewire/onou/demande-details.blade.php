@@ -30,6 +30,7 @@
                         ],
                     ],
                 ],
+
                 [
                     'id' => 'adress',
                     'title' => __('views/livewire/onou/forms/demande_details.details_adresse'),
@@ -48,7 +49,7 @@
 
             <div class="flex justify-between items-center mt-4">
                 <div>
-                    <x-common.modal id="accept-modal" title="Accepter la demande" size="auto">
+                    <x-common.modal id="accept-modal" :title="__('views/livewire/onou/forms/demande_hebergement/traitement_form.accepter')" size="auto">
                         @include($accept_view, ['data' => $demande, 'action' => 'accept'])
                     </x-common.modal>
 
@@ -69,7 +70,7 @@
                 </div>
                 @include($cles_remis_view, ['demande' => $demande])
                 <div>
-                    <x-common.modal id="reject-modal" title="Rejeter la demande" size="auto">
+                    <x-common.modal id="reject-modal" :title="__('views/livewire/onou/forms/demande_hebergement/traitement_form.rejeter')" size="auto">
                         @include($reject_view, ['data' => $demande, 'action' => 'reject'])
                     </x-common.modal>
                     <button id="open-reject-modal-button" data-modal-target="reject-modal"

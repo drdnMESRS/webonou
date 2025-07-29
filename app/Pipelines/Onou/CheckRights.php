@@ -96,9 +96,9 @@ class CheckRights extends Alerts
             $this->message = 'Situation hebergement réguliere';
             $this->flush_alert();
         }
-
-        if (isset($demande['id_suivi_fnd'])) {
-            if ($demande['id_suivi_fnd']) {
+//dd($demande);
+        if (isset($demande['id_fnd'])) {
+            if (isset($demande['id_suivi_fnd'])) {
                 $this->status = 'success';
                 $this->type = 'checkreinscription_doctort';
                 $this->message = 'Etudiant inscrie pour l\année universitaire';

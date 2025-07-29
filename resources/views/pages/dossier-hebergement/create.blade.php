@@ -1,11 +1,11 @@
-<x-layouts.app :title="__('Gestion_dossier_hebergement')" >
+<x-layouts.app :title=" __('views/livewire/onou/forms/demande_hebergement/search_by_year_matricule.Creer_demande')" >
 
     <div class="mb-6">
         <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">
-            {{ __('Creer une nouvelle demande') }}
+            {{__('views/livewire/onou/forms/demande_hebergement/search_by_year_matricule.Creer_demande')}}
         </h1>
         <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Creer une nouvelle demande') }}
+             {{__('views/livewire/onou/forms/demande_hebergement/search_by_year_matricule.Creer_demande')}}
         </p>
     </div>
 

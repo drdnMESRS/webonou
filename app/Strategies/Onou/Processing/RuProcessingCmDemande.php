@@ -73,13 +73,13 @@ class RuProcessingCmDemande implements ProcessCmDemande
             return [
                 'observ_heb_resid' => [
                     'type' => 'select',
-                    'label' => 'Motif de refus',
+                    'label' => __('views/livewire/onou/forms/demande_hebergement/traitement_form.motif'),
                     'name' => 'observ_heb_resid',
                     'required' => true,
                     'options' => cache()->remember('reject_observ_heb_resid', 60 * 60 * 24, function () {
                         return Nomenclature::byListId(533)
                             ->pluck('libelle_long_ar', 'id')
-                            ->prepend('Sélectionner un motif de refus', '');
+                            ->prepend(__('views/livewire/onou/forms/demande_hebergement/traitement_form.select_motif'), '');
                     }),
                 ],
             ];

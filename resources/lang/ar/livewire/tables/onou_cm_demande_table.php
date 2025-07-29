@@ -24,6 +24,10 @@ return [
     'conge_academique' => 'عطلة أكاديمية',
     'traitee' => 'مدروسة',
     'select_domaine' => 'حدد الميدان',
+    'select_filiere' => 'حدد الشعبة',
     'gestion_des_dossiers_hebergement' => 'إدارة ملفات الايواء',
     'gerer_les_demandes_hebergement_des_individus' => 'إدارة طلبات ايواء الطلبة',
+    'typestudent'=>'نوع الطلب',
+    'graduation'=>'التدرج',
+    'post_graduation'=>'ما بعد التدرج',
 ];
