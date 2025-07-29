@@ -98,7 +98,7 @@ class CheckRights extends Alerts
         }
 
         if (!isset($demande['id_dia'])) {
-            if ($demande['id_suivi_fnd']) {
+            if (isset($demande['id_suivi_fnd'])) {
                 $this->status = 'success';
                 $this->type = 'checkreinscription_doctort';
                 $this->message = 'Etudiant inscrie pour l\année universitaire';
