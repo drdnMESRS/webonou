@@ -59,13 +59,12 @@ class SearchByYearMatricule extends Component
 
             //   dd($this->type_etudiant);
             $this->demande = (new FindStudentByYearMatricule)->handle($this->annee_bac, $this->matricule_bac, $this->type_etudiant);
-
             $this->demande['rederctpage'] = 'diaHeb.create';
             $this->showDtudentDetails = true;
         } catch (\Exception $e) {
-
             session()->flash('error', 'Validation failed: '.$e->getMessage());
             $this->redirectRoute('diaHeb.create');
+            return;
         }
     }
 

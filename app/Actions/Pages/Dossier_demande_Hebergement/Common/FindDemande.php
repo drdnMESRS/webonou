@@ -116,7 +116,7 @@ class FindDemande
         ];
     }
 
-    public function mapToDTO($demande, $historique, $historique_dia = null): DemandeHebergementDTO
+    public function mapToDTO($demande, $historique, $historique_dia = null,$typesearch=1): DemandeHebergementDTO
     {
 
         return (new DemandeHebergementDTO)->FromArray([
@@ -124,7 +124,8 @@ class FindDemande
             'frais_hebregement_pay' => $demande->hebergement_paye,
             'actual_page' => $this->getPageFromUrl(),
             'individu' => $this->getIndividu($demande),
-            'dossierInscriptionAdministrative' => $this->getInscription($demande),
+            'dossierInscriptionAdministrative' => $typesearch==1?$this->getInscription($demande):[],
+            'dossierInscriptionDoctorant' =>$typesearch==2? $this->getDoctorant($demande):[],
             'demandeHebergement' => [
                 __('views/livewire/onou/forms/demande_details.1er_choix_arabe') => $demande->choix1_arabe ?? ' - ',
                 __('views/livewire/onou/forms/demande_details.1er_choix') => $demande->choix1 ?? ' - ',
@@ -137,6 +138,9 @@ class FindDemande
             'historiqueHebergement' => $historique->toArray(),
             'historiqueInscription' => $historique_dia?->toArray() ?? [],
             'adressIndividue' => $this->getadressIndividue($demande),
+            'id_dia' => $demande->id_dia?? null,
+            'id_fnd' => $demande->id_fnd?? null,
+            'id_individu' => $demande->id_individu,
             'cles_remis' => ($demande->cles_remis),
             'cles_remis_at' => ($demande->cles_remis_at) ? Carbon::make($demande->cles_remis_at)->format('d/m/Y H:i') : ' - ',
 
@@ -170,8 +174,8 @@ class FindDemande
             __('views/livewire/onou/forms/demande_details.numero_inscription') => $demande->numero_inscription,
             __('views/livewire/onou/forms/demande_details.payment_inscription') => $demande->frais_inscription_paye,
             // 'code_etablissement' => $demande->etab_identifiant,
-            __('views/livewire/onou/forms/demande_details.etablissement_arabe') => $demande->etab_identifiant.' - '.$demande->ll_etablissement_arabe,
-            __('views/livewire/onou/forms/demande_details.etablissement') => $demande->etab_identifiant.' - '.$demande->ll_etablissement_latin,
+            __('views/livewire/onou/forms/demande_details.etablissement_arabe') => $demande->etab_identifiant . ' - ' . $demande->ll_etablissement_arabe,
+            __('views/livewire/onou/forms/demande_details.etablissement') => $demande->etab_identifiant . ' - ' . $demande->ll_etablissement_latin,
             // 'offre_code' => $demande->code,
             __('views/livewire/onou/forms/demande_details.offre_de_formation') => $demande->libelle_long_fr,
             __('views/livewire/onou/forms/demande_details.offre_de_formation_arabe') => $demande->of_libelle_long_ar,
@@ -202,7 +206,7 @@ class FindDemande
     {
         $name = '';
         foreach ($columns as $column) {
-            $name .= ' '.$demande->$column;
+            $name .= ' ' . $demande->$column;
         }
 
         return $name;
@@ -246,8 +250,8 @@ class FindDemande
             'lieu.libelle_fr as chambre',
             'demande.cles_remis',
             'demande.cles_remis_at',
-                \DB::raw("CONCAT(comptedou.nom_latin, ' ', comptedou.prenom_latin) as au_niveau_de_la_dou_traiter_par"),
-            \DB::raw("CONCAT(compteru.nom_latin, ' ', compteru.prenom_latin) as au_niveau_de_la_ru_traiter_par"),
+            DB::raw("CONCAT(comptedou.nom_latin, ' ', comptedou.prenom_latin) as au_niveau_de_la_dou_traiter_par"),
+            DB::raw("CONCAT(compteru.nom_latin, ' ', compteru.prenom_latin) as au_niveau_de_la_ru_traiter_par"),
 
         ];
     }
@@ -307,7 +311,134 @@ class FindDemande
             'inscription.frais_inscription_paye as frais_inscription_paye',
         ];
     }
+    public function getDoctorant($demande): array
+    {
+        return [
+            'numero_inscription' => $demande->numero_inscription ?? '',
+            'frais_inscription_paye' => $demande->frais_inscription_paye ?? '',
 
+            // 'code_etablissement' => $demande->etab_identifiant,
+            'etablissement_arabe' => ($demande->etab_identifiant ?? '') . ' - ' . ($demande->ll_etablissement_arabe ?? ''),
+            'etablissement' => ($demande->etab_identifiant ?? '') . ' - ' . ($demande->ll_etablissement_latin ?? ''),
+
+            // 'offre_code' => $demande->code,
+            'domaine_arabe' => $demande->ll_domaine_arabe ?? '',
+            'domaine' => $demande->ll_domaine ?? '',
+
+            'structure_arabe' => $demande->ll_structure_arabe ?? '',
+            'structure' => $demande->ll_structure_latin ?? '',
+
+            'filiere_arabe' => $demande->ll_filiere_arabe ?? '',
+            'filiere' => $demande->ll_filiere ?? '',
+
+            'specialite_arabe' => $demande->ll_specialite_arabe ?? '',
+            'specialite' => $demande->ll_specialite ?? '',
+            'situation_arabe' => $demande->situation_libelle_long_arabe,
+            'situation_latin' => $demande->situation_libelle_long_latin,
+            'commune_arabe' => $demande->commune_libelle_long_ar ?? '',
+            'commune' => $demande->commune_libelle_long_f ?? '',
+
+            // 'cycle_code' => $demande->code,
+
+            // 'structure_code' => $demande->strecture_code,
+
+            // 'est_transfert' => $demande->est_transfert,
+        ];
+    }
+    public function getSelectFieldsDoctora(): array
+    {
+        return [
+            'demande.id as id_demande',
+            'demande.*',
+            'individu.id as id_individu',
+            'individu.identifiant',
+            'individu.date_naissance',
+            'individu.nom_arabe',
+            'individu.nom_jeune_fille_arabe',
+            'individu.nom_jeune_fille_latin',
+            'individu.nom_latin',
+            'individu.nom_mere_arabe',
+            'individu.nom_mere_latin',
+            'individu.prenom_arabe',
+            'individu.prenom_latin',
+            'individu.prenom_mere_arabe',
+            'individu.prenom_mere_latin',
+            'individu.prenom_pere_arabe',
+            'individu.prenom_pere_latin',
+            'individu.presume',
+            'individu.civilite',
+            'individu.groupe_sanguin',
+            'individu.nationalite',
+            'individu.situation_familiale',
+            'individu.situation_service_national',
+            'individu.type_individu',
+            'individu.qualite',
+            'individu.id',
+            'individu.lieu_naissance',
+            'individu.est_migree',
+            'individu.active',
+            'individu.etablissement',
+            'individu.lieu_naissance_arabe',
+            'individu.photo',
+            'individu.nc_wilaya_naissance',
+            'individu.date_deces',
+            'individu.email',
+            'individu.id_carde',
+            'individu.nc_commune_naissance',
+            'doctora.id as id_fnd',
+            'doctora.*',
+            'suivdoctora.numero_inscription as numero_inscription',
+            'paiement.est_paye as frais_inscription_paye',
+            // 'inscription.est_transfert',
+            'situation.libelle_long_ar as situation_libelle_long_arabe',
+            'situation.libelle_long_fr as situation_libelle_long_latin',
+            'etablissement.identifiant as etab_identifiant',
+            'etablissement.ll_etablissement_arabe',
+            'etablissement.ll_etablissement_latin',
+            'domaine.ll_domaine_arabe',
+            'domaine.ll_domaine',
+            'filiere.ll_filiere_arabe',
+            'filiere.ll_filiere',
+            // 'structure.identifiant as strecture_code',
+            'structure.ll_structure_arabe',
+            'structure.ll_structure_latin',
+            'specialite.ll_specialite_arabe',
+            'specialite.ll_specialite',
+            'suivdoctora.id as id_suivi_fnd',
+            'commune.libelle_long_ar as commune_libelle_long_ar',
+            'commune.libelle_long_f as commune_libelle_long_f',
+            'nationalite.libelle_long_ar as nationalite_arabe',
+            'nationalite.libelle_long_f as nationalite',
+            'adress.libelle_adresse_arabe',
+            'adress.libelle_adresse_latin',
+            'adress_commune.id as commune_residence_id',
+            'adress_commune.libelle_long_ar as commune_arabe',
+            'adress_commune.libelle_long_f as commune',
+            'adress_wilaya.libelle_long_ar as wilaya_arabe',
+            'adress_wilaya.libelle_long_f as wilaya',
+            'adress_daira.libelle_long_ar as daira_arabe',
+            'adress_daira.libelle_long_f as daira',
+            'adress_pays.libelle_long_ar as pays_arabe',
+            'adress_pays.libelle_long_f as pays',
+            'adress_type_adresse.libelle_long_ar as type_adresse_arabe',
+            'adress_type_adresse.libelle_long_f as type_adresse',
+
+            'choix1.denomination_ar as choix1_arabe',
+            'choix1.denomination_fr as choix1',
+
+            'choix2.denomination_ar as choix2_arabe',
+            'choix2.denomination_fr as choix2',
+
+            'choix3.denomination_ar as choix3_arabe',
+            'choix3.denomination_fr as choix3',
+            'droit_renouvellement.reinscription as reinscription',
+            'droit_renouvellement.abondan as abondan',
+            'droit_renouvellement.frais_hebergement as frais_hebergement',
+            'droit_renouvellement.deuxieme_diplome as deuxieme_diplome',
+            'droit_renouvellement.retard_scolaire as retard_scolaire',
+            'droit_renouvellement.retard_niveau as retard_niveau',
+        ];
+    }
     /**
      * @param  $queryParams
      * @return mixed

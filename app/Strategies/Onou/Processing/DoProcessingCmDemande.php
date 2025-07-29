@@ -34,7 +34,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
             throw new \Exception('Invalid parameters provided for processing the demand.');
         }
 
-        if(in_array($action, ['accept', 'create']) && !isset($data['id_individu'])) {
+        if(in_array($action, ['accept', 'create']) && isset($data['id_individu'])) {
             if (isset($data['id_dia'])) {
                 $checkAgeResult = session('checks.checkAge');
                 if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
