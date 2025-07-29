@@ -12,14 +12,16 @@
                 <input type="radio" wire:model.defer="type_etudiant" value=1
                     class="h-5 w-5 border-gray-300 text-blue-500 focus:ring-blue-500"
                     checked="{{ $type_etudiant === 1 ? 'checked' : '' }}">
-                <span class="text-sm font-medium text-gray-700">Graduation</span>
+                <span class="text-sm font-medium text-gray-700">{{__('views/livewire/onou/forms/demande_hebergement/search_by_year_matricule.graduation')}}</span>
             </label>
 
             {{-- زر راديو دكتوراه --}}
             <label class="cursor-pointer flex items-center space-x-2">
                 <input type="radio" wire:model.defer="type_etudiant" value=2
                     class="h-5 w-5 border-gray-300 text-green-500 focus:ring-green-500">
-                <span class="text-sm font-medium text-gray-700">Post Graduation</span>
+                <span class="text-sm font-medium text-gray-700">
+                    {{__('views/livewire/onou/forms/demande_hebergement/search_by_year_matricule.post_graduation')}}
+                </span>
             </label>
         </div>
         @error('type_etudiant')
@@ -30,7 +32,7 @@
 
 
         <div class="flex flex-col">
-            <input type="text" wire:model.defer="annee_bac" placeholder="Année du bac"
+            <input type="text" wire:model.defer="annee_bac" placeholder="annee de bac"
                 class="border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
             @error('annee_bac')
                 <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
@@ -38,7 +40,7 @@
         </div>
 
         <div class="flex flex-col">
-            <input type="text" wire:model.defer="matricule_bac" placeholder="Matricule du bac"
+            <input type="text" wire:model.defer="matricule_bac" placeholder="matricule de bac"
                 class="border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
             @error('matricule_bac')
                 <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
@@ -60,7 +62,7 @@
                         fill="currentColor" />
                 </svg>
             </div>
-            Rechercher
+            {{__('views/livewire/onou/forms/demande_hebergement/search_by_year_matricule.search')}}
         </button>
 
     </div>
@@ -108,7 +110,7 @@
                 ],
       [
                     'id' => 'doctorant',
-                    'title' => __('Détails sur doctorat'),
+                    'title' =>__('views/livewire/onou/forms/demande_details.details_doctorat'),
                     'content' => [
                         ['view' => 'pages.dossier-hebergement.partials.doctorat', 'data' => ['demande' => $demande]],
                     ],

@@ -24,6 +24,10 @@ return [
     'conge_academique' => 'Academic Leave',
     'traitee' => 'Processed',
     'select_domaine' => 'Select Field',
+    'select_filiere' => 'Select Filiere',
     'gestion_des_dossiers_hebergement' => 'Accommodation File Management',
     'gerer_les_demandes_hebergement_des_individus' => 'Manage Student Accommodation Requests',
+    'typestudent' => 'Request Type',
+    'graduation' => 'Graduate',
+    'post_graduation' => 'Postgraduate',
 ];

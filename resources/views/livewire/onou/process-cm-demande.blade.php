@@ -15,7 +15,7 @@
                 </svg>
 
             </div>
-            Enregistrer
+            {{__('views/livewire/onou/forms/demande_hebergement/traitement_form.enregestrer')}}
         </button>
     </form>
 </div>

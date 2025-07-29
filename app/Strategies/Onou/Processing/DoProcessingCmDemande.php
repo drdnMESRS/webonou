@@ -127,19 +127,19 @@ class DoProcessingCmDemande implements ProcessCmDemande
             // if civility is not null, we can return only R1
             return $this->getResidences($civility)
                 ->pluck('denomination_ar', 'id')
-                ->prepend('Sélectionner une résidence', '');
+                ->prepend(__('views/livewire/onou/forms/demande_hebergement/traitement_form.select_residence'), '');
         });
 
         $reject_fields = [
             'observ_heb_dou' => [
                 'type' => 'select',
-                'label' => 'Motif de refus',
+                'label' => __('views/livewire/onou/forms/demande_hebergement/traitement_form.motif'),
                 'name' => 'observ_heb_dou',
                 'required' => true,
                 'options' => cache()->remember('reject_observ_heb_dou', 60 * 60 * 24, function () {
                     return Nomenclature::byListId(533)
                         ->pluck('libelle_long_ar', 'id')
-                        ->prepend('Sélectionner un motif de refus', '');
+                        ->prepend(__('views/livewire/onou/forms/demande_hebergement/traitement_form.select_motif'), '');
                 }),
             ],
         ];
@@ -147,7 +147,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
         $accept_fields = [
             'residence' => [
                 'type' => 'select',
-                'label' => 'Residence',
+                'label' => __('views/livewire/onou/forms/demande_hebergement/traitement_form.residence'),
                 'name' => 'residence',
                 'required' => true,
                 'options' => $options,

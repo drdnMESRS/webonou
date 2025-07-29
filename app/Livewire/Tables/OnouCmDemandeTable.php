@@ -45,10 +45,10 @@ class OnouCmDemandeTable extends DataTableComponent
                     return $builder->where('dossier_inscription_administrative.id_filiere', $value);
                 })->hiddenFromAll(),
 
-            'typestudent' => SelectFilter::make('typestudent')
+            'typestudent' => SelectFilter::make(__('livewire/tables/onou_cm_demande_table.typestudent'))
                 ->options([
-                    1 => 'Graduation',
-                    2 => 'Post Graduation',
+                    1 => __('livewire/tables/onou_cm_demande_table.graduation'),
+                    2 => __('livewire/tables/onou_cm_demande_table.post_graduation'),
                 ])
                 ->filter(function (Builder $builder, $value) {
                     return $builder;

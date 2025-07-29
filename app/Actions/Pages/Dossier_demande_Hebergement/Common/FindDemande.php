@@ -277,7 +277,28 @@ class FindDemande
             'au_niveau_de_la_ru_traiter_par' => __('views/livewire/onou/forms/demande_details.traiter_par_resid'),
         ];
     }
-
+public function getHistoriqueInscriptionLabels(): array
+{
+    return [
+        'numero_inscription' => __('views/livewire/onou/forms/demande_details.numero_inscription'),
+        'bac' => __('views/livewire/onou/forms/demande_details.bac'),
+        'situation_inscription' => __('views/livewire/onou/forms/demande_details.situation_inscription'),
+        'année_académique' => __('views/livewire/onou/forms/demande_details.annee_academique'),
+        'etablissement_arabe' => __('views/livewire/onou/forms/demande_details.etablissement_arabe'),
+        'etablissement' => __('views/livewire/onou/forms/demande_details.etablissement'),
+        'structure_arabe' => __('views/livewire/onou/forms/demande_details.structure_arabe'),
+        'structure' => __('views/livewire/onou/forms/demande_details.structure'),
+        'niveau_arabe' => __('views/livewire/onou/forms/demande_details.niveau_arabe'),
+        'niveau' => __('views/livewire/onou/forms/demande_details.niveau'),
+        'offre_de_formation_arabe' => __('views/livewire/onou/forms/demande_details.offre_de_formation_arabe'),
+        'offre_de_formation' => __('views/livewire/onou/forms/demande_details.offre_de_formation'),
+        'résultat_arabe' => __('views/livewire/onou/forms/demande_details.resultat_arabe'),
+        'résultat' => __('views/livewire/onou/forms/demande_details.resultat'),
+        'est_transfert' => __('views/livewire/onou/forms/demande_details.est_transfert'),
+        'conge_acad' => __('views/livewire/onou/forms/demande_details.conge_academique'),
+        'frais_inscription_paye' => __('views/livewire/onou/forms/demande_details.payment_inscription'),
+    ];
+}
     public function getSelectFieldsHisInc(): array
     {
         return [
@@ -314,29 +335,29 @@ class FindDemande
     public function getDoctorant($demande): array
     {
         return [
-            'numero_inscription' => $demande->numero_inscription ?? '',
-            'frais_inscription_paye' => $demande->frais_inscription_paye ?? '',
+             __('views/livewire/onou/forms/demande_details.numero_inscription') => $demande->numero_inscription ?? '',
+            __('views/livewire/onou/forms/demande_details.payment_inscription') => $demande->frais_inscription_paye ?? '',
 
             // 'code_etablissement' => $demande->etab_identifiant,
-            'etablissement_arabe' => ($demande->etab_identifiant ?? '') . ' - ' . ($demande->ll_etablissement_arabe ?? ''),
-            'etablissement' => ($demande->etab_identifiant ?? '') . ' - ' . ($demande->ll_etablissement_latin ?? ''),
+            __('views/livewire/onou/forms/demande_details.etablissement_arabe') => ($demande->etab_identifiant ?? '') . ' - ' . ($demande->ll_etablissement_arabe ?? ''),
+            __('views/livewire/onou/forms/demande_details.etablissement') => ($demande->etab_identifiant ?? '') . ' - ' . ($demande->ll_etablissement_latin ?? ''),
 
             // 'offre_code' => $demande->code,
-            'domaine_arabe' => $demande->ll_domaine_arabe ?? '',
-            'domaine' => $demande->ll_domaine ?? '',
+            __('views/livewire/onou/forms/demande_details.domaine_arabe') => $demande->ll_domaine_arabe ?? '',
+            __('views/livewire/onou/forms/demande_details.domaine') => $demande->ll_domaine ?? '',
 
-            'structure_arabe' => $demande->ll_structure_arabe ?? '',
-            'structure' => $demande->ll_structure_latin ?? '',
+            __('views/livewire/onou/forms/demande_details.structure_arabe') => $demande->ll_structure_arabe ?? '',
+            __('views/livewire/onou/forms/demande_details.structure') => $demande->ll_structure_latin ?? '',
 
-            'filiere_arabe' => $demande->ll_filiere_arabe ?? '',
-            'filiere' => $demande->ll_filiere ?? '',
+            __('views/livewire/onou/forms/demande_details.filiere_arabe') => $demande->ll_filiere_arabe ?? '',
+            __('views/livewire/onou/forms/demande_details.filiere') => $demande->ll_filiere ?? '',
 
-            'specialite_arabe' => $demande->ll_specialite_arabe ?? '',
-            'specialite' => $demande->ll_specialite ?? '',
-            'situation_arabe' => $demande->situation_libelle_long_arabe,
-            'situation_latin' => $demande->situation_libelle_long_latin,
-            'commune_arabe' => $demande->commune_libelle_long_ar ?? '',
-            'commune' => $demande->commune_libelle_long_f ?? '',
+            __('views/livewire/onou/forms/demande_details.specialite_arabe') => $demande->ll_specialite_arabe ?? '',
+            __('views/livewire/onou/forms/demande_details.specialite') => $demande->ll_specialite ?? '',
+             __('views/livewire/onou/forms/demande_details.situation_inscription_arabe') => $demande->situation_libelle_long_arabe,
+             __('views/livewire/onou/forms/demande_details.situation_inscription') => $demande->situation_libelle_long_latin,
+            __('views/livewire/onou/forms/demande_details.commune_arabe') => $demande->commune_libelle_long_ar ?? '',
+            __('views/livewire/onou/forms/demande_details.commune') => $demande->commune_libelle_long_f ?? '',
 
             // 'cycle_code' => $demande->code,
 
@@ -475,5 +496,22 @@ class FindDemande
             return $entry;
         });
         return $historique_translated;
+    }
+        public function getinscTranslated($historique_insc)
+    {
+        //TODO verify the translation method
+        //return $historique_heb;
+
+        $historique_insc_translated = $historique_insc->map(function ($row) {
+            $labels = $this->getHistoriqueInscriptionLabels();
+            $entry = [];
+
+            foreach ($labels as $key => $label) {
+                $entry[$label] = $row->$key ?? null;
+            }
+
+            return $entry;
+        });
+        return $historique_insc_translated;
     }
 }

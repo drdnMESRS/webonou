@@ -24,7 +24,7 @@
                 c-2.8,10.47-11.65,17.71-21.77,18.98l-1.13,4.21c-0.15,0.55-0.72,0.89-1.28,0.74L59.15,77.38L59.15,77.38z"/>
             </g>
         </svg>
-        {{ $demande['cles_remis'] ? 'Annuler remise des clés' : 'Remise des clés'   }}
+        {{ $demande['cles_remis'] ? {{__('views/livewire/onou/forms/demande_hebergement/traitement_form.annuler_remise_cle')}} : {{__('views/livewire/onou/forms/demande_hebergement/traitement_form.remise_cle')}}   }}
     </button>
 @endif
 
