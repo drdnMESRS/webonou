@@ -97,7 +97,7 @@ class CheckRights extends Alerts
             $this->flush_alert();
         }
 
-        if (isset($demande['id_suivi_fnd'])) {
+        if (!isset($demande['id_dia'])) {
             if ($demande['id_suivi_fnd']) {
                 $this->status = 'success';
                 $this->type = 'checkreinscription_doctort';

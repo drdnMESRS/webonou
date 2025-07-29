@@ -49,7 +49,6 @@ class OnouCmDemandeTable extends DataTableComponent
                 ->options([
                     1 => 'Graduation',
                     2 => 'Post Graduation',
-
                 ])
                 ->filter(function (Builder $builder, $value) {
                     return $builder;
@@ -96,13 +95,11 @@ class OnouCmDemandeTable extends DataTableComponent
                         if (app(RoleManagement::class)->get_active_type_etablissement() === 'DO') {
                             return $builder->whereNotNull('approuvee_heb_dou');
                         }
-
                         return $builder->whereNotNull('approuvee_heb_resid');
                     }
                     if (app(RoleManagement::class)->get_active_type_etablissement() === 'DO') {
                         return $builder->whereNull('approuvee_heb_dou');
                     }
-
                     return $builder->whereNull('approuvee_heb_resid');
                 }),
         ];

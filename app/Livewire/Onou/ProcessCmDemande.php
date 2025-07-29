@@ -85,15 +85,17 @@ class ProcessCmDemande extends Component
         // prepare the new data to update
         $values = [
             $this->processCmDemande->field($this->action) => $this->field_update,
+            'id_individu' => $this->data['id_individu'],
         ];
         if ($this->action === 'create') {
+
             $values['id_dia'] = $this->data['id_dia'] ?? null;
             $values['id_fnd'] = $this->data['id_fnd'] ?? null;
             $values['id_individu'] = $this->data['id_individu'];
-
         }
         try {
             // call the process method to handle the update
+            // dd($values);
             $done = $this->processCmDemande->process_demande($id, $values, $this->action);
             // $this->reset(['data', 'action', 'formFields', 'field_update', 'acceptformView', 'rejectformView']);
             // dispatch an event to refresh the data table
@@ -104,14 +106,14 @@ class ProcessCmDemande extends Component
             // get the actual url to redirect
 
         } catch (\Exception $e) {
-            session()->flash('error', 'Validation failed: '.$e->getMessage());
+            session()->flash('error', 'Validation failed: ' . $e->getMessage());
             $this->redirectRoute($this->data['rederctpage'], ['page' => $pageact], navigate: true);
 
             return;
         }
 
         // get the actual url to redirect
-
+        // $this->reset(['data', 'action', 'formFields', 'field_update', 'acceptformView', 'rejectformView']);
         session()->flash('success', 'Demande mise à jour avec succès.');
         $this->redirectRoute($this->data['rederctpage'], ['page' => $pageact], navigate: true);
     }
