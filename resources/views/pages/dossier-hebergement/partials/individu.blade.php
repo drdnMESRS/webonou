@@ -3,14 +3,13 @@
         <x-common.table  :data="$demande['individu']" :title="__('Détails sur l\'individu')" />
     @endif
 </h1> --}}
-<div class="flex flex-col md:flex-row items-start gap-5">
-
-    <div class="md:w-1/5 w-full">
+<div class="flex flex-col md:flex-row items-start gap-6">
+    <div class="md:w-1/6 w-full">
         <img   src="{{ $demande['photo']??''}}"
              alt="Photo Étudiant"
              class="w-full rounded shadow">
     </div>
-    <div class="md:w-4/5 w-full overflow-auto">
+    <div class="md:w-5/6 w-full overflow-auto">
         @if (!empty($demande))
             <x-common.table :data="$demande['individu']" :title="__('Détails sur l\'individu')" />
         @endif
