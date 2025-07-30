@@ -21,6 +21,7 @@ class DemandeHebergementDTO extends BaseDTO
         public ?int $id_fnd = null,
         public ?int $id_individu = 0,
           public ?string $photo = null,
+          public ?string $year=null,
         public ?int $civilite = null,
         public ?bool $cles_remis = null,
         public ?string $cles_remis_at = null,

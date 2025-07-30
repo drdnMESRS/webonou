@@ -43,7 +43,7 @@ class FindDemande
             'individu.active',
             'individu.etablissement',
             'individu.lieu_naissance_arabe',
-              'individu.photo' ,
+            'individu.photo',
             'individu.nc_wilaya_naissance',
             'individu.date_deces',
             'individu.email',
@@ -116,16 +116,22 @@ class FindDemande
         ];
     }
 
-    public function mapToDTO($demande, $historique, $historique_dia = null,$typesearch=1): DemandeHebergementDTO
+    public function mapToDTO($demande, $historique, $historique_dia = null, $typesearch = 1): DemandeHebergementDTO
     {
 
+        if (strpos($demande->photo, '/') !== false) {
+            list($year, $photoPath) = explode('/', $demande->photo, 2);
+        } else {
+            $year = null;
+            $photoPath = $demande->photo;
+        }
         return (new DemandeHebergementDTO)->FromArray([
             'id' => $demande->id_demande,
             'frais_hebregement_pay' => $demande->hebergement_paye,
             'actual_page' => $this->getPageFromUrl(),
             'individu' => $this->getIndividu($demande),
-            'dossierInscriptionAdministrative' => $typesearch==1?$this->getInscription($demande):[],
-            'dossierInscriptionDoctorant' =>$typesearch==2? $this->getDoctorant($demande):[],
+            'dossierInscriptionAdministrative' => $typesearch == 1 ? $this->getInscription($demande) : [],
+            'dossierInscriptionDoctorant' => $typesearch == 2 ? $this->getDoctorant($demande) : [],
             'demandeHebergement' => [
                 __('views/livewire/onou/forms/demande_details.1er_choix_arabe') => $demande->choix1_arabe ?? ' - ',
                 __('views/livewire/onou/forms/demande_details.1er_choix') => $demande->choix1 ?? ' - ',
@@ -138,11 +144,12 @@ class FindDemande
             'historiqueHebergement' => $historique->toArray(),
             'historiqueInscription' => $historique_dia?->toArray() ?? [],
             'adressIndividue' => $this->getadressIndividue($demande),
-            'id_dia' => $demande->id_dia?? null,
-            'id_fnd' => $demande->id_fnd?? null,
+            'id_dia' => $demande->id_dia ?? null,
+            'id_fnd' => $demande->id_fnd ?? null,
             'id_individu' => $demande->id_individu,
-            'photo' =>  "https://webonou.mesrs.dz/storage/mesrs_prod/documents/photos/2017/119991089000740003_PH_IMP.JPG",
-            'civilite'=>$demande->civilite,
+            'photo' =>$photoPath,
+            'year'=>$year,
+            'civilite' => $demande->civilite,
             'cles_remis' => ($demande->cles_remis),
             'cles_remis_at' => ($demande->cles_remis_at) ? Carbon::make($demande->cles_remis_at)->format('d/m/Y H:i') : ' - ',
 
@@ -281,28 +288,28 @@ class FindDemande
             'au_niveau_de_la_ru_traiter_par' => __('views/livewire/onou/forms/demande_details.traiter_par_resid'),
         ];
     }
-public function getHistoriqueInscriptionLabels(): array
-{
-    return [
-        'numero_inscription' => __('views/livewire/onou/forms/demande_details.numero_inscription'),
-        'bac' => __('views/livewire/onou/forms/demande_details.bac'),
-        'situation_inscription' => __('views/livewire/onou/forms/demande_details.situation_inscription'),
-        'année_académique' => __('views/livewire/onou/forms/demande_details.annee_academique'),
-        'etablissement_arabe' => __('views/livewire/onou/forms/demande_details.etablissement_arabe'),
-        'etablissement' => __('views/livewire/onou/forms/demande_details.etablissement'),
-        'structure_arabe' => __('views/livewire/onou/forms/demande_details.structure_arabe'),
-        'structure' => __('views/livewire/onou/forms/demande_details.structure'),
-        'niveau_arabe' => __('views/livewire/onou/forms/demande_details.niveau_arabe'),
-        'niveau' => __('views/livewire/onou/forms/demande_details.niveau'),
-        'offre_de_formation_arabe' => __('views/livewire/onou/forms/demande_details.offre_de_formation_arabe'),
-        'offre_de_formation' => __('views/livewire/onou/forms/demande_details.offre_de_formation'),
-        'résultat_arabe' => __('views/livewire/onou/forms/demande_details.resultat_arabe'),
-        'résultat' => __('views/livewire/onou/forms/demande_details.resultat'),
-        'est_transfert' => __('views/livewire/onou/forms/demande_details.est_transfert'),
-        'conge_acad' => __('views/livewire/onou/forms/demande_details.conge_academique'),
-        'frais_inscription_paye' => __('views/livewire/onou/forms/demande_details.payment_inscription'),
-    ];
-}
+    public function getHistoriqueInscriptionLabels(): array
+    {
+        return [
+            'numero_inscription' => __('views/livewire/onou/forms/demande_details.numero_inscription'),
+            'bac' => __('views/livewire/onou/forms/demande_details.bac'),
+            'situation_inscription' => __('views/livewire/onou/forms/demande_details.situation_inscription'),
+            'année_académique' => __('views/livewire/onou/forms/demande_details.annee_academique'),
+            'etablissement_arabe' => __('views/livewire/onou/forms/demande_details.etablissement_arabe'),
+            'etablissement' => __('views/livewire/onou/forms/demande_details.etablissement'),
+            'structure_arabe' => __('views/livewire/onou/forms/demande_details.structure_arabe'),
+            'structure' => __('views/livewire/onou/forms/demande_details.structure'),
+            'niveau_arabe' => __('views/livewire/onou/forms/demande_details.niveau_arabe'),
+            'niveau' => __('views/livewire/onou/forms/demande_details.niveau'),
+            'offre_de_formation_arabe' => __('views/livewire/onou/forms/demande_details.offre_de_formation_arabe'),
+            'offre_de_formation' => __('views/livewire/onou/forms/demande_details.offre_de_formation'),
+            'résultat_arabe' => __('views/livewire/onou/forms/demande_details.resultat_arabe'),
+            'résultat' => __('views/livewire/onou/forms/demande_details.resultat'),
+            'est_transfert' => __('views/livewire/onou/forms/demande_details.est_transfert'),
+            'conge_acad' => __('views/livewire/onou/forms/demande_details.conge_academique'),
+            'frais_inscription_paye' => __('views/livewire/onou/forms/demande_details.payment_inscription'),
+        ];
+    }
     public function getSelectFieldsHisInc(): array
     {
         return [
@@ -339,7 +346,7 @@ public function getHistoriqueInscriptionLabels(): array
     public function getDoctorant($demande): array
     {
         return [
-             __('views/livewire/onou/forms/demande_details.numero_inscription') => $demande->numero_inscription ?? '',
+            __('views/livewire/onou/forms/demande_details.numero_inscription') => $demande->numero_inscription ?? '',
             __('views/livewire/onou/forms/demande_details.payment_inscription') => $demande->frais_inscription_paye ?? '',
 
             // 'code_etablissement' => $demande->etab_identifiant,
@@ -358,8 +365,8 @@ public function getHistoriqueInscriptionLabels(): array
 
             __('views/livewire/onou/forms/demande_details.specialite_arabe') => $demande->ll_specialite_arabe ?? '',
             __('views/livewire/onou/forms/demande_details.specialite') => $demande->ll_specialite ?? '',
-             __('views/livewire/onou/forms/demande_details.situation_inscription_arabe') => $demande->situation_libelle_long_arabe,
-             __('views/livewire/onou/forms/demande_details.situation_inscription') => $demande->situation_libelle_long_latin,
+            __('views/livewire/onou/forms/demande_details.situation_inscription_arabe') => $demande->situation_libelle_long_arabe,
+            __('views/livewire/onou/forms/demande_details.situation_inscription') => $demande->situation_libelle_long_latin,
             __('views/livewire/onou/forms/demande_details.commune_arabe') => $demande->commune_libelle_long_ar ?? '',
             __('views/livewire/onou/forms/demande_details.commune') => $demande->commune_libelle_long_f ?? '',
 
@@ -404,7 +411,7 @@ public function getHistoriqueInscriptionLabels(): array
             'individu.active',
             'individu.etablissement',
             'individu.lieu_naissance_arabe',
-          'individu.photo' ,
+            'individu.photo',
             'individu.nc_wilaya_naissance',
             'individu.date_deces',
             'individu.email',
@@ -501,7 +508,7 @@ public function getHistoriqueInscriptionLabels(): array
         });
         return $historique_translated;
     }
-        public function getinscTranslated($historique_insc)
+    public function getinscTranslated($historique_insc)
     {
         //TODO verify the translation method
         //return $historique_heb;

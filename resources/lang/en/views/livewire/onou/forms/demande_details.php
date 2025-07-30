@@ -6,7 +6,6 @@ return [
     'historique_inscription' => 'Registration History',
     'details_adresse' => 'Student Address Details',
     'details_demande' => 'Accommodation Request Details',
-    'details_doctorat' => 'Doctorate details',
     'accepter_demande' => 'Accept Request',
     'rejeter_demande' => 'Reject Request',
     'nin' => 'National ID Number',

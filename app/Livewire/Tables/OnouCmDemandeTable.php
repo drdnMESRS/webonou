@@ -46,6 +46,7 @@ class OnouCmDemandeTable extends DataTableComponent
                 })->hiddenFromAll(),
 
             'typestudent' => SelectFilter::make(__('livewire/tables/onou_cm_demande_table.typestudent'))
+
                 ->options([
                     1 => __('livewire/tables/onou_cm_demande_table.graduation'),
                     2 => __('livewire/tables/onou_cm_demande_table.post_graduation'),
