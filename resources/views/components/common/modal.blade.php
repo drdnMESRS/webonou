@@ -3,6 +3,9 @@
     'id', 'size', 'title', 'view'=>null, 'slot'=>null, 'withFooter' => null, 'padding' => '36'
 ]
 )
+@php
+    $isArabic = app()->getLocale() === 'ar';
+@endphp
 <div>
     <div id="{{ $id }}" tabindex="-1"
          aria-hidden="true"
@@ -16,12 +19,20 @@
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                         {{ $title }}
                     </h3>
-                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="{{ $id }}">
-                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M10 9.293l3.293-3.293a1 1 0 011.414 1.414L11.414 10l3.293 3.293a1 1 0 01-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 10 5.293 6.707a1 1 0 011.414-1.414L10 8.586z" clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="sr-only">Close modal</span>
-                    </button>
+                   <button type="button"
+    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5
+    {{ $isArabic ? 'mr-auto' : 'ml-auto' }} inline-flex items-center
+    dark:hover:bg-gray-600 dark:hover:text-white"
+    data-modal-hide="{{ $id }}">
+
+    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+         xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd"
+              d="M10 9.293l3.293-3.293a1 1 0 011.414 1.414L11.414 10l3.293 3.293a1 1 0 01-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 10 5.293 6.707a1 1 0 011.414-1.414L10 8.586z"
+              clip-rule="evenodd"></path>
+    </svg>
+    <span class="sr-only">Close modal</span>
+</button>
                 </div>
                 <div class="p-6 space-y-6">
                     @if(isset($view) )

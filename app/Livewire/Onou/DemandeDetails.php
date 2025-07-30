@@ -62,14 +62,20 @@ class DemandeDetails extends Component
 
             return;
         }
+        try {
+            $this->processCmDemande->process_clesremis($this->demandeId, $values);
 
-        $this->processCmDemande->process_clesremis($this->demandeId, $values);
+            session()->flash('success', 'État des clés mis à jour.');
 
-        session()->flash('success', 'État des clés mis à jour.');
+            $this->dispatch('refreshDatatable');
 
-        $this->dispatch('refreshDatatable');
-
-        $this->showDemandeDetails($this->demandeId);
+            $this->showDemandeDetails($this->demandeId);
+        } catch (\Exception $e) {
+          
+            session()->flash('error', 'Validation failed: ' . $e->getMessage());
+            $this->redirectRoute($this->demande['rederctpage'], ['page' => $this->demande['actual_page']], navigate: true);
+            return;
+        }
     }
 
     public function render()

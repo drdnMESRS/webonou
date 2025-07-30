@@ -45,7 +45,7 @@ class OnouCmDemandeTable extends DataTableComponent
                     return $builder->where('dossier_inscription_administrative.id_filiere', $value);
                 })->hiddenFromAll(),
 
-            'typestudent' => SelectFilter::make(__('livewire/tables/onou_cm_demande_table.typestudent'))
+            'typestudent' => SelectFilter::make(__('typestudent'))
                 ->options([
                     1 => __('livewire/tables/onou_cm_demande_table.graduation'),
                     2 => __('livewire/tables/onou_cm_demande_table.post_graduation'),
@@ -53,7 +53,7 @@ class OnouCmDemandeTable extends DataTableComponent
                 ->filter(function (Builder $builder, $value) {
                     return $builder;
                 }),
-            'civilite' => SelectFilter::make('Civilité')
+            'civilite' => SelectFilter::make(__('livewire/tables/onou_cm_demande_table.sexe'))
                 ->options([
                     1 => __('livewire/tables/onou_cm_demande_table.garcons'),
                     2 => __('livewire/tables/onou_cm_demande_table.filles'),

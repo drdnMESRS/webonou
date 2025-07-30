@@ -8,6 +8,7 @@ use App\Actions\Sessions\RoleManagement;
 use App\Models\Nc\Nomenclature;
 use App\Models\Onou\Onou_cm_demande;
 use App\Models\Onou\Onou_cm_lieu;
+use App\Models\Scopes\Dou\DouScope;
 use App\Strategies\Onou\ProcessCmDemande;
 
 class RuProcessingCmDemande implements ProcessCmDemande
@@ -42,11 +43,18 @@ class RuProcessingCmDemande implements ProcessCmDemande
     public function process_clesremis(?int $id, ?array $data): bool
     {
         if (is_null($id) || is_null($data) || ! is_array($data)) {
-            throw new \InvalidArgumentException('Invalid parameters provided for processing the demand.');
+            throw new \Exception('Invalid parameters provided for processing the demand.');
         }
 
         // TODO check if the student does not pay the fees throw an exception
+   $demand = Onou_cm_demande::query()
+            ->where('id', $id)
+            ->withoutGlobalScope(DouScope::class)
+            ->first();
 
+    if (is_null($demand->affectation) ) {
+            throw new \Exception("The student doesn't have a room yet");
+        }
         $data['cles_remis_at'] = now();
         (new UpdateDemandById)->handle($id, $data);
 
@@ -114,44 +122,7 @@ class RuProcessingCmDemande implements ProcessCmDemande
     public function builder(): \Illuminate\Database\Eloquent\Builder
     {
         // etablissement app(RoleManagement::class)->get_active_role_etablissement();
-        return Onou_cm_demande::query()
-            ->with([
-                'individu_detais',
-                'dossier_inscription_administrative',
-                'dossier_inscription_administrative.ouvertureOf',
-                'dossier_inscription_administrative.niveau',
-                'dossier_inscription_administrative.etablissement:id,ll_etablissement_arabe,ll_etablissement_latin',
-                'dossier_inscription_administrative.domaine',
-                'dossier_inscription_administrative.filiere',
-                'nc_commune_residence',
-            ])
-            ->leftJoin(
-                'ppm.ref_individu AS individu_detais',
-                'onou.onou_cm_demande.individu',
-                '=',
-                'individu_detais.id'
-            )
-            ->leftJoin(
-                'cursus.dossier_inscription_administrative AS dossier_inscription_administrative',
-                'onou.onou_cm_demande.id_dia',
-                '=',
-                'dossier_inscription_administrative.id'
-            )->leftJoin('cursus.conge_academique as cong', function ($q) {
-                $q->on('cong.id_dossier_inscription', '=', 'dossier_inscription_administrative.id')
-                    ->where('cong.demande_validee', true);
-            })
-            ->select(
-                'onou.onou_cm_demande.*',
-                'individu_detais.identifiant as individu_identifiant',
-                'individu_detais.nom_latin as individu_nom_latin',
-                'individu_detais.civilite as individu_civilite',
-                'dossier_inscription_administrative.numero_inscription as dossier_inscription_numero',
-                'dossier_inscription_administrative.*',
-            )
-            ->where(function ($q) {
-                $q->where('onou_cm_demande.residence', '=', app(RoleManagement::class)->get_active_role_etablissement());
-            })
-            ->remember(60);
+        return $this->Graduation();
     }
 
     public function PostGraduation(): \Illuminate\Database\Eloquent\Builder
@@ -159,12 +130,11 @@ class RuProcessingCmDemande implements ProcessCmDemande
         return Onou_cm_demande::query()
             ->with([
                 'individu_detais',
-                'dossier_inscription_administrative',
-                'dossier_inscription_administrative.ouvertureOf',
-                'dossier_inscription_administrative.niveau',
-                'dossier_inscription_administrative.etablissement:id,ll_etablissement_arabe,ll_etablissement_latin',
-                'dossier_inscription_administrative.domaine',
-                'dossier_inscription_administrative.filiere',
+                'fichier_national_doctorant',
+                'fichier_national_doctorant.domaine',
+                'fichier_national_doctorant.filiere',
+                'fichier_national_doctorant.etablissement:id,ll_etablissement_arabe,ll_etablissement_latin',
+                'suiv_fichier_national_doctorant',
                 'nc_commune_residence',
             ])
             ->leftJoin(
@@ -174,21 +144,29 @@ class RuProcessingCmDemande implements ProcessCmDemande
                 'individu_detais.id'
             )
             ->leftJoin(
-                'cursus.dossier_inscription_administrative AS dossier_inscription_administrative',
-                'onou.onou_cm_demande.id_dia',
+                'doctorat.fichier_national_doctorant AS fichier_national_doctorant',
+                'onou.onou_cm_demande.id_fnd',
                 '=',
-                'dossier_inscription_administrative.id'
+                'fichier_national_doctorant.id'
+            )
+            ->leftjoin(
+                'doctorat.suivi_fichier_national_doctorant AS suiv_fichier_national_doctorant',
+                function ($join) {
+                    $join->on('fichier_national_doctorant.id', '=', 'suiv_fichier_national_doctorant.id_fnd')
+                        ->where('suiv_fichier_national_doctorant.id_annee_academique', '=', (new \App\Actions\Sessions\AcademicYearSession)->get_academic_year());
+                }
             )
             ->select(
                 'onou.onou_cm_demande.*',
                 'individu_detais.identifiant as individu_identifiant',
                 'individu_detais.nom_latin as individu_nom_latin',
                 'individu_detais.civilite as individu_civilite',
-                'dossier_inscription_administrative.numero_inscription as dossier_inscription_numero',
-                'dossier_inscription_administrative.*',
+                'suiv_fichier_national_doctorant.numero_inscription as dossier_inscription_numero',
+                'suiv_fichier_national_doctorant.*',
+                'fichier_national_doctorant.*'
             )
             ->where(function ($q) {
-                $q->where('onou_cm_demande.residence', '=', app(RoleManagement::class)->get_active_role_etablissement());
+                $q->where([['onou_cm_demande.residence', '=', app(RoleManagement::class)->get_active_role_etablissement()], ['onou_cm_demande.id_fnd', '>', 0]]);
             })
             ->remember(60);
     }
@@ -227,7 +205,7 @@ class RuProcessingCmDemande implements ProcessCmDemande
                 'dossier_inscription_administrative.*',
             )
             ->where(function ($q) {
-                $q->where('onou_cm_demande.residence', '=', app(RoleManagement::class)->get_active_role_etablissement());
+                $q->where([['onou_cm_demande.residence', '=', app(RoleManagement::class)->get_active_role_etablissement()], ['onou_cm_demande.id_dia', '>', 0]]);
             })
             ->remember(60);
     }
@@ -279,7 +257,8 @@ class RuProcessingCmDemande implements ProcessCmDemande
         // update the cm_demande with the new affectation ID
         $data = array_merge(
             $data,
-            ['traiter_par_ru' => app(RoleManagement::class)->get_active_id(),
+            [
+                'traiter_par_ru' => app(RoleManagement::class)->get_active_id(),
                 'approuvee_heb_resid' => true,
                 'date_approuve_heb_resid' => now(),
                 'affectation' => $affectation,

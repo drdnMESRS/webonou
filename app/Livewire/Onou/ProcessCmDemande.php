@@ -42,7 +42,7 @@ class ProcessCmDemande extends Component
     {
         $this->processCmDemande = new ProcessCmDemandeContext;
         $this->formFields = $this->processCmDemande->formFields(
-            $this->data['individu']['civilite'] ?? null,
+            $this->data['civilite'] ?? null,
             $this->action
         );
         $this->acceptformView = $this->processCmDemande->getFormView()['accept'] ?? null;
