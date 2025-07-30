@@ -4,6 +4,7 @@ namespace App\Actions\Pages\Dossier_demande_Hebergement;
 
 use App\Actions\Pages\Dossier_demande_Hebergement\Common\FindDemande;
 use App\Models\Onou\Onou_cm_demande;
+use App\Models\Cursus\Dossier_inscription_administrative;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FindDemandeById extends FindDemande
@@ -19,7 +20,8 @@ class FindDemandeById extends FindDemande
         }
 
         $historique_translated = $this->fetchingTheHistoricalDataForTheIndividual($demande);
-
+        $historique_dia = Dossier_inscription_administrative::fetchAllInscrptionByIdividu($demande->id_individu, $this->getSelectFieldsHisInc());
+        $historique_dia_trad=$this->getinscTranslated($historique_dia);
 
         // Check if the demand is compliant
         (new CheckConformeHeb(collect($demande)->toArray()))->handle();
@@ -27,8 +29,7 @@ class FindDemandeById extends FindDemande
         if (! $demande) {
             throw new NotFoundHttpException('Demande not found with ID: '.$id);
         }
-
-        return $this->mapToDTO($demande, $historique_translated)->toArray();
+        return $this->mapToDTO($demande, $historique_translated, $historique_dia_trad)->toArray();
 
     }
 
