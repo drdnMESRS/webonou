@@ -27,7 +27,7 @@ return [
     'select_filiere' => 'Sélectionner la Filière',
     'gestion_des_dossiers_hebergement' => 'Gestion des dossiers d’hébergement',
     'gerer_les_demandes_hebergement_des_individus' => 'Gérer les demandes d’hébergement des étudiants',
-    'typestudent' => 'Type de demande',
+    'typestudent' => 'Formation',
     'graduation' => 'Graduation',
     'post_graduation' => 'Post-graduation',
 ];
