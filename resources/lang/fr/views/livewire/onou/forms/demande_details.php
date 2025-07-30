@@ -6,6 +6,7 @@ return [
     'historique_inscription' => 'Historique des inscriptions',
     'details_adresse' => 'Détails de l’adresse de l’étudiant',
     'details_demande' => 'Détails de la demande d’hébergement',
+    'details_doctorat' => 'Détails Doctorat',
     'accepter_demande' => 'Accepter la demande',
     'rejeter_demande' => 'Rejeter la demande',
     'nin' => 'Numéro d’identification nationale',
