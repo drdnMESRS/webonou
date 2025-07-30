@@ -48,7 +48,6 @@
 
 <div
     x-data="{ show: true }"
-    x-init="setTimeout(() => show = false, 5000)"
     x-show="show"
     x-transition
     {{ $attributes->merge(['class' => 'flex items-start justify-between p-4 mb-4 text-sm rounded-lg ' . $class]) }}
