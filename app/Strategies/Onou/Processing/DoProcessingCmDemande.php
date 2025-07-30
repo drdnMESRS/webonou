@@ -34,7 +34,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
             throw new \Exception('Invalid parameters provided for processing the demand.');
         }
 
-        if(in_array($action, ['accept', 'create']) && isset($data['id_individu'])) {
+        if (in_array($action, ['accept', 'create']) && isset($data['id_individu'])) {
             if (isset($data['id_dia'])) {
                 $checkAgeResult = session('checks.checkAge');
                 if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
@@ -60,7 +60,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
         $data = array_merge($data, [
             'dou' => app(RoleManagement::class)->get_active_role_etablissement(),
             'traiter_par_dou' => app(RoleManagement::class)->get_active_id(),
-            'approuvee_heb_dou' => in_array($action, ['accept', 'create'] ),
+            'approuvee_heb_dou' => in_array($action, ['accept', 'create']),
             'date_approuve_heb_dou' => now(),
             'affectation' => null,
         ]);
@@ -123,7 +123,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
      */
     public function formFields(?int $civility = null, ?string $action = 'accept'): array
     {
-        $options = cache()->remember('residences_'.auth()->id().'_'.$civility, 60 * 60 * 24, function () use ($civility) {
+        $options = cache()->remember('residences_' . auth()->id() . '_' . $civility, 60 * 60 * 24, function () use ($civility) {
             // if civility is not null, we can return only R1
             return $this->getResidences($civility)
                 ->pluck('denomination_ar', 'id')
@@ -320,17 +320,17 @@ class DoProcessingCmDemande implements ProcessCmDemande
             // if civility is not null and civility is mal (1), we can return only R1
             $options = ($civility === 1) ?
                 Onou_cm_etablissement::query()
-                    ->select('onou_cm_etablissement.*')
-                    ->with(['etablissement', 'type_nc'])
-                    ->garcon()
-                    ->open() // R1
-                    ->remember(60 * 60 * 24) : // if civility is not null and civility is femal (2), we can return only R1
+                ->select('onou_cm_etablissement.*')
+                ->with(['etablissement', 'type_nc'])
+                ->garcon()
+                ->open() // R1
+                ->remember(60 * 60 * 24) : // if civility is not null and civility is femal (2), we can return only R1
                 Onou_cm_etablissement::query()
-                    ->select('onou_cm_etablissement.*')
-                    ->with(['etablissement', 'type_nc'])
-                    ->fille()
-                    ->open() // R1
-                    ->remember(60 * 60 * 24);
+                ->select('onou_cm_etablissement.*')
+                ->with(['etablissement', 'type_nc'])
+                ->fille()
+                ->open() // R1
+                ->remember(60 * 60 * 24);
         }
 
         return $options;
@@ -351,7 +351,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
             return [
                 'field_update' => [
                     'required',
-                     Rule::in($nc),
+                    Rule::in($nc),
                 ],
             ];
         }
@@ -369,6 +369,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 'data.id_dia' => [
                     'integer',
                     'nullable',
+                    'required_without:data.id_fnd',
                 ],
                 'data.affectation' => [
                     'integer',
@@ -377,6 +378,7 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 'data.id_fnd' => [
                     'integer',
                     'nullable',
+                    'required_without:data.id_dia',
                 ],
 
             ];
@@ -388,6 +390,17 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 'integer',
                 Rule::in($residences),
             ],
+            'data.id_dia' => [
+                'integer',
+                'nullable',
+                'required_without:data.id_fnd',
+            ],
+            'data.id_fnd' => [
+                'integer',
+                'nullable',
+                'required_without:data.id_dia',
+            ],
+
         ];
     }
 }

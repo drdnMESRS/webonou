@@ -1,13 +1,10 @@
 <div>
 <div class="flex flex-col space-y-2 items-end">
 
-
     <div class="flex space-x-2">
 <div class="flex space-x-6 items-center">
-    {{-- نوع الطالب --}}
     <div class="flex flex-col">
         <div class="flex items-center space-x-6">
-            {{-- زر راديو عادي --}}
             <label class="cursor-pointer flex items-center space-x-2">
                 <input type="radio" wire:model.defer="type_etudiant" value=1
                     class="h-5 w-5 border-gray-300 text-blue-500 focus:ring-blue-500"
@@ -15,7 +12,6 @@
                 <span class="text-sm font-medium text-gray-700">{{__('views/livewire/onou/forms/demande_hebergement/search_by_year_matricule.graduation')}}</span>
             </label>
 
-            {{-- زر راديو دكتوراه --}}
             <label class="cursor-pointer flex items-center space-x-2">
                 <input type="radio" wire:model.defer="type_etudiant" value=2
                     class="h-5 w-5 border-gray-300 text-green-500 focus:ring-green-500">

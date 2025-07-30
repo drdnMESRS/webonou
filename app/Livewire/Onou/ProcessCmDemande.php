@@ -42,7 +42,7 @@ class ProcessCmDemande extends Component
     {
         $this->processCmDemande = new ProcessCmDemandeContext;
         $this->formFields = $this->processCmDemande->formFields(
-            $this->data['individu']['civilite'] ?? null,
+            $this->data['civilite'] ?? null,
             $this->action
         );
         $this->acceptformView = $this->processCmDemande->getFormView()['accept'] ?? null;
@@ -95,7 +95,7 @@ class ProcessCmDemande extends Component
         }
         try {
             // call the process method to handle the update
-            // dd($values);
+
             $done = $this->processCmDemande->process_demande($id, $values, $this->action);
             // $this->reset(['data', 'action', 'formFields', 'field_update', 'acceptformView', 'rejectformView']);
             // dispatch an event to refresh the data table

@@ -19,6 +19,7 @@
                         message="{{ session('success') }}"
                         class="mt-8 shadow-lg"
                         id="my-custom-alert" />
+                        
     @endif
     @if (session()->has('error'))
         <x-common.alert type="danger"

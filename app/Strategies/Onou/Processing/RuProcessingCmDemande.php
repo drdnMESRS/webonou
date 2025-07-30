@@ -159,12 +159,11 @@ class RuProcessingCmDemande implements ProcessCmDemande
         return Onou_cm_demande::query()
             ->with([
                 'individu_detais',
-                'dossier_inscription_administrative',
-                'dossier_inscription_administrative.ouvertureOf',
-                'dossier_inscription_administrative.niveau',
-                'dossier_inscription_administrative.etablissement:id,ll_etablissement_arabe,ll_etablissement_latin',
-                'dossier_inscription_administrative.domaine',
-                'dossier_inscription_administrative.filiere',
+                'fichier_national_doctorant',
+                'fichier_national_doctorant.domaine',
+                'fichier_national_doctorant.filiere',
+                'fichier_national_doctorant.etablissement:id,ll_etablissement_arabe,ll_etablissement_latin',
+                'suiv_fichier_national_doctorant',
                 'nc_commune_residence',
             ])
             ->leftJoin(
@@ -173,19 +172,27 @@ class RuProcessingCmDemande implements ProcessCmDemande
                 '=',
                 'individu_detais.id'
             )
-            ->leftJoin(
-                'cursus.dossier_inscription_administrative AS dossier_inscription_administrative',
-                'onou.onou_cm_demande.id_dia',
+         ->leftJoin(
+                'doctorat.fichier_national_doctorant AS fichier_national_doctorant',
+                'onou.onou_cm_demande.id_fnd',
                 '=',
-                'dossier_inscription_administrative.id'
+                'fichier_national_doctorant.id'
+            )
+            ->leftjoin(
+                'doctorat.suivi_fichier_national_doctorant AS suiv_fichier_national_doctorant',
+                function ($join) {
+                    $join->on('fichier_national_doctorant.id', '=', 'suiv_fichier_national_doctorant.id_fnd')
+                        ->where('suiv_fichier_national_doctorant.id_annee_academique', '=', (new \App\Actions\Sessions\AcademicYearSession)->get_academic_year());
+                }
             )
             ->select(
                 'onou.onou_cm_demande.*',
                 'individu_detais.identifiant as individu_identifiant',
                 'individu_detais.nom_latin as individu_nom_latin',
                 'individu_detais.civilite as individu_civilite',
-                'dossier_inscription_administrative.numero_inscription as dossier_inscription_numero',
-                'dossier_inscription_administrative.*',
+                'suivi_fichier_national_doctorant.numero_inscription as dossier_inscription_numero',
+                'suivi_fichier_national_doctorant.*',
+                'fichier_national_doctorant.*'
             )
             ->where(function ($q) {
                 $q->where('onou_cm_demande.residence', '=', app(RoleManagement::class)->get_active_role_etablissement());
@@ -279,7 +286,8 @@ class RuProcessingCmDemande implements ProcessCmDemande
         // update the cm_demande with the new affectation ID
         $data = array_merge(
             $data,
-            ['traiter_par_ru' => app(RoleManagement::class)->get_active_id(),
+            [
+                'traiter_par_ru' => app(RoleManagement::class)->get_active_id(),
                 'approuvee_heb_resid' => true,
                 'date_approuve_heb_resid' => now(),
                 'affectation' => $affectation,

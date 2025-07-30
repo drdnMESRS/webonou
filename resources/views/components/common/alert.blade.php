@@ -36,7 +36,7 @@
     }
 @endphp
 
-<div {{ $attributes->merge(['class' => 'flex items-center p-4 mb-4 text-sm rounded-lg ' . $class]) }} role="alert">
+{{-- <div {{ $attributes->merge(['class' => 'flex items-center p-4 mb-4 text-sm rounded-lg ' . $class]) }} role="alert">
     <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
         <path d="{{ $svgPath }}"/>
     </svg>
@@ -44,4 +44,27 @@
     <div>
         <span class="font-medium">{{ $title }}</span> {{ $message }}
     </div>
+</div> --}}
+
+<div
+    x-data="{ show: true }"
+    x-init="setTimeout(() => show = false, 5000)"
+    x-show="show"
+    x-transition
+    {{ $attributes->merge(['class' => 'flex items-start justify-between p-4 mb-4 text-sm rounded-lg ' . $class]) }}
+    role="alert"
+>
+    <div class="flex items-center">
+        <svg class="shrink-0 w-4 h-4 me-3 mt-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="{{ $svgPath }}" />
+        </svg>
+        <span class="sr-only">{{ $srOnlyText }}</span>
+        <div>
+            <span class="font-medium">{{ $title }}</span> {{ $message }}
+        </div>
+    </div>
+
+    <button @click="show = false" type="button" class="ms-4 text-xl text-gray-500 hover:text-gray-800 dark:hover:text-white focus:outline-none">
+        &times;
+    </button>
 </div>
