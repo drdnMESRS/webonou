@@ -190,8 +190,8 @@ class RuProcessingCmDemande implements ProcessCmDemande
                 'individu_detais.identifiant as individu_identifiant',
                 'individu_detais.nom_latin as individu_nom_latin',
                 'individu_detais.civilite as individu_civilite',
-                'suivi_fichier_national_doctorant.numero_inscription as dossier_inscription_numero',
-                'suivi_fichier_national_doctorant.*',
+                'suiv_fichier_national_doctorant.numero_inscription as dossier_inscription_numero',
+                'suiv_fichier_national_doctorant.*',
                 'fichier_national_doctorant.*'
             )
             ->where(function ($q) {
