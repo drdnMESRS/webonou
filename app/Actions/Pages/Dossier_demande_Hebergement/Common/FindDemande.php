@@ -237,6 +237,7 @@ class FindDemande
     {
         return [
             'demande.renouvellement',
+            DB::raw('concat(annee.premiere_annee,\'/\',annee.deuxieme_annee) as annee_academique '),
             'residence.denomination_ar as residance_arabe',
             'residence.denomination_fr as residance',
             'dou.denomination_ar as dou_arabe',
@@ -260,6 +261,7 @@ class FindDemande
     {
         return [
             'renouvellement' => __('views/livewire/onou/forms/demande_details.renouvellement'),
+            'annee_academique' => __('views/livewire/onou/forms/demande_details.annee_academique'),
             'residance_arabe' => __('views/livewire/onou/forms/demande_details.residance_arabe'),
             'residance' => __('views/livewire/onou/forms/demande_details.residance'),
             'dou_arabe' => __('views/livewire/onou/forms/demande_details.dou_arabe'),
