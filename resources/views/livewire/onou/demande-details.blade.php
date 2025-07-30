@@ -30,7 +30,16 @@
                         ],
                     ],
                 ],
-
+   [
+                    'id' => 'historiqueInscription',
+                    'title' => __('views/livewire/onou/forms/demande_details.historique_inscription'),
+                    'content' => [
+                        [
+                            'view' => 'pages.dossier-hebergement.partials.historique-ins',
+                            'data' => ['demande' => $demande],
+                        ],
+                    ],
+                ],
                 [
                     'id' => 'adress',
                     'title' => __('views/livewire/onou/forms/demande_details.details_adresse'),
