@@ -38,7 +38,7 @@ class CheckRights extends Alerts
                 'danger' => __('pipelines/onou/alerts.paiement_hebergement_not_reguliere'),
             ],
             'checkdeuxieme_diplome' => [
-                'condition' => !$demande['deuxieme_diplome'],
+                'condition' => $demande['deuxieme_diplome'],
                 'success' => __('pipelines/onou/alerts.etudiant_pas_deuxieme_diplome'),
                 'danger' => __('pipelines/onou/alerts.etudiant_a_deuxieme_diplome'),
             ],
