@@ -35,7 +35,9 @@ class DoProcessingCmDemande implements ProcessCmDemande
         }
 
         if(in_array($action, ['accept', 'create']) && isset($data['id_individu'])) {
+
             if (isset($data['id_dia'])) {
+
                 $checkAgeResult = session('checks.checkAge');
                 if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
                     throw new \Exception($checkAgeResult['message']);
@@ -44,11 +46,12 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
                     throw new \Exception($checkAgeResult['message']);
                 }
-                $checkAgeResult = session('checks.frais_inscription_paye');
+                $checkAgeResult = session('checks');
+                dd( $checkAgeResult);
                 if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
                     throw new \Exception($checkAgeResult['message']);
                 }
-                dd($checkAgeResult);
+
                 $checkAgeResult = session('checks.checkcles_remis');
                 if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
                     throw new \Exception($checkAgeResult['message']);
