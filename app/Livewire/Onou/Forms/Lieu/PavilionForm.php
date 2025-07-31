@@ -279,7 +279,7 @@ class PavilionForm extends Component
         $this->resetForm();
         $this->dispatch('close-lieu-modal');
         if ($success) {
-            session()->flash('success', 'Lieu a été mise à jour avec succès.');
+            session()->flash('success',  __('pipelines/onou/alerts.lieu_mise_a_jour_succes'));
             $this->redirectRoute('onouLieu.show', navigate: true);
         }
 

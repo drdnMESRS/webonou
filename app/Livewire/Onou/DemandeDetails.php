@@ -57,7 +57,7 @@ class DemandeDetails extends Component
         $values = ['cles_remis' => ! $this->demande['cles_remis'] || ! $this->demande['cles_remis']];
 
         if (! $this->demande['frais_hebregement_pay']) {
-            session()->flash('error', ' frais dhebergement non paye');
+            session()->flash('error',  __('pipelines/onou/alerts.frais_hebergement_non_paye'));
             $this->redirectRoute($this->demande['rederctpage'], ['page' => $this->demande['actual_page']], navigate: true);
 
             return;
@@ -65,13 +65,13 @@ class DemandeDetails extends Component
         try {
             $this->processCmDemande->process_clesremis($this->demandeId, $values);
 
-            session()->flash('success', 'État des clés mis à jour.');
+            session()->flash('success',  __('pipelines/onou/alerts.etat_cles_mis_a_jour'));
 
             $this->dispatch('refreshDatatable');
 
             $this->showDemandeDetails($this->demandeId);
         } catch (\Exception $e) {
-          
+
             session()->flash('error', 'Validation failed: ' . $e->getMessage());
             $this->redirectRoute($this->demande['rederctpage'], ['page' => $this->demande['actual_page']], navigate: true);
             return;
