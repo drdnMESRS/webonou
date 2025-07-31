@@ -6,7 +6,7 @@
         @csrf
           <input type="hidden" name="redirect_to" value="{{ url()->current() }}">
         <select name="academic_year"
-                class="flex items-center justify-center p-2 w-auto rounded-lg bg-indigo-300"
+                class="flex items-center justify-center w-auto rounded-lg bg-indigo-300"
                 onchange="this.form.submit()">
             @foreach($academic_years as $year)
                 <option value="{{ $year->id }}"
