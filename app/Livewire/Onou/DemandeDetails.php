@@ -49,7 +49,11 @@ class DemandeDetails extends Component
         $this->demande['rederctpage'] = 'diaHeb.show';
         $this->showDemandeDetails = true;
     }
-
+    #[On('demande-hide')]
+    public function hideDemandeDetails()
+    {
+        $this->showDemandeDetails = false;
+    }
     public function toggleClesRemis()
     {
         $this->processCmDemande = new ProcessCmDemandeContext;

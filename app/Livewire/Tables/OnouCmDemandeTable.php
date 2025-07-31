@@ -27,16 +27,15 @@ class OnouCmDemandeTable extends DataTableComponent
     }
 
     public function builder(): Builder
-    {
+    {   $this->dispatch('demande-hide');
         if ($this->getAppliedFilterWithValue(__('livewire/tables/onou_cm_demande_table.typestudent')) == 2) {
             return $this->processCmDemande->PostGraduation();
         }
-
         return $this->processCmDemande->builder();
     }
 
     public function filters(): array
-    {
+    {   $this->dispatch('demande-hide');
         return [
 
             'filiere' => SelectFilter::make('filiere')
