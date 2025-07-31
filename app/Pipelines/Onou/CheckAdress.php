@@ -7,10 +7,13 @@ use App\Models\Onou\Onou_heb_commune_refusee;
 
 class CheckAdress extends Alerts
 {
-    protected ?string $title = 'Adresse du domicile : ';
+    protected ?string $title =null;
 
     protected ?string $type = 'checkAdress';
-
+    public function __construct()
+    {
+        $this->title = __('pipelines/onou/alerts.adresse_domicile') . ' : ';
+    }
     public function handle(array $demande, \Closure $next)
     {
         // compute the age
@@ -26,11 +29,11 @@ class CheckAdress extends Alerts
 
         if ($exist) {
             $this->status = 'danger';
-            $this->message = 'Adresse du domicile réfusée ';
+            $this->message = __('pipelines/onou/alerts.adresse_domicile_not_conforme');
             $this->flush_alert();
 
         } else {
-            $this->message = 'Adresse du domicile conforme ';
+            $this->message = __('pipelines/onou/alerts.adresse_domicile_conforme');
             $this->flush_alert();
         }
         $next($demande);

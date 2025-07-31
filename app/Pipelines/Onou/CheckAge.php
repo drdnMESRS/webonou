@@ -7,10 +7,13 @@ use Carbon\Carbon;
 
 class CheckAge extends Alerts
 {
-    protected ?string $title = 'Confirmité d age : ';
+    protected ?string $title =null;
 
     protected ?string $type = 'checkAge';
-
+    public function __construct()
+    {
+        $this->title = __('pipelines/onou/alerts.confirmite_age') . ' : ';
+    }
     public function handle(array $demande, \Closure $next)
     {
         // compute the age
@@ -18,10 +21,10 @@ class CheckAge extends Alerts
         $age = $birthday->diffInYears(Carbon::now());
         if ($age > 28) {
             $this->status = 'danger';
-            $this->message = 'Age depassé '.$birthday->diffForHumans(Carbon::now(), Carbon::DIFF_ABSOLUTE);
+            $this->message = __('pipelines/onou/alerts.age_not_conforme').' '.$birthday->diffForHumans(Carbon::now(), Carbon::DIFF_ABSOLUTE);
 
         } else {
-            $this->message = 'Age conforme '.$birthday->diffForHumans(Carbon::now(), Carbon::DIFF_ABSOLUTE);
+            $this->message = __('pipelines/onou/alerts.age_conforme').' '.$birthday->diffForHumans(Carbon::now(), Carbon::DIFF_ABSOLUTE);
 
         }
 

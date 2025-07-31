@@ -246,7 +246,7 @@ class FindDemande
     {
         return [
             'demande.renouvellement',
-            DB::raw('concat(annee.premiere_annee,\'/\',annee.deuxieme_annee) as annee_academique '),
+            DB::raw('concat(annee.premiere_annee,\'/\',annee.deuxieme_annee) as annee_academique'),
             'residence.denomination_ar as residance_arabe',
             'residence.denomination_fr as residance',
             'dou.denomination_ar as dou_arabe',
@@ -321,8 +321,8 @@ class FindDemande
             'etablissement.ll_etablissement_latin as etablissement',
             'structure.ll_structure_arabe  as structure_arabe',
             'structure.ll_structure_latin as structure',
-            // 'CONCAT (etablissement.identifiant ,etablissement.ll_etablissement_arabe) as etablissement_arabe ',
-            // 'CONCAT (etablissement.identifiant,etablissement.ll_etablissement_latin) as etablissement ',
+            // 'CONCAT (etablissement.identifiant ,etablissement.ll_etablissement_arabe) as etablissement_arabe',
+            // 'CONCAT (etablissement.identifiant,etablissement.ll_etablissement_latin) as etablissement',
             'niveau.libelle_long_ar as niveau_arabe',
             'niveau.libelle_long_lt as niveau',
             'offre.libelle_long_ar as offre_de_formation_arabe',

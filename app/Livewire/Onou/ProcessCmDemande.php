@@ -96,7 +96,7 @@ class ProcessCmDemande extends Component
             // $this->reset(['data', 'action', 'formFields', 'field_update', 'acceptformView', 'rejectformView']);
             // dispatch an event to refresh the data table
             if (! $done) {
-                session()->flash('error', 'Une erreur est survenue lors de la mise à jour de la demande.');
+                session()->flash('error',  __('pipelines/onou/alerts.erreur_survenue_lors_mise_a_jour_demande'));
                 $this->redirectRoute($this->data['rederctpage'], ['page' => $pageact], navigate: true);
             }
             // get the actual url to redirect
@@ -110,7 +110,7 @@ class ProcessCmDemande extends Component
 
         // get the actual url to redirect
         // $this->reset(['data', 'action', 'formFields', 'field_update', 'acceptformView', 'rejectformView']);
-        session()->flash('success', 'Demande mise à jour avec succès.');
+        session()->flash('success',  __('pipelines/onou/alerts.demande_mise_a_jour_succes'));
         $this->redirectRoute($this->data['rederctpage'], ['page' => $pageact], navigate: true);
     }
 

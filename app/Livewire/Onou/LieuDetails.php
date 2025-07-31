@@ -45,15 +45,15 @@ class LieuDetails extends Component
 
         if (($lieu->children_count !== null && $lieu->children_count > 0) ||
          ($lieu->Affectation_count !== null && $lieu->Affectation_count > 0)) {
-            session()->flash('error', 'Impossible de supprimer ce lieu car il a des sous Lieux ou des affectations.');
+            session()->flash('error',  __('pipelines/onou/alerts.impossible_supprimer_lieu'));
 
         } else {
             try {
                 $lieu->delete();
-                session()->flash('success', 'Lieu est supprimé avec succès.');
+                session()->flash('success', __('pipelines/onou/alerts.lieu_a_supprimer'));
             } catch (\Exception $e) {
-                session()->flash('error', 'Impossible de supprimer ce lieu car il a des sous Lieux ou des affectations.');
-                // session()->flash('error', $e->getMessage());
+                session()->flash('error', __('pipelines/onou/alerts.impossible_supprimer_lieu'));
+                //session()->flash('error', $e->getMessage());
             }
         }
         $this->redirectRoute('onouLieu.show', navigate: true);
