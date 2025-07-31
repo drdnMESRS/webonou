@@ -27,7 +27,7 @@ return [
     'select_filiere' => 'Select Filiere',
     'gestion_des_dossiers_hebergement' => 'Accommodation File Management',
     'gerer_les_demandes_hebergement_des_individus' => 'Manage Student Accommodation Requests',
-    'typestudent' => 'Formation',
+    'typestudent' => 'formation',
     'graduation' => 'Graduate',
     'post_graduation' => 'Postgraduate',
 ];
