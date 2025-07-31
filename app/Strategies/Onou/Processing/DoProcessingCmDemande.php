@@ -44,6 +44,11 @@ class DoProcessingCmDemande implements ProcessCmDemande
                 if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
                     throw new \Exception($checkAgeResult['message']);
                 }
+                $checkAgeResult = session('checks.frais_inscription_paye');
+                if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
+                    throw new \Exception($checkAgeResult['message']);
+                }
+                dd($checkAgeResult);
                 $checkAgeResult = session('checks.checkcles_remis');
                 if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
                     throw new \Exception($checkAgeResult['message']);
