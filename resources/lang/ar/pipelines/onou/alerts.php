@@ -31,4 +31,7 @@ return [
    'impossible_supprimer_lieu'=>'لا يمكن حذف هذا الموقع لأنه يحتوي على مواقع فرعية أو مهام',
    'lieu_a_supprimer'=>'تم حذف الموقع بنجاح',
    'lieu_mise_a_jour_succes'=>'تم تحيين الموقع بنجاح',
+   'etudiant_inscrie'=>'طالب الدكتوراه مسجل في الموسم الحالي',
+   'etudiant_doctorat_not_inscrie'=>'طالب الدكتوراه غير مسجل في الموسم الحالي',
+
 ];

@@ -30,4 +30,6 @@ return [
     'impossible_supprimer_lieu' => 'Cannot delete this location because it has sub-locations or assignments',
     'lieu_a_supprimer' => 'Location deleted successfully',
     'lieu_mise_a_jour_succes' => 'Location updated successfully',
+    'etudiant_inscrie' => 'PhD student is enrolled for the current academic year',
+    'etudiant_doctorat_not_inscrie' => 'PhD student is not enrolled for the current academic year',
 ];

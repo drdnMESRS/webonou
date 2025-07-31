@@ -30,4 +30,6 @@ return [
     'impossible_supprimer_lieu' => 'Impossible de supprimer ce lieu car il contient des sous-lieux ou des affectations',
     'lieu_a_supprimer' => 'Lieu supprimé avec succès',
     'lieu_mise_a_jour_succes' => 'Lieu mis à jour avec succès',
+    'etudiant_inscrie' => 'Doctorant inscrit pour l’année académique en cours',
+    'etudiant_doctorat_not_inscrie' => 'Doctorant non inscrit pour l’année académique en cours',
 ];
