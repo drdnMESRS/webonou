@@ -34,34 +34,36 @@ class DoProcessingCmDemande implements ProcessCmDemande
             throw new \Exception('Invalid parameters provided for processing the demand.');
         }
 
-        if(in_array($action, ['accept', 'create']) && isset($data['id_individu'])) {
-
+        if (in_array($action, ['accept', 'create']) && isset($data['id_individu'])) {
+            $checks = session('checks');
             if (isset($data['id_dia'])) {
-
-                $checkAgeResult = session('checks.checkAge');
+                //$checkAgeResult = session('checks.checkAge');
+                $checkAgeResult = $checks['checkAge'];
                 if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
                     throw new \Exception($checkAgeResult['message']);
                 }
-                $checkAgeResult = session('checks.reinscription');
+                //  $checkAgeResult = session('checks.reinscription');
+                $checkAgeResult = $checks['checkreinscription'];
                 if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
                     throw new \Exception($checkAgeResult['message']);
                 }
-                $checkAgeResult = session('checks');
-                dd( $checkAgeResult);
-                if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
-                    throw new \Exception($checkAgeResult['message']);
-                }
-
-                $checkAgeResult = session('checks.checkcles_remis');
+                // $checkAgeResult = session('checks.frais_inscription_paye');
+                $checkAgeResult =  $checks['frais_inscription_paye'];
                 if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
                     throw new \Exception($checkAgeResult['message']);
                 }
             }
             if (isset($data['id_fnd'])) {
-                $checkAgeResult = session('checks.checkreinscription_doctort');
+                //$checkAgeResult = session('checks.checkreinscription_doctort');
+                $checkAgeResult =  $checks['checkreinscription_doctort'];
                 if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
                     throw new \Exception($checkAgeResult['message']);
                 }
+            }
+            //   $checkAgeResult = session('checks.checkcles_remis');
+            $checkAgeResult =  $checks['checkcles_remis'];
+            if ($checkAgeResult && ($checkAgeResult['status'] ?? '') === 'danger') {
+                throw new \Exception($checkAgeResult['message']);
             }
         }
 

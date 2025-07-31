@@ -52,6 +52,7 @@ class FindDemande
             'etablissement.identifiant as etab_identifiant',
             'etablissement.ll_etablissement_arabe',
             'etablissement.ll_etablissement_latin',
+            'inscription.id as id_dia',
             'inscription.numero_inscription',
             'inscription.frais_inscription_paye as frais_inscription_paye',
             'inscription.est_transfert',
