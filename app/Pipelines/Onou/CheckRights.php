@@ -25,6 +25,18 @@ class CheckRights extends Alerts
             $this->flush_alert();
         }
 
+   if (!$demande['frais_inscription_paye']) {
+            $this->status = 'danger';
+            $this->type = 'frais_inscription_paye';
+            $this->message = 'Aucun paiement des frais d\'inscription n\'a été enregistré pour cette année universitaire';
+            $this->flush_alert();
+        } else {
+            $this->status = 'success';
+            $this->type = 'frais_inscription_paye';
+            $this->message = 'Frais d\'inscription payés pour l\'année universitaire';
+            $this->flush_alert();
+        }
+
         if (! $demande['abondan']) {
             $this->status = 'danger';
             $this->type = 'checkreabondan';
